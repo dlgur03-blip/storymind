@@ -18,6 +18,7 @@ export const useStore = create((set, get) => ({
   },
   login: async (email, password) => { const d = await api.auth('/auth/login', { email, password }); localStorage.setItem('sm_token', d.token); set({ token: d.token, user: d.user }); await get().fetchWorks(); },
   register: async (email, password, nickname) => { const d = await api.auth('/auth/register', { email, password, nickname }); localStorage.setItem('sm_token', d.token); set({ token: d.token, user: d.user }); },
+  googleLogin: async (credential) => { const d = await api.auth('/auth/google', { credential }); localStorage.setItem('sm_token', d.token); set({ token: d.token, user: d.user }); await get().fetchWorks(); },
   logout: () => { api.post('/auth/logout').catch(()=>{}); localStorage.removeItem('sm_token'); set({ token: null, user: null, works: [], currentWork: null }); },
   changePassword: async (currentPassword, newPassword) => { await api.put('/auth/password', { currentPassword, newPassword }); toast('비밀번호가 변경되었습니다', 'success'); },
   deleteAccount: async (password) => {

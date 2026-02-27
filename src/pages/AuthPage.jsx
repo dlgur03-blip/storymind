@@ -1,15 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../stores/store';
 import { PenTool, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
 export default function AuthPage() {
-  const { login, register } = useStore();
+  const { login, register, googleLogin } = useStore();
   const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [nick, setNick] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (window.google && GOOGLE_CLIENT_ID) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: async (response) => {
+          setLoading(true);
+          try {
+            await googleLogin(response.credential);
+          } catch (e) {
+            setErr(e.message);
+          }
+          setLoading(false);
+        },
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('google-signin-btn'),
+        { theme: 'filled_black', size: 'large', width: '100%', text: 'continue_with' }
+      );
+    }
+  }, []);
 
   const submit = async (e) => {
     e.preventDefault(); setErr(''); setLoading(true);
@@ -58,6 +81,17 @@ export default function AuthPage() {
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
             {mode === 'login' ? '로그인' : '계정 만들기'}
           </button>
+
+          {GOOGLE_CLIENT_ID && (
+            <>
+              <div className="flex items-center gap-3 my-2">
+                <div className="flex-1 h-px bg-white/20" />
+                <span className="text-white/40 text-xs">또는</span>
+                <div className="flex-1 h-px bg-white/20" />
+              </div>
+              <div id="google-signin-btn" className="w-full flex justify-center" />
+            </>
+          )}
         </form>
         <p className="text-center text-xs text-white/30 mt-6">by Fedma Inc.</p>
       </div>
