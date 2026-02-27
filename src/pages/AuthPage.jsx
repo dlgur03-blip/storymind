@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../stores/store';
 import { PenTool, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_ID = '63644023830-40bbo7vkacomrst81u7q8qou1vnqnh9m.apps.googleusercontent.com';
 
 export default function AuthPage() {
   const { login, register, googleLogin } = useStore();
