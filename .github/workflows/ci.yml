@@ -1,0 +1,36 @@
+name: StoryMind CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Health check
+        run: |
+          node server/index.js &
+          sleep 3
+          curl -f http://localhost:4000/api/health || exit 1
+          kill %1
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t storymind:latest .
+      - name: Deploy
+        run: echo "Add your deployment script here (e.g., docker push, SSH deploy, etc.)"

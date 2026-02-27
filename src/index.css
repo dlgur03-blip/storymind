@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+
+@layer base {
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+  }
+}
+
+.tiptap-editor .ProseMirror { outline: none; min-height: 60vh; font-family: 'Noto Serif KR', Georgia, serif; font-size: 1.05rem; line-height: 1.95; padding: 2.5rem; color: #171717; }
+.dark .tiptap-editor .ProseMirror { color: #e5e5e5; }
+.tiptap-editor .ProseMirror p { margin-bottom: 0.85rem; }
+.tiptap-editor .ProseMirror h1 { font-size: 1.8rem; font-weight: 700; margin: 1.5rem 0 1rem; letter-spacing: -0.02em; }
+.tiptap-editor .ProseMirror h2 { font-size: 1.4rem; font-weight: 700; margin: 1.2rem 0 0.8rem; }
+.tiptap-editor .ProseMirror blockquote { border-left: 2px solid #404040; padding-left: 1rem; color: #737373; font-style: italic; }
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); float: left; color: #a3a3a3; pointer-events: none; height: 0; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #a3a3a3; }
+.dark ::-webkit-scrollbar-thumb { background: #404040; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(8px) } to { opacity: 1; transform: translateX(0) } }
+.anim-fade { animation: fadeIn .25s ease-out; }
+.anim-slide { animation: slideIn .25s ease-out; }
+
+*:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
+.dark *:focus-visible { outline-color: #e5e5e5; }
+button { transition: all 0.15s ease; }
+
+/* === 1-8: Responsive / Mobile === */
+@media (max-width: 768px) {
+  .tiptap-editor .ProseMirror { padding: 1rem; font-size: 0.95rem; line-height: 1.8; }
+}
+
+@media (max-width: 640px) {
+  /* Stack panels vertically on mobile */
+  .editor-layout { flex-direction: column !important; }
+  .editor-sidebar { width: 100% !important; max-height: 40vh; overflow-y: auto; }
+  .editor-right-panel { width: 100% !important; max-height: 50vh; position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; border-top: 1px solid #e5e5e5; }
+  .dark .editor-right-panel { border-top-color: #404040; }
+}
