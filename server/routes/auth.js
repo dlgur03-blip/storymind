@@ -12,26 +12,26 @@ function genToken() { return crypto.randomBytes(32).toString('hex'); }
 
 router.post('/register', (req, res, next) => {
   try {
-    const errs = validate({ email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ }, password: { required: true, minLength: 6 }, nickname: { required: true, minLength: 1, maxLength: 30 } }, req.body);
+    const errs = validate({ username: { required: true, minLength: 3, maxLength: 20, pattern: /^[a-zA-Z0-9_]+$/ }, password: { required: true, minLength: 6 }, nickname: { required: true, minLength: 1, maxLength: 30 } }, req.body);
     if (errs) return res.status(400).json({ error: errs[0] });
-    const { email, password, nickname } = req.body;
-    if (db.prepare('SELECT id FROM users WHERE email=?').get(email)) return res.status(400).json({ error: '이미 사용 중인 이메일입니다' });
-    const result = db.prepare('INSERT INTO users (email,password_hash,nickname) VALUES (?,?,?)').run(email, hashPw(password), nickname);
+    const { username, password, nickname } = req.body;
+    if (db.prepare('SELECT id FROM users WHERE username=?').get(username)) return res.status(400).json({ error: '이미 사용 중인 아이디입니다' });
+    const result = db.prepare('INSERT INTO users (username,email,password_hash,nickname) VALUES (?,?,?,?)').run(username, username + '@local', hashPw(password), nickname);
     const token = genToken();
     db.prepare("INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime('now','+30 days'))").run(token, result.lastInsertRowid);
-    res.json({ token, user: { id: result.lastInsertRowid, email, nickname } });
+    res.json({ token, user: { id: result.lastInsertRowid, username, nickname } });
   } catch (e) { next(e); }
 });
 
 router.post('/login', (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: '이메일과 비밀번호를 입력해주세요' });
-    const user = db.prepare('SELECT * FROM users WHERE email=?').get(email);
-    if (!user || !verifyPw(password, user.password_hash)) return res.status(401).json({ error: '이메일 또는 비밀번호가 올바르지 않습니다' });
+    const { username, password } = req.body;
+    if (!username || !password) return res.status(400).json({ error: '아이디와 비밀번호를 입력해주세요' });
+    const user = db.prepare('SELECT * FROM users WHERE username=?').get(username);
+    if (!user || !verifyPw(password, user.password_hash)) return res.status(401).json({ error: '아이디 또는 비밀번호가 올바르지 않습니다' });
     const token = genToken();
     db.prepare("INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime('now','+30 days'))").run(token, user.id);
-    res.json({ token, user: { id: user.id, email: user.email, nickname: user.nickname } });
+    res.json({ token, user: { id: user.id, username: user.username, nickname: user.nickname } });
   } catch (e) { next(e); }
 });
 

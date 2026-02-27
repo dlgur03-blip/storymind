@@ -92,6 +92,8 @@ CREATE TABLE IF NOT EXISTS referrals (
 try { db.exec('ALTER TABLE users ADD COLUMN referral_code TEXT DEFAULT ""'); } catch {}
 // Add google_id for OAuth
 try { db.exec('ALTER TABLE users ADD COLUMN google_id TEXT'); } catch {}
+// Add username for ID-based login
+try { db.exec('ALTER TABLE users ADD COLUMN username TEXT UNIQUE'); } catch {}
 
 // #9-3 Author badges
 db.exec(`

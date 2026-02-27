@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../stores/store';
-import { PenTool, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
+import { PenTool, UserCircle, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 
 const GOOGLE_CLIENT_ID = '63644023830-40bbo7vkacomrst81u7q8qou1vnqnh9m.apps.googleusercontent.com';
 
 export default function AuthPage() {
   const { login, register, googleLogin } = useStore();
   const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [pw, setPw] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
   const [nick, setNick] = useState('');
@@ -38,10 +38,10 @@ export default function AuthPage() {
   const submit = async (e) => {
     e.preventDefault(); setErr(''); setLoading(true);
     try {
-      if (mode === 'login') await login(email, pw);
+      if (mode === 'login') await login(username, pw);
       else {
         if (pw !== pwConfirm) { setErr('비밀번호가 일치하지 않습니다'); setLoading(false); return; }
-        await register(email, pw, nick);
+        await register(username, pw, nick);
       }
     } catch (e) { setErr(e.message); }
     setLoading(false);
@@ -71,8 +71,8 @@ export default function AuthPage() {
             </div>
           )}
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일" className="w-full pl-10 pr-3 py-2.5 bg-white/10 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:ring-2 focus:ring-neutral-600 outline-none" />
+            <UserCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="아이디" className="w-full pl-10 pr-3 py-2.5 bg-white/10 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:ring-2 focus:ring-neutral-600 outline-none" />
           </div>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
