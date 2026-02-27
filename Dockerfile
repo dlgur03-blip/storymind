@@ -2,9 +2,12 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install build tools for native modules (better-sqlite3)
+RUN apk add --no-cache python3 make g++
+
 # Install dependencies
 COPY package*.json ./
-RUN npm ci --production=false
+RUN npm install
 
 # Build frontend
 COPY . .
