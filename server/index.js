@@ -43,7 +43,7 @@ app.get('/api/plan', auth, (req, res) => {
   }
   // Auto-reset monthly usage
   if (plan && new Date(plan.reset_at) < new Date()) {
-    db.prepare('UPDATE user_plans SET monthly_reviews_used=0, reset_at=datetime("now","+30 days") WHERE user_id=?').run(req.userId);
+    db.prepare("UPDATE user_plans SET monthly_reviews_used=0, reset_at=datetime('now','+30 days') WHERE user_id=?").run(req.userId);
     plan.monthly_reviews_used = 0;
   }
   res.json(plan || { plan: 'free', monthly_review_limit: 5, monthly_reviews_used: 0 });

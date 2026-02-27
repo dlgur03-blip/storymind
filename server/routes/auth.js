@@ -18,7 +18,7 @@ router.post('/register', (req, res, next) => {
     if (db.prepare('SELECT id FROM users WHERE email=?').get(email)) return res.status(400).json({ error: '이미 사용 중인 이메일입니다' });
     const result = db.prepare('INSERT INTO users (email,password_hash,nickname) VALUES (?,?,?)').run(email, hashPw(password), nickname);
     const token = genToken();
-    db.prepare('INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime("now","+30 days"))').run(token, result.lastInsertRowid);
+    db.prepare("INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime('now','+30 days'))").run(token, result.lastInsertRowid);
     res.json({ token, user: { id: result.lastInsertRowid, email, nickname } });
   } catch (e) { next(e); }
 });
@@ -30,7 +30,7 @@ router.post('/login', (req, res, next) => {
     const user = db.prepare('SELECT * FROM users WHERE email=?').get(email);
     if (!user || !verifyPw(password, user.password_hash)) return res.status(401).json({ error: '이메일 또는 비밀번호가 올바르지 않습니다' });
     const token = genToken();
-    db.prepare('INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime("now","+30 days"))').run(token, user.id);
+    db.prepare("INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime('now','+30 days'))").run(token, user.id);
     res.json({ token, user: { id: user.id, email: user.email, nickname: user.nickname } });
   } catch (e) { next(e); }
 });
@@ -64,7 +64,7 @@ router.post('/google', async (req, res, next) => {
     }
 
     const token = genToken();
-    db.prepare('INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime("now","+30 days"))').run(token, user.id);
+    db.prepare("INSERT INTO sessions (token,user_id,expires_at) VALUES (?,?,datetime('now','+30 days'))").run(token, user.id);
     res.json({ token, user: { id: user.id, email: user.email, nickname: user.nickname } });
   } catch (e) { next(e); }
 });

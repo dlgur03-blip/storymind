@@ -11,7 +11,8 @@
       "Bash(git push:*)",
       "Bash(npm install:*)",
       "Bash(vercel login:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(railway login:*)"
     ]
   }
 }

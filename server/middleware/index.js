@@ -4,7 +4,7 @@ const logger = require('../lib/logger');
 function auth(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '') || req.query.token;
   if (!token) return res.status(401).json({ error: '로그인이 필요합니다' });
-  const session = db.prepare('SELECT * FROM sessions WHERE token=? AND expires_at > datetime("now")').get(token);
+  const session = db.prepare("SELECT * FROM sessions WHERE token=? AND expires_at > datetime('now')").get(token);
   if (!session) return res.status(401).json({ error: '세션이 만료되었습니다' });
   req.userId = session.user_id;
   global.__currentUserId = session.user_id; // for API usage tracking

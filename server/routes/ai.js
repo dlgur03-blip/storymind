@@ -46,7 +46,7 @@ router.post('/review', auth, rateLimit('ai'), async (req, res, next) => {
     // #8-1 Plan check
     let plan = db.prepare('SELECT * FROM user_plans WHERE user_id=?').get(req.userId);
     if (!plan) { db.prepare('INSERT OR IGNORE INTO user_plans (user_id) VALUES (?)').run(req.userId); plan = db.prepare('SELECT * FROM user_plans WHERE user_id=?').get(req.userId); }
-    if (plan && new Date(plan.reset_at) < new Date()) { db.prepare('UPDATE user_plans SET monthly_reviews_used=0,reset_at=datetime("now","+30 days") WHERE user_id=?').run(req.userId); plan.monthly_reviews_used = 0; }
+    if (plan && new Date(plan.reset_at) < new Date()) { db.prepare("UPDATE user_plans SET monthly_reviews_used=0,reset_at=datetime('now','+30 days') WHERE user_id=?").run(req.userId); plan.monthly_reviews_used = 0; }
     if (plan && plan.monthly_reviews_used >= plan.monthly_review_limit) return res.status(429).json({ error: `월 검수 ${plan.monthly_review_limit}회 한도 초과. 플랜을 업그레이드해주세요.`, plan: plan.plan, limit: plan.monthly_review_limit });
     db.prepare('UPDATE user_plans SET monthly_reviews_used=monthly_reviews_used+1 WHERE user_id=?').run(req.userId);
 

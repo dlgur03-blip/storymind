@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS writing_stats (id INTEGER PRIMARY KEY AUTOINCREMENT, 
 
 // Session cleanup - run every hour
 function cleanExpiredSessions() {
-  const deleted = db.prepare('DELETE FROM sessions WHERE expires_at < datetime("now")').run();
+  const deleted = db.prepare("DELETE FROM sessions WHERE expires_at < datetime('now')").run();
   if (deleted.changes > 0) console.log(`[DB] Cleaned ${deleted.changes} expired sessions`);
 }
 cleanExpiredSessions();
