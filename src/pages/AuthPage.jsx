@@ -9,6 +9,7 @@ export default function AuthPage() {
   const [mode, setMode] = useState('login');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
+  const [pwConfirm, setPwConfirm] = useState('');
   const [nick, setNick] = useState('');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,7 +39,10 @@ export default function AuthPage() {
     e.preventDefault(); setErr(''); setLoading(true);
     try {
       if (mode === 'login') await login(email, pw);
-      else await register(email, pw, nick);
+      else {
+        if (pw !== pwConfirm) { setErr('비밀번호가 일치하지 않습니다'); setLoading(false); return; }
+        await register(email, pw, nick);
+      }
     } catch (e) { setErr(e.message); }
     setLoading(false);
   };
@@ -74,6 +78,12 @@ export default function AuthPage() {
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="비밀번호 (6자 이상)" className="w-full pl-10 pr-3 py-2.5 bg-white/10 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:ring-2 focus:ring-neutral-600 outline-none" />
           </div>
+          {mode === 'register' && (
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+              <input type="password" value={pwConfirm} onChange={e => setPwConfirm(e.target.value)} placeholder="비밀번호 확인" className="w-full pl-10 pr-3 py-2.5 bg-white/10 border border-white/10 rounded-lg text-white placeholder-white/40 text-sm focus:ring-2 focus:ring-neutral-600 outline-none" />
+            </div>
+          )}
 
           {err && <p className="text-red-400 text-xs text-center">{err}</p>}
 
