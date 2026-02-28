@@ -1,0 +1,56 @@
+{
+  "fantasy_hunter": {
+    "name": "판타지/헌터물",
+    "tension_pattern": [3, 7, 4, 9, 10],
+    "cliffhanger_rate": 0.9,
+    "popular_elements": ["시스템 창", "먼치킨", "레벨업", "보스전", "아이템 획득"],
+    "avg_chapter_length": 4000,
+    "dialogue_ratio": [0.2, 0.3],
+    "asl_range": [8, 15]
+  },
+  "romance": {
+    "name": "로맨스",
+    "tension_pattern": [2, 5, 3, 7, 5],
+    "cliffhanger_rate": 0.65,
+    "popular_elements": ["심쿵", "밀당", "오해→화해", "고백", "질투"],
+    "avg_chapter_length": 3500,
+    "dialogue_ratio": [0.4, 0.6],
+    "asl_range": [8, 12]
+  },
+  "martial_arts": {
+    "name": "무협",
+    "tension_pattern": [4, 6, 8, 5, 9],
+    "cliffhanger_rate": 0.8,
+    "popular_elements": ["내공 성장", "비급", "대련", "복수", "사제관계"],
+    "avg_chapter_length": 4500,
+    "dialogue_ratio": [0.2, 0.35],
+    "asl_range": [12, 20]
+  },
+  "regression": {
+    "name": "회귀물",
+    "tension_pattern": [5, 7, 4, 8, 10],
+    "cliffhanger_rate": 0.85,
+    "popular_elements": ["미래 지식 활용", "복수", "반전", "주가조작", "숨겨진 보물"],
+    "avg_chapter_length": 4000,
+    "dialogue_ratio": [0.25, 0.35],
+    "asl_range": [10, 18]
+  },
+  "modern_fantasy": {
+    "name": "현대 판타지",
+    "tension_pattern": [3, 5, 7, 4, 8],
+    "cliffhanger_rate": 0.7,
+    "popular_elements": ["비밀 유지", "점진적 노출", "일상+초자연", "정부기관", "각성"],
+    "avg_chapter_length": 3800,
+    "dialogue_ratio": [0.3, 0.4],
+    "asl_range": [10, 16]
+  },
+  "thriller": {
+    "name": "스릴러/추리",
+    "tension_pattern": [5, 7, 6, 9, 10],
+    "cliffhanger_rate": 0.9,
+    "popular_elements": ["반전", "단서", "심리전", "시간제한", "이중 정체"],
+    "avg_chapter_length": 3500,
+    "dialogue_ratio": [0.25, 0.35],
+    "asl_range": [10, 20]
+  }
+}

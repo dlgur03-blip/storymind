@@ -1,0 +1,132 @@
+{
+  "version": "1.0.0",
+  "description": "국내 인기 웹소설 분석 데이터. 문피아/카카오페이지/네이버 시리즈 상위 작품의 구조적·문체적 특징을 정리한 정적 기준 데이터.",
+
+  "narrative_structures": {
+    "standard_arc": {
+      "name": "기승전결 5단계",
+      "phases": [
+        {"name": "도입(1~5화)", "description": "세계관 소개 + 주인공 일상 + 사건 발생", "tension_range": [2, 5], "key": "첫 화에서 반드시 흥미 유발 요소 1개 이상"},
+        {"name": "전개(6~30화)", "description": "능력 성장 + 동료 확보 + 1차 갈등", "tension_range": [4, 7], "key": "매 5화마다 소규모 위기-해결 사이클"},
+        {"name": "위기(31~60화)", "description": "1차 보스/위기 + 반전 + 성장 한계", "tension_range": [6, 9], "key": "독자가 '이번엔 어떻게 이기지?' 생각하게"},
+        {"name": "절정(61~80화)", "description": "최대 위기 + 각성/반전 + 결전", "tension_range": [8, 10], "key": "가장 강한 감정적 페이오프"},
+        {"name": "결말/다음 아크(81~100화)", "description": "보상 + 다음 아크 복선 + 새 위협", "tension_range": [3, 6], "key": "완결감 + 연재 동기 유지"}
+      ]
+    },
+    "regression_arc": {
+      "name": "회귀물 구조",
+      "phases": [
+        {"name": "미래 비극(1~2화)", "description": "주인공의 파멸적 결말 → 회귀", "tension_range": [8, 10]},
+        {"name": "재시작(3~10화)", "description": "미래 지식으로 초기 이점 확보", "tension_range": [3, 6]},
+        {"name": "나비효과(11~40화)", "description": "미래가 달라지기 시작, 예측 불가 상황", "tension_range": [5, 8]},
+        {"name": "원래 비극 회피(41~60화)", "description": "핵심 비극 사건을 막으려는 시도", "tension_range": [7, 10]},
+        {"name": "새로운 위협(61화~)", "description": "회귀해도 못 막는 새 위기", "tension_range": [6, 9]}
+      ]
+    },
+    "system_growth_arc": {
+      "name": "시스템/성장물 구조",
+      "phases": [
+        {"name": "각성(1~5화)", "description": "시스템 획득 / 특별한 능력 발현", "tension_range": [4, 7]},
+        {"name": "초반 성장(6~20화)", "description": "빠른 레벨업, 관심받기 시작", "tension_range": [3, 6]},
+        {"name": "1차 벽(21~40화)", "description": "성장 정체 + 강적 등장", "tension_range": [6, 8]},
+        {"name": "돌파(41~60화)", "description": "히든 스킬/각성2차 → 새로운 차원", "tension_range": [7, 10]},
+        {"name": "상위 세계(61화~)", "description": "새로운 스케일의 도전", "tension_range": [5, 8]}
+      ]
+    }
+  },
+
+  "success_benchmarks": {
+    "fantasy_hunter": {
+      "reference_works": ["나 혼자만 레벨업", "전지적 독자 시점", "오버기어드", "템빨"],
+      "chapter_length": {"optimal": [3500, 4500], "unit": "chars"},
+      "dialogue_ratio": {"optimal": [0.20, 0.30]},
+      "asl": {"optimal": [8, 15], "unit": "eojeols"},
+      "tension_avg": 6.5,
+      "cliffhanger_rate": 0.88,
+      "growth_interval": "3~5화마다 능력 상승 이벤트",
+      "system_window_ratio": "15~25% (과하면 피로감)",
+      "key_success_factors": [
+        "첫 3화 안에 시스템 획득 + 위기 상황",
+        "매 10화마다 뚜렷한 성장 마일스톤",
+        "보스전은 2~3화에 걸쳐 긴장감 유지",
+        "시스템 창은 서사 보조용, 서사를 대체하면 안 됨",
+        "사이다(통쾌) 전개 vs 고구마(답답) 전개 비율 7:3"
+      ]
+    },
+    "romance": {
+      "reference_works": ["여주인공의 오빠를 지킵니다", "악녀는 모래시계를 되돌린다", "나의 행복한 결혼"],
+      "chapter_length": {"optimal": [3000, 4000], "unit": "chars"},
+      "dialogue_ratio": {"optimal": [0.40, 0.55]},
+      "asl": {"optimal": [8, 12], "unit": "eojeols"},
+      "tension_avg": 4.8,
+      "cliffhanger_rate": 0.62,
+      "key_success_factors": [
+        "첫 만남 장면에서 강한 인상 (1~3화)",
+        "밀당 사이클: 3~5화 간격으로 가까워짐↔거리둠",
+        "감정 고조 전 반드시 갈등/오해 배치",
+        "대화 중심이되 내면 독백으로 감정 깊이 추가",
+        "서브 커플 or 라이벌로 변주"
+      ]
+    },
+    "martial_arts": {
+      "reference_works": ["화산귀환", "나 혼자 무림에서 만렙", "검술명가 막내아들"],
+      "chapter_length": {"optimal": [4000, 5000], "unit": "chars"},
+      "dialogue_ratio": {"optimal": [0.20, 0.35]},
+      "asl": {"optimal": [12, 20], "unit": "eojeols"},
+      "tension_avg": 6.0,
+      "cliffhanger_rate": 0.82,
+      "key_success_factors": [
+        "사제 관계의 깊이감",
+        "내공/경지 성장은 시각적으로 묘사 (기운 흐름, 검기 색상)",
+        "대련 장면은 기술 교환 중심, 단순 타격 나열 지양",
+        "무공 이름/기술명은 한자어 기반 → 분위기 유지",
+        "의리, 복수, 성장 3요소 균형"
+      ]
+    },
+    "regression": {
+      "reference_works": ["SSS급 자살헌터", "회귀자 사용설명서", "레벨업 하는 플레이어"],
+      "chapter_length": {"optimal": [3500, 4500], "unit": "chars"},
+      "dialogue_ratio": {"optimal": [0.25, 0.35]},
+      "asl": {"optimal": [10, 18], "unit": "eojeols"},
+      "tension_avg": 7.0,
+      "cliffhanger_rate": 0.86,
+      "key_success_factors": [
+        "1~2화에서 미래 비극을 충분히 보여줘야 감정 이입",
+        "회귀 후 '아는 것'을 활용하는 쾌감을 자주 제공",
+        "나비효과로 원래 미래와 달라지는 긴장감",
+        "주인공이 전생 트라우마를 극복하는 내면 서사",
+        "독자가 '이건 어떻게 할까?' 궁금하게 만드는 떡밥"
+      ]
+    },
+    "modern_fantasy": {
+      "reference_works": ["전지적 독자 시점", "이 세계가 게임이라는 사실은", "멸망 이후의 세계"],
+      "chapter_length": {"optimal": [3500, 4500], "unit": "chars"},
+      "dialogue_ratio": {"optimal": [0.30, 0.40]},
+      "asl": {"optimal": [10, 16], "unit": "eojeols"},
+      "tension_avg": 5.8,
+      "cliffhanger_rate": 0.72,
+      "key_success_factors": [
+        "현실과 판타지의 경계가 주는 긴장감 유지",
+        "비밀 유지 → 점진적 노출의 리듬",
+        "일상 파트에서도 초자연 요소 암시",
+        "정부/기관의 존재감으로 세계관 입체화",
+        "주인공의 이중 생활이 주는 긴장"
+      ]
+    }
+  },
+
+  "universal_rules": [
+    {"rule": "첫 3화 법칙", "description": "첫 3화에서 흥미를 끌지 못하면 90% 이탈. 세계관 설명 최소화, 사건으로 시작."},
+    {"rule": "10화 잔류 법칙", "description": "10화까지 읽은 독자의 70%가 50화까지 읽음. 10화 안에 1차 위기-해소 사이클 필수."},
+    {"rule": "클리프행어 빈도", "description": "인기 작품은 평균 80%+ 화에서 클리프행어. 완결감 있는 화는 전체의 20% 이하."},
+    {"rule": "사이다:고구마 비율", "description": "독자 쾌감(사이다) 70% : 답답함(고구마) 30%. 고구마가 3화 이상 연속되면 이탈 급증."},
+    {"rule": "캐릭터 재등장 주기", "description": "중요 캐릭터는 10화 이내 재등장. 20화+ 미등장 시 독자가 잊음."},
+    {"rule": "성장 보상 주기", "description": "성장물에서 5화 이상 성장 없으면 독자 불만. 최소 3~5화마다 눈에 보이는 변화."},
+    {"rule": "반전의 타이밍", "description": "큰 반전은 30~50화 간격. 작은 반전/서프라이즈는 5~10화 간격."},
+    {"rule": "대화 품질", "description": "캐릭터별 고유 말투가 있으면 몰입 2배. '모두 같은 말투'는 큰 단점."},
+    {"rule": "장면 전환", "description": "한 장면이 화의 80% 이상을 차지하면 단조로움. 2~3개 장면 교차가 이상적."},
+    {"rule": "엔딩 약속", "description": "100화 이상 연재작은 50화마다 아크 완결감 필요. 끝없는 확장은 이탈 유발."}
+  ],
+
+  "usage": "AI 검수 모듈에서 장르별 success_benchmarks를 기준치로 참조. universal_rules를 대중성 분석(M6)에서 적용. narrative_structures를 페이싱 분석에 활용."
+}
