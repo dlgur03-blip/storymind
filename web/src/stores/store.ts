@@ -725,6 +725,28 @@ export const useStore = create((set, get) => ({
     }
   },
 
+  // ===== Editor Mode =====
+  editorCollaborations: [],
+  editorUnread: { unreadMessages: 0, unreadComments: 0, total: 0 },
+
+  fetchEditorCollaborations: async () => {
+    try {
+      const res = await fetch('/api/editor/collaborators?role=editor')
+      const data = await res.json()
+      set({ editorCollaborations: data.collaborations || [] })
+    } catch {
+      set({ editorCollaborations: [] })
+    }
+  },
+
+  fetchEditorUnread: async () => {
+    try {
+      const res = await fetch('/api/editor/unread')
+      const data = await res.json()
+      set({ editorUnread: data })
+    } catch {}
+  },
+
   markNotificationsRead: async () => {
     try {
       await fetch('/api/life/notifications', {

@@ -1,46 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import { X, ArrowRight, ArrowLeft, BookOpen, Wand2, Shield, PenLine, BarChart3, Keyboard } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, BookOpen, Wand2, Shield, PenLine, BarChart3, Keyboard, Sparkles, FolderOpen, Download, Search, Maximize2 } from 'lucide-react';
 
 const STEPS = [
   {
     icon: BookOpen,
-    title: '작품 등록',
-    description: '대시보드에서 새 작품을 만드세요. 제목과 장르를 입력하면 AI가 장르에 맞는 분석 기준을 자동으로 설정합니다.',
-    tip: '기존 원고가 있다면 "일괄 임포트"로 한번에 등록할 수 있어요.',
+    title: 'StoryMind에 오신 것을 환영합니다!',
+    description: '소설 작가를 위한 AI 집필 도우미입니다. 설정 오류 검수, 복선 관리, AI 대필까지 - 창작에만 집중하세요.',
+    tip: '이 가이드는 언제든 우측 상단 ? 버튼으로 다시 볼 수 있어요.',
+  },
+  {
+    icon: FolderOpen,
+    title: '작품 등록하기',
+    description: '대시보드에서 "새 작품"을 눌러 시작하세요. 기존 원고가 있다면 하단의 "기존 원고 임포트" 버튼으로 폴더를 선택해 한번에 등록할 수 있습니다.',
+    features: [
+      { label: '새 작품', desc: '제목, 장르, 문체 설정' },
+      { label: '폴더 임포트', desc: '.txt 파일들을 챕터로 변환' },
+    ],
   },
   {
     icon: PenLine,
     title: '에디터에서 집필',
-    description: '화(챕터) 단위로 집필합니다. 자동 저장이 30초마다 작동하고, 오프라인에서도 로컬 백업이 유지됩니다.',
-    tip: '화 제목은 클릭해서 바로 수정할 수 있어요.',
+    description: '화(챕터) 단위로 집필합니다. 2초 후 자동 저장되며, 오프라인에서도 로컬 백업이 유지됩니다.',
+    features: [
+      { label: '좌측 패널', desc: '챕터 목록, 추가/삭제' },
+      { label: '우측 패널', desc: 'AI 검수, StoryVault' },
+    ],
   },
   {
     icon: Wand2,
-    title: 'AI 검수 실행',
-    description: '검수 버튼을 누르면 6개 AI 모듈이 동시에 분석합니다: 설정 모순, 캐릭터 일관성, 시간선, 복선, 문체, 대중성.',
-    tip: 'Ctrl+Shift+R 단축키로 더 빠르게!',
+    title: 'AI 검수 (핵심 기능)',
+    description: '에디터 우측 패널에서 AI 검수를 실행하면 6개 모듈이 동시에 분석합니다.',
+    features: [
+      { label: '설정 오류', desc: '눈 색깔, 키 등 모순 탐지' },
+      { label: '캐릭터', desc: '성격/말투 일관성 체크' },
+      { label: '복선', desc: '미회수 복선 추적' },
+      { label: '텐션', desc: '긴장감 점수 분석' },
+    ],
   },
   {
     icon: Shield,
-    title: 'StoryVault 확인',
-    description: '캐릭터, 복선, 세계관, 시간선이 자동으로 기록됩니다. 우측 패널에서 확인하고 직접 추가/수정할 수 있어요.',
-    tip: '"스마트 모드"에서는 AI가 새 설정을 발견하면 승인을 요청합니다.',
+    title: 'StoryVault (설정 금고)',
+    description: '우측 패널 첫 번째 탭에서 캐릭터, 복선, 세계관, 시간선, 관계도를 관리합니다.',
+    features: [
+      { label: '캐릭터', desc: '이름, 외모, 성격 등록' },
+      { label: '복선', desc: '설치/회수 상태 관리' },
+      { label: '시간선', desc: 'AI 검수 시 자동 구축' },
+      { label: '관계도', desc: '캐릭터 간 관계 시각화' },
+    ],
+    tip: '"스마트 모드"에서는 AI가 새 설정 발견 시 승인을 요청합니다.',
   },
   {
-    icon: BarChart3,
-    title: '텐션 & 대중성',
-    description: '각 화의 텐션 점수, 클리프행어 품질, 페이싱을 분석합니다. 차트에서 전체 흐름을 한눈에 볼 수 있어요.',
-    tip: '장르별 인기 작품 기준과 비교해서 구체적인 개선 팁을 줍니다.',
+    icon: Sparkles,
+    title: 'AI 대필 & 제안',
+    description: '아이디어만 입력하면 AI가 현재 설정과 문체에 맞게 글을 작성합니다.',
+    features: [
+      { label: '스토리 제안', desc: '미회수 복선 기반 전개 제안' },
+      { label: 'AI 대필', desc: '아이디어 → 한 화 작성' },
+      { label: '필체 학습', desc: '내 문체 분석 후 대필 반영' },
+    ],
+  },
+  {
+    icon: Maximize2,
+    title: '집중 모드 & 검색',
+    description: '방해 없이 글쓰기에 집중할 수 있는 기능들입니다.',
+    features: [
+      { label: '집중 모드', desc: '사이드바 숨기고 에디터만' },
+      { label: '작품 내 검색', desc: '모든 챕터에서 텍스트 찾기' },
+      { label: '내보내기', desc: 'TXT/HTML로 다운로드' },
+    ],
   },
   {
     icon: Keyboard,
-    title: '단축키',
+    title: '단축키 모음',
     description: '자주 쓰는 기능을 키보드로 빠르게!',
     shortcuts: [
       { key: 'Ctrl + S', desc: '저장' },
+      { key: 'Ctrl + F', desc: '작품 내 검색' },
+      { key: 'Ctrl + Enter', desc: '집중 모드' },
       { key: 'Ctrl + Shift + R', desc: 'AI 검수' },
       { key: 'Ctrl + \\', desc: '우측 패널 토글' },
       { key: 'Ctrl + [', desc: '좌측 패널 토글' },
+      { key: 'Esc', desc: '집중 모드 / 검색 종료' },
     ],
   },
 ];
@@ -61,7 +101,7 @@ export default function OnboardingGuide({ onClose }) {
 
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity ${exiting ? 'opacity-0' : 'opacity-100'}`}>
-      <div className={`w-full max-w-md mx-4 bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl overflow-hidden transition-transform ${exiting ? 'scale-95' : 'scale-100'}`}>
+      <div className={`w-full max-w-lg mx-4 bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl overflow-hidden transition-transform ${exiting ? 'scale-95' : 'scale-100'}`}>
         {/* Progress bar */}
         <div className="h-1 bg-neutral-100 dark:bg-neutral-800">
           <div className="h-full bg-neutral-900 dark:bg-white transition-all duration-300" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
@@ -82,6 +122,17 @@ export default function OnboardingGuide({ onClose }) {
           <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2 tracking-tight">{current.title}</h3>
           <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">{current.description}</p>
 
+          {current.features && (
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              {current.features.map((f, i) => (
+                <div key={i} className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                  <div className="text-xs font-medium text-neutral-700 dark:text-neutral-300">{f.label}</div>
+                  <div className="text-[10px] text-neutral-500">{f.desc}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {current.tip && (
             <div className="p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg mb-4">
               <p className="text-xs text-neutral-500 dark:text-neutral-400"><span className="font-medium text-neutral-700 dark:text-neutral-300">💡 팁: </span>{current.tip}</p>
@@ -89,7 +140,7 @@ export default function OnboardingGuide({ onClose }) {
           )}
 
           {current.shortcuts && (
-            <div className="space-y-2 mb-4">
+            <div className="space-y-1.5 mb-4 max-h-48 overflow-y-auto">
               {current.shortcuts.map((s, i) => (
                 <div key={i} className="flex items-center justify-between p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
                   <kbd className="px-2 py-0.5 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded text-xs font-mono text-neutral-700 dark:text-neutral-300">{s.key}</kbd>
@@ -122,7 +173,7 @@ export default function OnboardingGuide({ onClose }) {
               onClick={close}
               className="px-5 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-lg hover:opacity-90 transition"
             >
-              시작하기
+              시작하기 🚀
             </button>
           )}
         </div>
@@ -135,7 +186,17 @@ export default function OnboardingGuide({ onClose }) {
 export function useOnboarding() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    if (!localStorage.getItem('sm_onboarding_done')) setShow(true);
+    // 첫 실행 시 자동으로 튜토리얼 표시
+    if (!localStorage.getItem('sm_onboarding_done')) {
+      setShow(true);
+    }
   }, []);
-  return { showOnboarding: show, closeOnboarding: () => setShow(false), reopenOnboarding: () => setShow(true) };
+  return {
+    showOnboarding: show,
+    closeOnboarding: () => setShow(false),
+    reopenOnboarding: () => {
+      // 다시 보기 클릭 시
+      setShow(true);
+    }
+  };
 }

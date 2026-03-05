@@ -5,6 +5,15 @@ const logger = require('./lib/logger');
 const { errorHandler, requestLogger, auth } = require('./middleware');
 const db = require('./lib/db');
 
+// Wait for DB to initialize
+db.initPromise.then(() => {
+  startServer();
+}).catch(err => {
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
+});
+
+function startServer() {
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -86,11 +95,9 @@ app.get('/api/export-data', auth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// Static
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')));
-  app.get('*', (_req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
-}
+// Static - 항상 dist 폴더 서빙
+app.use(express.static(path.join(__dirname, '../dist')));
+app.get('*', (_req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
 
 app.use(errorHandler);
 
@@ -123,3 +130,6 @@ process.on('SIGTERM', () => {
   server.close(() => { db.close(); process.exit(0); });
   setTimeout(() => process.exit(1), 10000);
 });
+
+module.exports = server;
+} // end startServer

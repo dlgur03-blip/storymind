@@ -47,7 +47,7 @@ router.post('/:id/chat', auth, rateLimit('ai'), async (req, res, next) => {
     const plan = db.prepare('SELECT * FROM story_plans WHERE id=? AND user_id=?').get(req.params.id, req.userId);
     if (!plan) return res.status(404).json({ error: '플랜 없음' });
 
-    const { message } = req.body;
+    const { message, quickMode } = req.body; // quickMode: true = AI generates more, asks less
     let conversation = [];
     try { conversation = JSON.parse(plan.conversation || '[]'); } catch { conversation = []; }
 
@@ -69,7 +69,15 @@ router.post('/:id/chat', auth, rateLimit('ai'), async (req, res, next) => {
     const benchmarks = Object.values(novelAnalysis.success_benchmarks).map(b => `${b.reference_works?.[0]||''}: 텐션${b.tension_avg}, 클리프${b.cliffhanger_rate}`).join('; ');
 
     // Core system prompt: AI must ASK QUESTIONS, not just generate
-    const systemBase = `너는 웹소설 기획 전문 컨설턴트 "스토리마인드"다. 
+    const systemBase = quickMode
+      ? `너는 웹소설 기획 전문 컨설턴트 "스토리마인드"다.
+[빠른 모드] 작가가 빠른 진행을 원한다. 질문 최소화, 바로 생성하라.
+1. 아이디어를 바탕으로 즉시 결과물을 생성하라.
+2. 질문은 꼭 필요한 것만 1개 이하로 하라.
+3. 작가가 "좋아", "ㅇㅇ" 등 긍정하면 바로 STEP_COMPLETE 태그와 함께 다음으로 넘어가라.
+4. 최대한 한 번의 응답으로 현재 단계를 완료하라.
+인기작 기준: ${benchmarks}`
+      : `너는 웹소설 기획 전문 컨설턴트 "스토리마인드"다.
 핵심 원칙:
 1. 일방적으로 생성하지 마라. 반드시 작가에게 2~3개 질문을 던져서 작가의 의도를 확인하라.
 2. 선택지를 줄 때는 3가지 옵션을 주고 작가가 고르게 하라.

@@ -12,7 +12,31 @@
       "Bash(npm install:*)",
       "Bash(vercel login:*)",
       "Bash(vercel:*)",
-      "Bash(railway login:*)"
+      "Bash(railway login:*)",
+      "Bash(npx vite build:*)",
+      "Bash(npm start)",
+      "Bash(npm run build:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c \"taskkill /F /PID 38140\")",
+      "Bash(cmd //c \"taskkill /F /PID 22228\")",
+      "Bash(cmd //c \"taskkill /F /PID 35464\")",
+      "Bash(cmd //c \"taskkill /F /PID 13516\")",
+      "WebSearch",
+      "Bash(cmd //c \"taskkill /F /PID 44396\")",
+      "Bash(cmd //c \"taskkill /F /PID 37948\")",
+      "Bash(cmd //c \"taskkill /F /PID 45108\")",
+      "Bash(cmd //c \"taskkill /F /PID 46352\")",
+      "Bash(npm run dev:*)",
+      "Bash(npm run:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl:*)",
+      "Bash(npx vercel:*)",
+      "Bash(find:*)",
+      "Bash(wc:*)"
     ]
   }
 }

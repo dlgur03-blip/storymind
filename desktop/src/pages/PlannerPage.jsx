@@ -74,6 +74,7 @@ export default function PlannerPage() {
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
   const [tab, setTab] = useState('chat'); // chat | conti | summary
+  const [quickMode, setQuickMode] = useState(false); // 빠른 모드: AI가 질문 최소화
   const chatEndRef = useRef(null);
 
   const load = async () => {
@@ -95,7 +96,7 @@ export default function PlannerPage() {
     setPlan(p => ({ ...p, conversation: [...(p.conversation || []), { role: 'user', content: msg, step: p.current_step }] }));
 
     try {
-      const result = await api.post(`/planner/${id}/chat`, { message: msg });
+      const result = await api.post(`/planner/${id}/chat`, { message: msg, quickMode });
       // Add AI response
       setPlan(p => ({
         ...p,
@@ -230,18 +231,33 @@ export default function PlannerPage() {
 
             {/* Input */}
             <div className="border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
-              <div className="flex gap-2 max-w-3xl mx-auto">
-                <input
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
-                  placeholder={step <= 6 ? STEPS[Math.min(step-1, 5)].desc : '수정하고 싶은 부분을 말해주세요'}
-                  className="flex-1 px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm outline-none focus:border-neutral-400 transition"
-                  disabled={sending}
-                />
-                <button onClick={sendMessage} disabled={!input.trim() || sending} className="p-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl hover:opacity-90 disabled:opacity-30 transition">
-                  <Send className="w-4 h-4" />
-                </button>
+              <div className="flex flex-col gap-2 max-w-3xl mx-auto">
+                <div className="flex gap-2">
+                  <input
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+                    placeholder={step <= 6 ? STEPS[Math.min(step-1, 5)].desc : '수정하고 싶은 부분을 말해주세요'}
+                    className="flex-1 px-4 py-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm outline-none focus:border-neutral-400 transition"
+                    disabled={sending}
+                  />
+                  <button onClick={sendMessage} disabled={!input.trim() || sending} className="p-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl hover:opacity-90 disabled:opacity-30 transition">
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => setQuickMode(!quickMode)}
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-medium transition ${
+                      quickMode
+                        ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+                        : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500 hover:text-neutral-700'
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    {quickMode ? '빠른 모드 ON' : '빠른 모드: AI가 바로 생성'}
+                  </button>
+                </div>
               </div>
             </div>
           </>

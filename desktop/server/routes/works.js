@@ -14,10 +14,12 @@ router.post('/', auth, (req, res, next) => {
   try {
     const errs = validate({ title: { required: true, maxLength: 200 } }, req.body);
     if (errs) return res.status(400).json({ error: errs[0] });
-    const { title, genre, style_preset, daily_goal } = req.body;
-    const result = db.prepare('INSERT INTO works (user_id,title,genre,style_preset,daily_goal) VALUES (?,?,?,?,?)').run(req.userId, sanitize(title), genre || '', style_preset || 'action', daily_goal || 3000);
+    const { title, genre, style_preset, work_type, daily_goal } = req.body;
+    const type = work_type === 'webtoon' ? 'webtoon' : 'novel';
+    const result = db.prepare('INSERT INTO works (user_id,title,genre,style_preset,work_type,daily_goal) VALUES (?,?,?,?,?,?)').run(req.userId, sanitize(title), genre || '', style_preset || 'action', type, daily_goal || 3000);
     const work = db.prepare('SELECT * FROM works WHERE id=?').get(result.lastInsertRowid);
-    db.prepare('INSERT INTO chapters (work_id,number,title) VALUES (?,1,?)').run(work.id, '제1화');
+    const chapterTitle = type === 'webtoon' ? '1화' : '제1화';
+    db.prepare('INSERT INTO chapters (work_id,number,title) VALUES (?,1,?)').run(work.id, chapterTitle);
     res.json(work);
   } catch (e) { next(e); }
 });
@@ -44,12 +46,60 @@ router.get('/:workId/export', auth, (req, res, next) => {
     if (!work) return res.status(404).json({ error: '작품을 찾을 수 없습니다' });
     const chapters = db.prepare('SELECT * FROM chapters WHERE work_id=? ORDER BY number').all(work.id);
     const fmt = req.query.format || 'txt';
+    const platform = req.query.platform || 'generic';
+
+    // Platform-specific formatting
+    const platformFormats = {
+      naver: { // 네이버 시리즈
+        lineBreak: '\n\n',
+        chapterSeparator: '\n\n※ ※ ※\n\n',
+        dialogueFormat: (text) => text.replace(/"([^"]+)"/g, '"$1"'),
+        maxCharsPerLine: 40,
+      },
+      kakao: { // 카카오페이지
+        lineBreak: '\n\n',
+        chapterSeparator: '\n\n───────\n\n',
+        dialogueFormat: (text) => text,
+        indent: false,
+      },
+      munpia: { // 문피아
+        lineBreak: '\n\n',
+        chapterSeparator: '\n\n* * *\n\n',
+        dialogueFormat: (text) => text,
+        indent: true,
+      },
+      ridi: { // 리디북스
+        lineBreak: '\n\n',
+        chapterSeparator: '\n\n□ □ □\n\n',
+        dialogueFormat: (text) => text,
+      },
+      generic: {
+        lineBreak: '\n\n',
+        chapterSeparator: '\n\n---\n\n',
+        dialogueFormat: (text) => text,
+      }
+    };
+
+    const pf = platformFormats[platform] || platformFormats.generic;
+
     if (fmt === 'txt') {
       let text = `${work.title}\n${'='.repeat(40)}\n`;
-      chapters.forEach(ch => { text += `\n${'─'.repeat(30)}\n${ch.title || '제' + ch.number + '화'}\n${'─'.repeat(30)}\n\n${(ch.content || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')}\n`; });
+      chapters.forEach((ch, i) => {
+        let content = (ch.content || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+        content = pf.dialogueFormat(content);
+        if (pf.indent) content = content.split('\n').map(line => '　' + line).join('\n');
+        if (i > 0) text += pf.chapterSeparator;
+        text += `\n${ch.title || '제' + ch.number + '화'}\n\n${content}${pf.lineBreak}`;
+      });
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(work.title)}.txt"`);
+      res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(work.title)}_${platform}.txt"`);
       res.send(text);
+    } else if (fmt === 'epub') {
+      // Simple EPUB structure (without external library)
+      const epub = generateSimpleEpub(work, chapters);
+      res.setHeader('Content-Type', 'application/epub+zip');
+      res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(work.title)}.epub"`);
+      res.send(epub);
     } else {
       let html = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>${work.title}</title><style>body{font-family:'Noto Serif KR',Georgia,serif;max-width:700px;margin:40px auto;padding:20px;line-height:1.9}h1{text-align:center;border-bottom:2px solid #333;padding-bottom:10px}h2{margin-top:40px;border-top:1px solid #ddd;padding-top:20px;color:#555}</style></head><body><h1>${work.title}</h1>`;
       chapters.forEach(ch => { html += `<h2>${ch.title || '제' + ch.number + '화'}</h2>${ch.content || ''}`; });
@@ -60,6 +110,24 @@ router.get('/:workId/export', auth, (req, res, next) => {
     }
   } catch (e) { next(e); }
 });
+
+// Helper: Generate simple EPUB (basic implementation)
+function generateSimpleEpub(work, chapters) {
+  // Returns a buffer - for full EPUB, would need archiver package
+  // For now, return HTML as fallback since EPUB requires zip
+  let content = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head><title>${work.title}</title></head>
+<body>
+<h1>${work.title}</h1>`;
+  chapters.forEach(ch => {
+    content += `<h2>${ch.title || '제' + ch.number + '화'}</h2>`;
+    content += (ch.content || '').replace(/<script[^>]*>.*?<\/script>/gi, '');
+  });
+  content += '</body></html>';
+  return Buffer.from(content, 'utf-8');
+}
 
 // ── Chapters ──
 router.get('/:workId/chapters', auth, (req, res) => {

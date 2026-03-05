@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -6,15 +6,47 @@ import Underline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
 import { useStore } from '../../stores/store';
 
+const FONT_MAP = {
+  'pretendard': 'Pretendard Variable, Pretendard, sans-serif',
+  'nanum-gothic': '"Nanum Gothic", sans-serif',
+  'nanum-myeongjo': '"Nanum Myeongjo", serif',
+  'spoqa': '"Spoqa Han Sans Neo", sans-serif',
+};
+
+const WEBTOON_PLACEHOLDER = `[씬 1 - 장소, 시간대]
+(지문) 상황 설명...
+
+캐릭터: "대사"
+       (감정/톤)
+
+[씬 2 - 다음 장면]
+(SFX) 효과음
+`;
+
+const NOVEL_PLACEHOLDER = '여기에 이야기를 시작하세요...';
+
 export default function TipTapEditor({ content, onChange }) {
-  const { currentChapter, recoverBackup, saveChapter } = useStore();
+  const { currentChapter, currentWork, recoverBackup, saveChapter } = useStore();
   const pendingRef = useRef(null);
+  const [fontSize, setFontSize] = useState(18);
+  const [fontFamily, setFontFamily] = useState('pretendard');
+
+  const isWebtoon = currentWork?.work_type === 'webtoon';
+  const placeholderText = isWebtoon ? WEBTOON_PLACEHOLDER : NOVEL_PLACEHOLDER;
+
+  // 폰트 설정 로드
+  useEffect(() => {
+    const savedSize = localStorage.getItem('sm_fontSize');
+    const savedFamily = localStorage.getItem('sm_fontFamily');
+    if (savedSize) setFontSize(parseInt(savedSize));
+    if (savedFamily) setFontFamily(savedFamily);
+  }, []);
 
   const editor = useEditor({
-    extensions: [StarterKit, Underline, Highlight.configure({ multicolor: true }), Placeholder.configure({ placeholder: '여기에 이야기를 시작하세요...' })],
+    extensions: [StarterKit, Underline, Highlight.configure({ multicolor: true }), Placeholder.configure({ placeholder: placeholderText })],
     content: content || '',
     onUpdate: ({ editor }) => { pendingRef.current = editor.getHTML(); onChange(editor.getHTML()); },
-  });
+  }, [placeholderText]);
 
   // Sync content from parent
   useEffect(() => {
@@ -50,7 +82,11 @@ export default function TipTapEditor({ content, onChange }) {
     }
   }, [currentChapter?.id]);
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div style={{ fontFamily: FONT_MAP[fontFamily] || FONT_MAP.pretendard, fontSize: `${fontSize}px`, lineHeight: '1.8' }}>
+      <EditorContent editor={editor} />
+    </div>
+  );
 }
 
 // Utility: highlight issues in editor (#4)

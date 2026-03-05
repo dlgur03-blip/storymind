@@ -1,20 +1,21 @@
 const logger = require('./logger');
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'demo-key';
+// API 키를 동적으로 읽음 (설정 변경 시 즉시 반영)
+const getApiKey = () => process.env.GEMINI_API_KEY || '';
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
-// All tiers use Gemini 2.5 Flash — $0.15/$0.60 per 1M tokens
+// Gemini 2.5 Flash - 안정 버전
 const MODELS = {
-  critical: 'gemini-2.5-flash-preview-05-20',
-  standard: 'gemini-2.5-flash-preview-05-20',
-  light:    'gemini-2.5-flash-preview-05-20',
+  critical: 'gemini-2.5-flash',
+  standard: 'gemini-2.5-flash',
+  light:    'gemini-2.5-flash-lite',
 };
 
 async function callGemini(systemPrompt, userMessage, maxTokens = 4096, priority = 'standard') {
   const model = MODELS[priority] || MODELS.standard;
   const start = Date.now();
   try {
-    const url = `${BASE_URL}/${model}:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `${BASE_URL}/${model}:generateContent?key=${getApiKey()}`;
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -68,7 +69,7 @@ async function callGemini(systemPrompt, userMessage, maxTokens = 4096, priority 
     if (priority === 'critical') {
       logger.warn('Retrying critical request');
       try {
-        const url = `${BASE_URL}/${MODELS.standard}:generateContent?key=${GEMINI_API_KEY}`;
+        const url = `${BASE_URL}/${MODELS.standard}:generateContent?key=${getApiKey()}`;
         const resp = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

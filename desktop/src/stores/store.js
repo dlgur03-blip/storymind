@@ -4,6 +4,10 @@ import { toast } from '../lib/Toast';
 
 const tryParse = (s, fb) => { if (Array.isArray(s)) return s; try { return JSON.parse(s); } catch { return fb; } };
 
+// Debounce timer for auto-extraction
+let extractTimer = null;
+const EXTRACT_DELAY = 10000; // 10 seconds after last save
+
 export const useStore = create((set, get) => ({
   user: { id: 1, nickname: '작가' },
   darkMode: localStorage.getItem('sm_dark') === 'true',
@@ -12,12 +16,13 @@ export const useStore = create((set, get) => ({
   // 데스크톱 앱 초기화 (로그인 불필요)
   init: async () => {
     await get().fetchWorks();
+    await get().fetchDailyStats();
   },
 
   // Works
   works: [], currentWork: null,
   fetchWorks: async () => { try { set({ works: await api.get('/works') }); } catch (e) { toast(e.message, 'error'); } },
-  createWork: async (title, genre, style_preset, daily_goal) => { const w = await api.post('/works', { title, genre, style_preset, daily_goal }); await get().fetchWorks(); return w; },
+  createWork: async (title, genre, style_preset, work_type, daily_goal) => { const w = await api.post('/works', { title, genre, style_preset, work_type: work_type || 'novel', daily_goal }); await get().fetchWorks(); return w; },
   selectWork: async (work) => { set({ currentWork: work, currentChapter: null, reviewResult: null }); await get().fetchChapters(work.id); await get().fetchVault(work.id); },
   deleteWork: async (id) => { await api.delete('/works/' + id); set({ currentWork: null, currentChapter: null, chapters: [] }); await get().fetchWorks(); },
   importWork: async (workId, chapterTexts) => {
@@ -35,10 +40,20 @@ export const useStore = create((set, get) => ({
   createChapter: async () => { const { currentWork: w, chapters } = get(); if (!w) return; const n = chapters.length + 1; const ch = await api.post('/works/' + w.id + '/chapters', { number: n, title: '제' + n + '화' }); await get().fetchChapters(w.id); set({ currentChapter: ch }); },
   saveChapter: async (content, title) => {
     const c = get().currentChapter; if (!c) return;
+    const w = get().currentWork;
     set({ isSaving: true });
     // Local backup
     try { localStorage.setItem('sm_backup_' + c.id, JSON.stringify({ content, title, t: Date.now() })); } catch {}
-    try { await api.put('/chapters/' + c.id, { content, title: title || c.title }); set(s => ({ isSaving: false, currentChapter: { ...s.currentChapter, content, title: title || s.currentChapter.title } })); try { localStorage.removeItem('sm_backup_' + c.id); } catch {} }
+    try {
+      await api.put('/chapters/' + c.id, { content, title: title || c.title });
+      set(s => ({ isSaving: false, currentChapter: { ...s.currentChapter, content, title: title || s.currentChapter.title } }));
+      try { localStorage.removeItem('sm_backup_' + c.id); } catch {}
+      // Auto-extract: debounced call after successful save
+      if (w && w.vault_mode !== 'manual') {
+        clearTimeout(extractTimer);
+        extractTimer = setTimeout(() => get().quickExtract(w.id, c.id), EXTRACT_DELAY);
+      }
+    }
     catch (e) { set({ isSaving: false }); toast('저장 실패 (로컬 백업됨)', 'error'); }
   },
   renameChapter: async (cid, title) => { await api.put('/chapters/' + cid, { title, content: undefined }); const w = get().currentWork; if (w) await get().fetchChapters(w.id); },
@@ -51,7 +66,23 @@ export const useStore = create((set, get) => ({
 
   // Stats
   stats: { last7days: [], today: 0 },
+  dailyStats: [],
+  usage: { total: { calls: 0, tokens_in: 0, tokens_out: 0, cost: 0 }, last30days: [] },
   fetchStats: async () => { try { set({ stats: await api.get('/stats') }); } catch {} },
+  fetchDailyStats: async () => { try { const r = await api.get('/stats'); set({ dailyStats: r.last7days || [] }); } catch {} },
+  fetchUsage: async () => { try { set({ usage: await api.get('/usage') }); } catch {} },
+
+  // 폴더 임포트 (데스크톱 전용)
+  importFromFolder: async (title, genre, style, files) => {
+    // 1. 작품 생성
+    const work = await api.post('/works', { title, genre, style_preset: style });
+    // 2. 파일들을 챕터로 임포트
+    const chapters = files.map((f, i) => ({ number: i + 1, title: f.name.replace(/\.[^.]+$/, ''), content: f.content }));
+    await api.post('/works/' + work.id + '/import', { chapters });
+    await get().fetchWorks();
+    toast(`${files.length}화 임포트 완료!`, 'success');
+    return work;
+  },
 
   // Vault (fixed URL: /vault/:workId not /vault/:workId/vault)
   vault: { characters: [], foreshadows: [], world: [], timeline: [], addressMatrix: [] },
@@ -161,6 +192,107 @@ export const useStore = create((set, get) => ({
   },
   fetchStyleProfile: async (wid) => { try { set({ styleProfile: await api.get('/ai/style-profile/' + wid) }); } catch {} },
 
+  // Quick Extract - lightweight auto-extraction without full review
+  isExtracting: false,
+  lastExtracted: null,
+  quickExtract: async (workId, chapterId) => {
+    if (get().isExtracting) return; // Already running
+    set({ isExtracting: true });
+    try {
+      const r = await api.post('/ai/quick-extract', { workId, chapterId });
+      set({ isExtracting: false, lastExtracted: Date.now() });
+      if (r.ok && (r.inserted.characters > 0 || r.inserted.world > 0 || r.inserted.timeline > 0)) {
+        // Refresh vault if new data was extracted
+        await get().fetchVault(workId);
+        const total = r.inserted.characters + r.inserted.world + r.inserted.timeline;
+        toast(`설정 ${total}건 자동 추출됨`, 'info');
+      }
+    } catch {
+      set({ isExtracting: false });
+      // Silently fail - this is background operation
+    }
+  },
+
   // Settings panel
   showSettings: false,
+
+  // Competition Benchmarking
+  benchmarkResult: null,
+  isBenchmarking: false,
+  runBenchmark: async () => {
+    const w = get().currentWork;
+    if (!w) return;
+    set({ isBenchmarking: true, benchmarkResult: null });
+    try {
+      const r = await api.get('/ai/benchmark/' + w.id);
+      set({ benchmarkResult: r, isBenchmarking: false });
+    } catch (e) {
+      set({ isBenchmarking: false });
+      toast(e.message, 'error');
+    }
+  },
+
+  // Reader Persona Simulation
+  readerSimulation: null,
+  isSimulatingReaders: false,
+  simulateReaders: async (personas) => {
+    const { currentWork: w, currentChapter: c } = get();
+    if (!w || !c) return;
+    set({ isSimulatingReaders: true, readerSimulation: null });
+    try {
+      const r = await api.post('/ai/simulate-readers', { workId: w.id, chapterId: c.id, personas });
+      set({ readerSimulation: r, isSimulatingReaders: false });
+    } catch (e) {
+      set({ isSimulatingReaders: false });
+      toast(e.message, 'error');
+    }
+  },
+
+  // Outline Mode
+  outlineSummaries: [],
+  isGeneratingOutline: false,
+  generateOutline: async () => {
+    const w = get().currentWork;
+    if (!w) return;
+    set({ isGeneratingOutline: true, outlineSummaries: [] });
+    try {
+      const r = await api.post('/ai/summarize-work', { workId: w.id });
+      set({ outlineSummaries: r.summaries || [], isGeneratingOutline: false });
+      toast(`${r.summaries?.length || 0}화 요약 완료`, 'success');
+    } catch (e) {
+      set({ isGeneratingOutline: false });
+      toast(e.message, 'error');
+    }
+  },
+
+  // Cliche Detection
+  clicheResult: null,
+  isDetectingCliches: false,
+  detectCliches: async (useAI = false) => {
+    const c = get().currentChapter;
+    if (!c || !c.content) return;
+    set({ isDetectingCliches: true, clicheResult: null });
+    try {
+      const r = await api.post('/ai/detect-cliches', { content: c.content, useAI });
+      set({ clicheResult: r, isDetectingCliches: false });
+      toast(`클리셰 ${r.total}건 발견`, 'info');
+    } catch (e) {
+      set({ isDetectingCliches: false });
+      toast(e.message, 'error');
+    }
+  },
+
+  // Name Generator
+  generatedNames: null,
+  isGeneratingNames: false,
+  generateNames: async (style, gender, count, context) => {
+    set({ isGeneratingNames: true, generatedNames: null });
+    try {
+      const r = await api.post('/ai/generate-names', { style, gender, count, context });
+      set({ generatedNames: r.names || [], isGeneratingNames: false });
+    } catch (e) {
+      set({ isGeneratingNames: false });
+      toast(e.message, 'error');
+    }
+  },
 }));
