@@ -9,7 +9,7 @@ import LifeHeader from '@/components/life/LifeHeader'
 import StoryCard from '@/components/life/StoryCard'
 import LifeOnboarding from '@/components/life/LifeOnboarding'
 import MonthlyBest from '@/components/life/MonthlyBest'
-import { PenLine, TrendingUp, Sparkles, Loader2, BookOpen } from 'lucide-react'
+import { PenLine, Sparkles, Loader2, BookOpen } from 'lucide-react'
 
 const DAILY_PROMPTS = [
   '오늘 길에서 마주친 낯선 사람의 이야기',
@@ -100,43 +100,43 @@ export default function LifeFeedPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-rose-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <div className="w-6 h-6 border-2 border-rose-700 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen bg-[var(--background)]">
       <LifeHeader />
 
-      <main className="max-w-4xl mx-auto px-4 py-6">
+      <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Daily prompt */}
-        <div className="bg-gradient-to-r from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30 rounded-2xl p-5 mb-6 border border-rose-100 dark:border-rose-900/30">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-4 h-4 text-rose-500" />
-            <span className="text-sm font-medium text-rose-600 dark:text-rose-400">오늘의 글감</span>
+        <div className="relative rounded-2xl p-7 mb-8 border border-stone-200/60 dark:border-stone-800/40 bg-white/50 dark:bg-stone-900/30 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-rose-300/60 dark:via-rose-700/40 to-transparent" />
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="w-4 h-4 text-rose-700 dark:text-rose-400" />
+            <span className="text-xs font-medium tracking-widest uppercase text-rose-700/70 dark:text-rose-400/70">오늘의 글감</span>
           </div>
-          <p className="text-neutral-800 dark:text-neutral-200 font-medium">{todayPrompt}</p>
+          <p className="font-serif text-lg text-stone-800 dark:text-stone-200 leading-relaxed">{todayPrompt}</p>
           <button
             onClick={() => router.push('/life/my')}
-            className="mt-3 px-4 py-1.5 bg-rose-500 text-white text-sm rounded-full hover:bg-rose-600 transition"
+            className="mt-4 px-5 py-2 text-sm font-medium border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 rounded-full hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300"
           >
             이 글감으로 쓰기
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Feed */}
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-rose-500" />
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-serif text-xl font-medium text-stone-800 dark:text-stone-200">
                 최신 이야기
               </h2>
               <button
                 onClick={() => router.push('/life/my')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-500 text-white text-sm rounded-lg hover:bg-rose-600 transition"
+                className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-400 rounded-lg hover:border-rose-700 hover:text-rose-700 dark:hover:border-rose-600 dark:hover:text-rose-400 transition-all duration-300"
               >
                 <PenLine className="w-4 h-4" />
                 글쓰기
@@ -144,18 +144,18 @@ export default function LifeFeedPage() {
             </div>
 
             {lifeFeed.length === 0 ? (
-              <div className="text-center py-16">
-                <BookOpen className="w-12 h-12 text-neutral-300 dark:text-neutral-700 mx-auto mb-3" />
-                <p className="text-neutral-400 mb-4">아직 이야기가 없습니다</p>
+              <div className="text-center py-20">
+                <BookOpen className="w-10 h-10 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
+                <p className="font-serif text-stone-400 dark:text-stone-500 mb-6">아직 이야기가 없습니다</p>
                 <button
                   onClick={() => router.push('/life/my')}
-                  className="px-6 py-2 bg-rose-500 text-white rounded-xl hover:bg-rose-600 transition"
+                  className="px-6 py-2.5 text-sm font-medium border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 rounded-xl hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300"
                 >
                   첫 이야기 쓰기
                 </button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-5 stagger-in">
                 {lifeFeed.map((item) => (
                   <StoryCard key={item.id} item={item} onRequestRead={handleRequestRead} />
                 ))}
@@ -163,7 +163,7 @@ export default function LifeFeedPage() {
                   <button
                     onClick={handleLoadMore}
                     disabled={loadingMore}
-                    className="w-full py-3 text-sm text-neutral-500 hover:text-rose-500 border border-neutral-200 dark:border-neutral-700 rounded-xl hover:border-rose-300 transition disabled:opacity-50"
+                    className="w-full py-3 text-sm text-stone-400 hover:text-rose-700 dark:hover:text-rose-400 border border-stone-200/60 dark:border-stone-800/40 rounded-xl hover:border-rose-300 dark:hover:border-rose-800 transition-all duration-300 disabled:opacity-50"
                   >
                     {loadingMore ? (
                       <Loader2 className="w-4 h-4 animate-spin mx-auto" />
@@ -178,20 +178,20 @@ export default function LifeFeedPage() {
 
           {/* Sidebar (desktop) */}
           <div className="hidden lg:block w-72 shrink-0">
-            <div className="sticky top-20 space-y-4">
+            <div className="sticky top-20 space-y-5">
               {/* Monthly Best */}
               <MonthlyBest />
 
               {/* My profile card */}
               {lifeProfile && (
-                <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-4">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-rose-600 dark:text-rose-400 font-medium">
+                <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-600 dark:text-stone-400 font-serif font-medium text-lg ring-1 ring-stone-200/60 dark:ring-stone-700/60">
                       {lifeProfile.display_name?.charAt(0) || '?'}
                     </div>
                     <div>
-                      <p className="font-medium text-sm">{lifeProfile.display_name}</p>
-                      <p className="text-xs text-neutral-400">스토리 {lifeProfile.total_stories}개</p>
+                      <p className="font-medium text-sm text-stone-700 dark:text-stone-300">{lifeProfile.display_name}</p>
+                      <p className="text-xs text-stone-400 dark:text-stone-500 mt-0.5">스토리 {lifeProfile.total_stories}개</p>
                     </div>
                   </div>
                 </div>
@@ -203,31 +203,31 @@ export default function LifeFeedPage() {
 
       {/* Profile Setup Modal */}
       {showProfileSetup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-neutral-800 rounded-2xl w-full max-w-md p-6 life-fade-in">
-            <h2 className="text-xl font-bold mb-2">StoryLife에 오신 걸 환영해요!</h2>
-            <p className="text-sm text-neutral-500 mb-6">커뮤니티에서 사용할 프로필을 설정하세요</p>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 modal-overlay">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl w-full max-w-md p-8 modal-content border border-stone-200/60 dark:border-stone-800/60">
+            <h2 className="font-serif text-2xl font-medium mb-2 text-stone-800 dark:text-stone-200">StoryLife에 오신 걸 환영해요</h2>
+            <p className="text-sm text-stone-400 dark:text-stone-500 mb-8">커뮤니티에서 사용할 프로필을 설정하세요</p>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium mb-1.5">닉네임</label>
+                <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">닉네임</label>
                 <input
                   type="text"
                   value={profileName}
                   onChange={(e) => setProfileName(e.target.value)}
                   placeholder="커뮤니티에서 사용할 이름"
-                  className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
                   autoFocus
                   maxLength={20}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1.5">소개 (선택)</label>
+                <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">소개 (선택)</label>
                 <textarea
                   value={profileBio}
                   onChange={(e) => setProfileBio(e.target.value)}
                   placeholder="나를 소개하는 한 줄"
-                  className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500 resize-none h-20"
+                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 resize-none h-20 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
                   maxLength={100}
                 />
               </div>
@@ -236,7 +236,7 @@ export default function LifeFeedPage() {
             <button
               onClick={handleSaveProfile}
               disabled={!profileName.trim() || savingProfile}
-              className="w-full mt-6 py-3 bg-rose-500 text-white rounded-xl font-medium hover:bg-rose-600 transition disabled:opacity-50"
+              className="w-full mt-8 py-3 border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 rounded-xl font-medium hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300 disabled:opacity-50"
             >
               {savingProfile ? '저장 중...' : '시작하기'}
             </button>

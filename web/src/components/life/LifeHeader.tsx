@@ -2,7 +2,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Heart, Bell, User, BookOpen, Moon, Sun } from 'lucide-react'
+import { Bell, User, BookOpen, Moon, Sun } from 'lucide-react'
 import ServiceSwitcher from '@/components/ServiceSwitcher'
 import { useStore } from '@/stores/store'
 
@@ -11,49 +11,52 @@ export default function LifeHeader() {
   const { lifeUnreadCount, darkMode, toggleDark } = useStore()
 
   return (
-    <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-40">
-      <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/life')}>
-            <Heart className="w-6 h-6 text-rose-500" />
-            <span className="font-bold text-lg">
-              Story<span className="text-rose-500">Life</span>
+    <header className="bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-neutral-800/60 sticky top-0 z-40">
+      <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div
+            className="flex items-center gap-1.5 cursor-pointer group"
+            onClick={() => router.push('/life')}
+          >
+            <span className="font-serif text-xl tracking-tight">
+              <span className="font-medium text-stone-800 dark:text-stone-200">Story</span>
+              <span className="font-medium text-rose-700 dark:text-rose-400">Life</span>
             </span>
           </div>
           <ServiceSwitcher activeService="life" />
         </div>
-        <div className="flex items-center gap-1">
+        <nav className="flex items-center gap-0.5">
           <button
             onClick={() => router.push('/life/my')}
-            className="flex items-center gap-1.5 px-3 py-2 text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
           >
             <BookOpen className="w-4 h-4" />
             <span className="hidden sm:inline">내 스토리</span>
           </button>
           <button
             onClick={() => router.push('/life/notifications')}
-            className="relative p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            className="relative p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
           >
-            <Bell className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+            <Bell className="w-[18px] h-[18px]" />
             {lifeUnreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center min-w-[18px] h-[18px]">
+              <span className="absolute -top-0.5 -right-0.5 bg-rose-700 text-white text-[10px] font-bold rounded-full flex items-center justify-center min-w-[18px] h-[18px] px-1">
                 {lifeUnreadCount > 99 ? '99+' : lifeUnreadCount}
               </span>
             )}
           </button>
           <button
             onClick={toggleDark}
-            className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
           >
-            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {darkMode ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
           </button>
           <button
             onClick={() => router.push('/dashboard')}
-            className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
           >
-            <User className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+            <User className="w-[18px] h-[18px]" />
           </button>
-        </div>
+        </nav>
       </div>
     </header>
   )

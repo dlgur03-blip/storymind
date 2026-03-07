@@ -57,41 +57,41 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
 
   return (
     <div
-      className={`bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 hover:shadow-lg transition life-fade-in ${canRead ? 'cursor-pointer' : ''}`}
+      className={`bg-white dark:bg-stone-900/60 rounded-2xl border border-stone-200/80 dark:border-stone-800/60 p-6 card-hover life-fade-in ${canRead ? 'cursor-pointer' : ''}`}
       onClick={handleClick}
     >
       {/* Author row */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-3 mb-4">
         <div
-          className="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-sm font-medium text-rose-600 dark:text-rose-400 cursor-pointer"
+          className="w-9 h-9 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-sm font-medium text-stone-600 dark:text-stone-400 cursor-pointer ring-1 ring-stone-200/60 dark:ring-stone-700/60"
           onClick={(e) => { e.stopPropagation(); router.push(`/life/profile/${item.authorId}`) }}
         >
           {item.authorAvatar ? (
-            <img src={item.authorAvatar} alt="" className="w-8 h-8 rounded-full object-cover" />
+            <img src={item.authorAvatar} alt="" className="w-9 h-9 rounded-full object-cover" />
           ) : (
             item.authorName?.charAt(0) || '?'
           )}
         </div>
         <div className="flex-1 min-w-0">
           <span
-            className="text-sm font-medium hover:text-rose-500 transition cursor-pointer"
+            className="text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-rose-700 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer"
             onClick={(e) => { e.stopPropagation(); router.push(`/life/profile/${item.authorId}`) }}
           >
             {item.authorName}
           </span>
-          <div className="flex items-center gap-2 text-xs text-neutral-400">
+          <div className="flex items-center gap-1.5 text-xs text-stone-400 dark:text-stone-500 mt-0.5">
             <Clock className="w-3 h-3" />
             {timeAgo(item.updatedAt)}
           </div>
         </div>
         <div className="flex items-center gap-1.5">
           {item.recallMode === 'recall' && (
-            <span className="px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full">
+            <span className="px-2.5 py-1 text-[11px] font-medium bg-amber-50 dark:bg-amber-900/15 text-amber-700 dark:text-amber-400 rounded-full tracking-wide">
               기억회상
             </span>
           )}
           {item.genre && (
-            <span className="px-2 py-0.5 text-xs bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full">
+            <span className="px-2.5 py-1 text-[11px] font-medium bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded-full tracking-wide">
               {item.genre}
             </span>
           )}
@@ -99,24 +99,24 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
       </div>
 
       {/* Content */}
-      <h3 className="font-semibold text-base mb-1">{item.title}</h3>
+      <h3 className="font-serif font-medium text-lg leading-snug mb-1.5 text-stone-800 dark:text-stone-200">{item.title}</h3>
       {item.description && (
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2 line-clamp-2">
+        <p className="text-sm text-stone-500 dark:text-stone-400 mb-3 line-clamp-2 leading-relaxed">
           {item.description}
         </p>
       )}
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-xs text-neutral-400 mb-3">
-        <span className="flex items-center gap-1">
+      <div className="flex items-center gap-5 text-xs text-stone-400 dark:text-stone-500 mb-4 pt-1">
+        <span className="flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5" />
           {item.publishedChapters}챕터
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1.5">
           <Heart className="w-3.5 h-3.5" />
           {item.totalLikes}
         </span>
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1.5">
           <Eye className="w-3.5 h-3.5" />
           {item.totalViews}
         </span>
@@ -126,20 +126,20 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
       {requestStatus === 'own' ? (
         <button
           onClick={(e) => { e.stopPropagation(); router.push(`/life/story/${item.id}`) }}
-          className="w-full py-2 text-sm font-medium bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 rounded-xl hover:bg-neutral-200 dark:hover:bg-neutral-600 transition"
+          className="w-full py-2.5 text-sm font-medium bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 rounded-xl hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300"
         >
           내 스토리 보기
         </button>
       ) : requestStatus === 'accepted' ? (
         <button
           onClick={(e) => { e.stopPropagation(); router.push(`/life/story/${item.id}`) }}
-          className="w-full py-2 text-sm font-medium bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-xl flex items-center justify-center gap-1.5 hover:bg-rose-100 dark:hover:bg-rose-900/30 transition"
+          className="w-full py-2.5 text-sm font-medium border border-rose-200 dark:border-rose-800/40 text-rose-700 dark:text-rose-400 rounded-xl flex items-center justify-center gap-1.5 hover:bg-rose-50 dark:hover:bg-rose-900/15 transition-all duration-300"
         >
           <CheckCircle className="w-4 h-4" />
           읽기
         </button>
       ) : requestStatus === 'pending' ? (
-        <div className="w-full py-2 text-sm font-medium bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center gap-1.5">
+        <div className="w-full py-2.5 text-sm font-medium bg-amber-50/60 dark:bg-amber-900/10 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center gap-1.5 border border-amber-200/40 dark:border-amber-800/20">
           <Clock className="w-4 h-4" />
           요청 대기중
         </div>
@@ -147,7 +147,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
         <button
           onClick={handleRequestRead}
           disabled={requesting}
-          className="w-full py-2 text-sm font-medium bg-neutral-100 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 rounded-xl flex items-center justify-center gap-1.5 hover:bg-neutral-200 dark:hover:bg-neutral-600 transition disabled:opacity-50"
+          className="w-full py-2.5 text-sm font-medium bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded-xl flex items-center justify-center gap-1.5 hover:bg-stone-200 dark:hover:bg-stone-700 transition-all duration-300 disabled:opacity-50"
         >
           {requesting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           다시 요청하기
@@ -156,7 +156,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
         <button
           onClick={handleRequestRead}
           disabled={requesting}
-          className="w-full py-2 text-sm font-medium bg-rose-500 text-white rounded-xl flex items-center justify-center gap-1.5 hover:bg-rose-600 transition disabled:opacity-50"
+          className="w-full py-2.5 text-sm font-medium border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 rounded-xl flex items-center justify-center gap-1.5 hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300 disabled:opacity-50"
         >
           {requesting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
           읽기 요청

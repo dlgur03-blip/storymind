@@ -62,8 +62,8 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-rose-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <div className="w-6 h-6 border-2 border-rose-700 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -73,14 +73,14 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
   const isOwnProfile = currentUserId === userId
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen bg-[var(--background)]">
       <LifeHeader />
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         {/* Profile header */}
-        <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6 mb-6 life-fade-in">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center text-2xl font-bold text-rose-600 dark:text-rose-400">
+        <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-7 mb-6 life-fade-in">
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-16 h-16 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-2xl font-serif font-medium text-stone-600 dark:text-stone-400 ring-1 ring-stone-200/60 dark:ring-stone-700/60">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt="" className="w-16 h-16 rounded-full object-cover" />
               ) : (
@@ -88,9 +88,9 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
               )}
             </div>
             <div className="flex-1">
-              <h1 className="text-xl font-bold">{profile.display_name}</h1>
+              <h1 className="font-serif text-xl font-medium text-stone-800 dark:text-stone-200">{profile.display_name}</h1>
               {profile.bio && (
-                <p className="text-sm text-neutral-500 mt-1">{profile.bio}</p>
+                <p className="text-sm text-stone-400 dark:text-stone-500 mt-1 leading-relaxed">{profile.bio}</p>
               )}
             </div>
             {!isOwnProfile && currentUserId && (
@@ -99,47 +99,47 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="grid grid-cols-4 gap-4 text-center pt-4 border-t border-stone-200/40 dark:border-stone-800/30">
             <div>
-              <p className="text-lg font-bold">{profile.total_stories || 0}</p>
-              <p className="text-xs text-neutral-400">스토리</p>
+              <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_stories || 0}</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">스토리</p>
             </div>
             <div>
-              <p className="text-lg font-bold">{profile.total_followers || 0}</p>
-              <p className="text-xs text-neutral-400">팔로워</p>
+              <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_followers || 0}</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로워</p>
             </div>
             <div>
-              <p className="text-lg font-bold">{profile.total_following || 0}</p>
-              <p className="text-xs text-neutral-400">팔로잉</p>
+              <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_following || 0}</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로잉</p>
             </div>
             <div>
-              <p className="text-lg font-bold">
+              <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">
                 {stories.reduce((sum, s) => sum + (s.total_likes || 0), 0)}
               </p>
-              <p className="text-xs text-neutral-400">총 좋아요</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">총 좋아요</p>
             </div>
           </div>
         </div>
 
         {/* Streak Card (own profile only) */}
         {isOwnProfile && streak && (
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-2xl border border-amber-200 dark:border-amber-800 p-5 mb-6 life-fade-in">
-            <h3 className="font-bold text-sm flex items-center gap-2 mb-3">
-              <Flame className="w-4 h-4 text-amber-500" />
+          <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-amber-200/40 dark:border-amber-800/30 p-6 mb-6 life-fade-in">
+            <h3 className="font-serif font-medium text-sm flex items-center gap-2 mb-4 text-stone-700 dark:text-stone-300">
+              <Flame className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               작성 스트릭
             </h3>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{streak.current_streak || 0}</p>
-                <p className="text-xs text-neutral-500">연속 일수</p>
+                <p className="text-2xl font-serif font-medium text-amber-700 dark:text-amber-400">{streak.current_streak || 0}</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">연속 일수</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{streak.longest_streak || 0}</p>
-                <p className="text-xs text-neutral-500">최장 기록</p>
+                <p className="text-2xl font-serif font-medium text-orange-700 dark:text-orange-400">{streak.longest_streak || 0}</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">최장 기록</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">{streak.total_write_days || 0}</p>
-                <p className="text-xs text-neutral-500">총 작성일</p>
+                <p className="text-2xl font-serif font-medium text-rose-700 dark:text-rose-400">{streak.total_write_days || 0}</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">총 작성일</p>
               </div>
             </div>
           </div>
@@ -147,20 +147,20 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
 
         {/* Badges */}
         {badges.length > 0 && (
-          <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 mb-6 life-fade-in">
-            <h3 className="font-bold text-sm flex items-center gap-2 mb-3">
-              <Trophy className="w-4 h-4 text-rose-500" />
+          <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6 mb-6 life-fade-in">
+            <h3 className="font-serif font-medium text-sm flex items-center gap-2 mb-4 text-stone-700 dark:text-stone-300">
+              <Trophy className="w-4 h-4 text-stone-500 dark:text-stone-400" />
               획득한 뱃지
             </h3>
             <div className="grid grid-cols-4 gap-3">
               {badges.map((badge) => (
                 <div
                   key={badge.id}
-                  className="flex flex-col items-center gap-1.5 p-3 bg-neutral-50 dark:bg-neutral-700/50 rounded-xl badge-earned"
+                  className="flex flex-col items-center gap-1.5 p-3 bg-stone-50 dark:bg-stone-800/60 rounded-xl badge-earned border border-stone-200/40 dark:border-stone-700/30"
                   title={badge.meta?.description || ''}
                 >
-                  <span className="text-2xl">{badge.meta?.icon || '🏅'}</span>
-                  <span className="text-[11px] font-medium text-center leading-tight">{badge.meta?.name || badge.badge_type}</span>
+                  <span className="text-2xl">{badge.meta?.icon || ''}</span>
+                  <span className="text-[11px] font-medium text-center leading-tight text-stone-600 dark:text-stone-400">{badge.meta?.name || badge.badge_type}</span>
                 </div>
               ))}
             </div>
@@ -168,23 +168,23 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
         )}
 
         {/* Tabs */}
-        <div className="flex border-b border-neutral-200 dark:border-neutral-700 mb-4">
+        <div className="flex border-b border-stone-200/60 dark:border-stone-800/40 mb-5">
           <button
             onClick={() => setActiveTab('stories')}
-            className={`flex-1 py-2.5 text-sm font-medium text-center transition ${
+            className={`flex-1 py-3 text-sm font-medium text-center transition-all duration-300 ${
               activeTab === 'stories'
-                ? 'text-rose-500 border-b-2 border-rose-500'
-                : 'text-neutral-400 hover:text-neutral-600'
+                ? 'text-rose-700 dark:text-rose-400 border-b-2 border-rose-700 dark:border-rose-400'
+                : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
             }`}
           >
             스토리
           </button>
           <button
             onClick={() => setActiveTab('liked')}
-            className={`flex-1 py-2.5 text-sm font-medium text-center transition ${
+            className={`flex-1 py-3 text-sm font-medium text-center transition-all duration-300 ${
               activeTab === 'liked'
-                ? 'text-rose-500 border-b-2 border-rose-500'
-                : 'text-neutral-400 hover:text-neutral-600'
+                ? 'text-rose-700 dark:text-rose-400 border-b-2 border-rose-700 dark:border-rose-400'
+                : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
             }`}
           >
             좋아요
@@ -194,32 +194,32 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
         {/* Stories grid */}
         {activeTab === 'stories' && (
           stories.length === 0 ? (
-            <div className="text-center py-12 text-neutral-400 text-sm">
+            <div className="text-center py-16 text-stone-400 dark:text-stone-500 text-sm font-serif">
               아직 공개된 스토리가 없습니다
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-4 stagger-in">
               {stories.map((story) => (
                 <div
                   key={story.id}
-                  className="bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 hover:shadow-md transition cursor-pointer life-fade-in"
+                  className="bg-white/60 dark:bg-stone-900/40 rounded-xl border border-stone-200/60 dark:border-stone-800/40 p-5 card-hover cursor-pointer"
                   onClick={() => router.push(`/life/story/${story.id}`)}
                 >
-                  <h3 className="font-semibold mb-1 truncate">{story.title}</h3>
-                  <div className="flex items-center gap-2 text-xs text-neutral-400 mb-2">
+                  <h3 className="font-serif font-medium text-base mb-1.5 truncate text-stone-800 dark:text-stone-200">{story.title}</h3>
+                  <div className="flex items-center gap-2 text-xs text-stone-400 dark:text-stone-500 mb-2">
                     {story.genre && (
-                      <span className="px-1.5 py-0.5 bg-rose-50 dark:bg-rose-900/20 text-rose-500 rounded">
+                      <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                         {story.genre}
                       </span>
                     )}
                     {story.recall_mode === 'recall' && (
-                      <span className="px-1.5 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-500 rounded">
+                      <span className="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/15 text-amber-700 dark:text-amber-400 rounded font-medium">
                         기억회상
                       </span>
                     )}
                     <span>{story.total_chapters || 0}챕터</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-neutral-400">
+                  <div className="flex items-center gap-3 text-xs text-stone-400 dark:text-stone-500">
                     <span className="flex items-center gap-1">
                       <Heart className="w-3 h-3" />
                       {story.total_likes || 0}
@@ -236,7 +236,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
         )}
 
         {activeTab === 'liked' && (
-          <div className="text-center py-12 text-neutral-400 text-sm">
+          <div className="text-center py-16 text-stone-400 dark:text-stone-500 text-sm font-serif">
             좋아요한 스토리 목록은 준비 중입니다
           </div>
         )}

@@ -4,10 +4,10 @@
 import { useState, useEffect } from 'react'
 
 const TONES = [
-  { value: '따뜻한', label: '따뜻한', emoji: '🌤️' },
-  { value: '드라마틱', label: '드라마틱', emoji: '🎭' },
-  { value: '유머러스', label: '유머러스', emoji: '😄' },
-  { value: '담담한', label: '담담한', emoji: '🍃' },
+  { value: '따뜻한', label: '따뜻한' },
+  { value: '드라마틱', label: '드라마틱' },
+  { value: '유머러스', label: '유머러스' },
+  { value: '담담한', label: '담담한' },
 ]
 
 export interface RecallConfig {
@@ -46,55 +46,54 @@ export default function RecallSetupForm({ onChange, initialConfig }: RecallSetup
     })
   }, [birthYear, birthPlace, worldSetting, worldDetail, novelStyle, protagonistName, tone])
 
+  const toggleBtnClass = (active: boolean) =>
+    active
+      ? 'border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/15'
+      : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
+
+  const inputClass = 'w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600'
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <label className="block text-sm font-medium mb-1.5">출생년도</label>
+        <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">출생년도</label>
         <input
           type="number"
           value={birthYear}
           onChange={(e) => setBirthYear(parseInt(e.target.value) || 2000)}
           min={1920}
           max={new Date().getFullYear()}
-          className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500"
+          className={inputClass}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5">출생 장소 / 성장 지역</label>
+        <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">출생 장소 / 성장 지역</label>
         <input
           type="text"
           value={birthPlace}
           onChange={(e) => setBirthPlace(e.target.value)}
           placeholder="예: 서울 강남, 부산 해운대"
-          className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500"
+          className={inputClass}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5">세계관</label>
+        <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">세계관</label>
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => setWorldSetting('real')}
-            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition ${
-              worldSetting === 'real'
-                ? 'bg-rose-500 text-white'
-                : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
-            }`}
+            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${toggleBtnClass(worldSetting === 'real')}`}
           >
-            🌍 현실
+            현실
           </button>
           <button
             type="button"
             onClick={() => setWorldSetting('fantasy')}
-            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition ${
-              worldSetting === 'fantasy'
-                ? 'bg-rose-500 text-white'
-                : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
-            }`}
+            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${toggleBtnClass(worldSetting === 'fantasy')}`}
           >
-            🧙 판타지
+            판타지
           </button>
         </div>
         {worldSetting === 'fantasy' && (
@@ -103,35 +102,27 @@ export default function RecallSetupForm({ onChange, initialConfig }: RecallSetup
             value={worldDetail}
             onChange={(e) => setWorldDetail(e.target.value)}
             placeholder="판타지 세계관을 설명해주세요"
-            className="w-full mt-2 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500"
+            className={`${inputClass} mt-2`}
           />
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5">소설 스타일</label>
+        <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">소설 스타일</label>
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => setNovelStyle('memoir')}
-            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition ${
-              novelStyle === 'memoir'
-                ? 'bg-rose-500 text-white'
-                : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
-            }`}
+            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${toggleBtnClass(novelStyle === 'memoir')}`}
           >
-            📖 자서전 (1인칭)
+            자서전 (1인칭)
           </button>
           <button
             type="button"
             onClick={() => setNovelStyle('fiction')}
-            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition ${
-              novelStyle === 'fiction'
-                ? 'bg-rose-500 text-white'
-                : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
-            }`}
+            className={`py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${toggleBtnClass(novelStyle === 'fiction')}`}
           >
-            ✨ 소설화 (3인칭)
+            소설화 (3인칭)
           </button>
         </div>
         {novelStyle === 'fiction' && (
@@ -140,26 +131,22 @@ export default function RecallSetupForm({ onChange, initialConfig }: RecallSetup
             value={protagonistName}
             onChange={(e) => setProtagonistName(e.target.value)}
             placeholder="주인공 이름 (가명)"
-            className="w-full mt-2 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-rose-500"
+            className={`${inputClass} mt-2`}
           />
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5">분위기</label>
+        <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">분위기</label>
         <div className="grid grid-cols-2 gap-2">
           {TONES.map((t) => (
             <button
               key={t.value}
               type="button"
               onClick={() => setTone(t.value)}
-              className={`py-2.5 px-4 rounded-xl text-sm font-medium transition ${
-                tone === t.value
-                  ? 'bg-rose-500 text-white'
-                  : 'bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-600'
-              }`}
+              className={`py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${toggleBtnClass(tone === t.value)}`}
             >
-              {t.emoji} {t.label}
+              {t.label}
             </button>
           ))}
         </div>
