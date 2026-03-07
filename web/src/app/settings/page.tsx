@@ -231,8 +231,8 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-        <div className="w-8 h-8 border-2 border-neutral-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <div className="w-6 h-6 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -241,17 +241,17 @@ export default function SettingsPage() {
   const fontSizes = [14, 16, 18, 20, 22]
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
+    <div className="min-h-screen bg-[var(--background)] text-stone-900 dark:text-stone-100">
       {/* Header */}
-      <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-40">
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
+      <header className="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-stone-800/60 sticky top-0 z-40">
+        <div className="max-w-2xl mx-auto px-4 h-16 flex items-center gap-3">
           <button
             onClick={() => router.push('/dashboard')}
-            className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+            className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h1 className="text-lg font-bold">설정</h1>
+          <h1 className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200">설정</h1>
         </div>
       </header>
 
@@ -259,25 +259,25 @@ export default function SettingsPage() {
       <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
         {/* 1. Profile */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2">
             <Users className="w-5 h-5" />
             프로필
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+              <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                 이메일
               </label>
               <input
                 type="text"
                 value={userEmail}
                 readOnly
-                className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 cursor-not-allowed"
+                className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-stone-50 dark:bg-stone-800 text-stone-500 dark:text-stone-400 cursor-not-allowed"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+              <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                 닉네임
               </label>
               <div className="flex gap-2">
@@ -286,11 +286,11 @@ export default function SettingsPage() {
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                   placeholder="닉네임을 입력하세요"
-                  className="flex-1 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                  className="flex-1 px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                 />
                 <button
                   onClick={handleSaveNickname}
-                  className="flex items-center gap-1.5 px-4 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition"
+                  className="flex items-center gap-1.5 px-4 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300"
                 >
                   {nicknameSaved ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
                   {nicknameSaved ? '저장됨' : '저장'}
@@ -301,21 +301,21 @@ export default function SettingsPage() {
         </section>
 
         {/* 2. Appearance */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2">
             <Type className="w-5 h-5" />
             외관
           </h2>
           <div className="space-y-4">
             {/* Font family */}
             <div>
-              <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+              <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                 글꼴
               </label>
               <select
                 value={fontFamily}
                 onChange={(e) => handleFontFamilyChange(e.target.value)}
-                className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
               >
                 {fontFamilies.map((f) => (
                   <option key={f} value={f}>{f}</option>
@@ -325,7 +325,7 @@ export default function SettingsPage() {
 
             {/* Font size */}
             <div>
-              <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+              <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                 글자 크기
               </label>
               <div className="flex gap-2">
@@ -335,8 +335,8 @@ export default function SettingsPage() {
                     onClick={() => handleFontSizeChange(size)}
                     className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition ${
                       fontSize === size
-                        ? 'border-neutral-900 dark:border-white bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
-                        : 'border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                        ? 'border-stone-800 dark:border-stone-300 bg-stone-800 dark:bg-stone-300 text-white dark:text-stone-900'
+                        : 'border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
                     }`}
                   >
                     {size}
@@ -347,22 +347,22 @@ export default function SettingsPage() {
 
             {/* Dark mode */}
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+              <span className="text-sm font-medium text-stone-600 dark:text-stone-400">
                 다크 모드
               </span>
               <button
                 onClick={handleToggleDark}
                 className={`relative w-14 h-8 rounded-full transition-colors ${
-                  darkMode ? 'bg-neutral-700' : 'bg-neutral-300'
+                  darkMode ? 'bg-stone-700' : 'bg-stone-300'
                 }`}
               >
                 <div
-                  className={`absolute top-1 w-6 h-6 bg-white dark:bg-neutral-200 rounded-full shadow transition-transform flex items-center justify-center ${
+                  className={`absolute top-1 w-6 h-6 bg-white dark:bg-stone-200 rounded-full shadow transition-transform flex items-center justify-center ${
                     darkMode ? 'translate-x-7' : 'translate-x-1'
                   }`}
                 >
                   {darkMode ? (
-                    <Moon className="w-3.5 h-3.5 text-neutral-700" />
+                    <Moon className="w-3.5 h-3.5 text-stone-700" />
                   ) : (
                     <Sun className="w-3.5 h-3.5 text-yellow-500" />
                   )}
@@ -373,8 +373,8 @@ export default function SettingsPage() {
         </section>
 
         {/* 3. Referral */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2">
             <Users className="w-5 h-5" />
             추천인
           </h2>
@@ -382,7 +382,7 @@ export default function SettingsPage() {
             {/* My referral code */}
             {myReferralCode && (
               <div>
-                <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+                <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                   내 추천 코드
                 </label>
                 <div className="flex gap-2">
@@ -390,17 +390,17 @@ export default function SettingsPage() {
                     type="text"
                     value={myReferralCode}
                     readOnly
-                    className="flex-1 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-mono"
+                    className="flex-1 px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-mono"
                   />
                   <button
                     onClick={handleCopyReferral}
-                    className="flex items-center gap-1.5 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+                    className="flex items-center gap-1.5 px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition"
                   >
                     {referralCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
                     {referralCopied ? '복사됨' : '복사'}
                   </button>
                 </div>
-                <p className="text-sm text-neutral-500 mt-2">
+                <p className="text-sm text-stone-500 mt-2">
                   추천한 사람: <span className="font-semibold">{totalReferred}명</span>
                 </p>
               </div>
@@ -408,7 +408,7 @@ export default function SettingsPage() {
 
             {/* Enter referral code */}
             <div>
-              <label className="block text-sm font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
+              <label className="block text-sm font-medium text-stone-600 dark:text-stone-400 mb-1.5">
                 추천인 코드 입력
               </label>
               <div className="flex gap-2">
@@ -417,12 +417,12 @@ export default function SettingsPage() {
                   value={referralInput}
                   onChange={(e) => setReferralInput(e.target.value)}
                   placeholder="추천인 코드를 입력하세요"
-                  className="flex-1 px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                  className="flex-1 px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                 />
                 <button
                   onClick={handleSubmitReferral}
                   disabled={referralSubmitting || !referralInput.trim()}
-                  className="px-4 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-50"
+                  className="px-4 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300 disabled:opacity-50"
                 >
                   {referralSubmitting ? '등록 중...' : '등록'}
                 </button>
@@ -437,13 +437,13 @@ export default function SettingsPage() {
         </section>
 
         {/* 4. Badges */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2">
             <Award className="w-5 h-5" />
             뱃지 갤러리
           </h2>
           {badges.length === 0 ? (
-            <p className="text-sm text-neutral-400 text-center py-6">아직 뱃지가 없습니다</p>
+            <p className="text-sm text-stone-400 text-center py-6">아직 뱃지가 없습니다</p>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {badges.map((badge, idx) => (
@@ -451,15 +451,15 @@ export default function SettingsPage() {
                   key={idx}
                   className={`flex flex-col items-center p-3 rounded-xl border transition ${
                     badge.earned
-                      ? 'border-neutral-300 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800'
-                      : 'border-neutral-100 dark:border-neutral-800 opacity-40 grayscale'
+                      ? 'border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800'
+                      : 'border-stone-100 dark:border-stone-800 opacity-40 grayscale'
                   }`}
                   title={badge.description}
                 >
                   <span className="text-2xl mb-1">{badge.icon}</span>
                   <span className="text-xs font-medium text-center leading-tight">{badge.name}</span>
                   {badge.earned && badge.earnedAt && (
-                    <span className="text-[10px] text-neutral-400 mt-1">
+                    <span className="text-[10px] text-stone-400 mt-1">
                       {new Date(badge.earnedAt).toLocaleDateString('ko-KR')}
                     </span>
                   )}
@@ -470,17 +470,17 @@ export default function SettingsPage() {
         </section>
 
         {/* 5. Data Export */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2">
             <Download className="w-5 h-5" />
             데이터 내보내기
           </h2>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+          <p className="text-sm text-stone-500 dark:text-stone-400 mb-4">
             모든 작품 데이터를 JSON 파일로 내보냅니다.
           </p>
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-5 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition"
+            className="flex items-center gap-2 px-5 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300"
           >
             <Download className="w-4 h-4" />
             전체 작품 내보내기
@@ -488,13 +488,13 @@ export default function SettingsPage() {
         </section>
 
         {/* 6. Account */}
-        <section className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-6">
-          <h2 className="text-lg font-semibold mb-4">계정</h2>
+        <section className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6">
+          <h2 className="font-serif text-lg font-medium mb-4 text-stone-800 dark:text-stone-200">계정</h2>
           <div className="space-y-6">
 
             {/* Change password */}
             <div>
-              <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+              <h3 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-3">
                 비밀번호 변경
               </h3>
               <div className="space-y-3">
@@ -504,12 +504,12 @@ export default function SettingsPage() {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="현재 비밀번호"
-                    className="w-full px-4 py-3 pr-12 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="w-full px-4 py-3 pr-12 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-600"
                   >
                     {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -520,12 +520,12 @@ export default function SettingsPage() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="새 비밀번호"
-                    className="w-full px-4 py-3 pr-12 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="w-full px-4 py-3 pr-12 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-600"
                   >
                     {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -536,12 +536,12 @@ export default function SettingsPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="새 비밀번호 확인"
-                    className="w-full px-4 py-3 pr-12 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                    className="w-full px-4 py-3 pr-12 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-600"
                   >
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -554,7 +554,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleChangePassword}
                   disabled={passwordChanging}
-                  className="px-5 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-50"
+                  className="px-5 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300 disabled:opacity-50"
                 >
                   {passwordChanging ? '변경 중...' : '비밀번호 변경'}
                 </button>
@@ -562,23 +562,23 @@ export default function SettingsPage() {
             </div>
 
             {/* Divider */}
-            <div className="border-t border-neutral-200 dark:border-neutral-700" />
+            <div className="divider-subtle" />
 
             {/* Logout */}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-5 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+              className="flex items-center gap-2 px-5 py-3 border border-stone-200 dark:border-stone-700 rounded-xl font-medium hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300"
             >
               <LogOut className="w-4 h-4" />
               로그아웃
             </button>
 
             {/* Divider */}
-            <div className="border-t border-neutral-200 dark:border-neutral-700" />
+            <div className="divider-subtle" />
 
             {/* Delete account */}
             <div className="p-4 border border-red-200 dark:border-red-900/50 rounded-xl bg-red-50 dark:bg-red-950/30">
-              <h3 className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">
+              <h3 className="text-sm font-medium text-red-600 dark:text-red-400 mb-2">
                 계정 삭제
               </h3>
               <p className="text-sm text-red-500 dark:text-red-400/80 mb-3">

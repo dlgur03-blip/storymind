@@ -75,40 +75,40 @@ export default function EditorModePage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-neutral-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <header className="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-stone-800/60 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <BookOpen className="w-6 h-6 text-neutral-700 dark:text-white" />
-            <span className="font-bold text-lg">StoryMind</span>
+            <BookOpen className="w-5 h-5 text-stone-600 dark:text-stone-400" />
+            <span className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200">StoryMind</span>
             <ServiceSwitcher activeService="editor" />
           </div>
           <div className="flex items-center gap-1">
             <button
               onClick={() => router.push('/editor-mode/messages')}
-              className="flex items-center gap-1.5 px-3 py-2 text-sm text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+              className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition"
             >
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">메시지</span>
             </button>
-            <div className="w-px h-5 bg-neutral-200 dark:bg-neutral-700 mx-1" />
+            <div className="w-px h-5 bg-stone-200 dark:bg-stone-700 mx-1" />
             <button
               onClick={() => router.push('/settings')}
-              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+              className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition"
             >
-              <Settings className="w-5 h-5 text-neutral-500" />
+              <Settings className="w-5 h-5 text-stone-500" />
             </button>
-            <button onClick={toggleDark} className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition">
+            <button onClick={toggleDark} className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition">
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <button onClick={handleLogout} className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg text-neutral-500 transition">
+            <button onClick={handleLogout} className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg text-stone-500 transition">
               <LogOut className="w-5 h-5" />
             </button>
           </div>
@@ -119,20 +119,20 @@ export default function EditorModePage() {
         {/* Pending Invites */}
         {pendingInvites.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Inbox className="w-5 h-5" />
+            <h2 className="font-serif text-lg font-medium mb-4 flex items-center gap-2 text-stone-800 dark:text-stone-200">
+              <Inbox className="w-5 h-5 text-stone-500 dark:text-stone-400" />
               대기중 초대 ({pendingInvites.length})
             </h2>
             <div className="space-y-3">
               {pendingInvites.map(invite => (
-                <div key={invite.id} className="bg-white dark:bg-neutral-800 rounded-2xl border border-yellow-200 dark:border-yellow-800/50 p-4 flex items-center justify-between">
+                <div key={invite.id} className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-amber-200/60 dark:border-amber-800/30 p-5 flex items-center justify-between">
                   <div>
                     <h3 className="font-medium">{invite.works?.title || '알 수 없는 작품'}</h3>
-                    <div className="flex items-center gap-2 mt-1 text-sm text-neutral-500">
-                      <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded text-xs">
+                    <div className="flex items-center gap-2 mt-1 text-sm text-stone-500">
+                      <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium text-xs">
                         {invite.works?.genre || '미지정'}
                       </span>
-                      <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded text-xs">
+                      <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium text-xs">
                         {invite.role === 'editor' ? '편집자' : '열람자'}
                       </span>
                     </div>
@@ -140,13 +140,13 @@ export default function EditorModePage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleReject(invite.id)}
-                      className="px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 transition"
+                      className="px-3 py-2 border border-stone-200 dark:border-stone-700 rounded-xl text-sm hover:bg-stone-50 dark:hover:bg-stone-700 transition"
                     >
                       <X className="w-4 h-4 text-red-500" />
                     </button>
                     <button
                       onClick={() => handleAccept(invite.id)}
-                      className="px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl text-sm font-medium hover:opacity-90 transition flex items-center gap-1.5"
+                      className="px-4 py-2 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl text-sm font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300 flex items-center gap-1.5"
                     >
                       <Check className="w-4 h-4" />
                       수락
@@ -159,43 +159,43 @@ export default function EditorModePage() {
         )}
 
         {/* Active Works */}
-        <h2 className="text-2xl font-bold mb-6">담당 작품</h2>
+        <h2 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200 mb-6">담당 작품</h2>
         {activeWorks.length === 0 ? (
           <div className="text-center py-20">
-            <BookOpen className="w-16 h-16 text-neutral-300 dark:text-neutral-700 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-neutral-400 mb-2">담당 작품이 없습니다</h3>
-            <p className="text-neutral-400">작가의 초대를 기다리세요</p>
+            <BookOpen className="w-16 h-16 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
+            <h3 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">담당 작품이 없습니다</h3>
+            <p className="text-stone-400 dark:text-stone-500">작가의 초대를 기다리세요</p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-in">
             {activeWorks.map(collab => (
               <div
                 key={collab.id}
-                className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 hover:shadow-lg transition cursor-pointer group"
+                className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6 card-hover cursor-pointer group"
                 onClick={() => router.push(`/editor-mode/${collab.work_id}`)}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 bg-neutral-100 dark:bg-neutral-700 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center">
                     {collab.works?.work_type === 'webtoon' ? (
-                      <Palette className="w-6 h-6 text-neutral-500" />
+                      <Palette className="w-6 h-6 text-stone-500" />
                     ) : (
-                      <FileText className="w-6 h-6 text-neutral-500" />
+                      <FileText className="w-6 h-6 text-stone-500" />
                     )}
                   </div>
                   <span className="text-[10px] px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full font-medium">
                     {collab.role === 'editor' ? '편집자' : '열람자'}
                   </span>
                 </div>
-                <h3 className="font-semibold text-lg mb-1 truncate">{collab.works?.title}</h3>
-                <div className="flex items-center gap-2 text-sm text-neutral-500">
-                  <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded">
+                <h3 className="font-serif font-medium text-lg mb-1 truncate text-stone-800 dark:text-stone-200">{collab.works?.title}</h3>
+                <div className="flex items-center gap-2 text-sm text-stone-500">
+                  <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                     {collab.works?.genre || '미지정'}
                   </span>
-                  <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded">
+                  <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                     {collab.works?.work_type === 'webtoon' ? '웹툰' : '웹소설'}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-3 text-xs text-neutral-400">
+                <div className="flex items-center gap-1 mt-3 text-xs text-stone-400">
                   <Clock className="w-3 h-3" />
                   {new Date(collab.works?.updated_at || collab.created_at).toLocaleDateString('ko-KR')}
                 </div>

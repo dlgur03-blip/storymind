@@ -156,27 +156,27 @@ export default function PlannerListPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-neutral-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-stone-400 border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* Header */}
-      <header className="bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <header className="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-stone-800/60 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.push('/dashboard')}
-              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition"
+              className="p-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition"
               title="대시보드로 돌아가기"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-2">
-              <Map className="w-6 h-6 text-neutral-700 dark:text-white" />
-              <span className="font-bold text-lg">StoryPlanner</span>
+              <Map className="w-5 h-5 text-stone-600 dark:text-stone-400" />
+              <span className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200">StoryPlanner</span>
             </div>
           </div>
         </div>
@@ -186,12 +186,12 @@ export default function PlannerListPage() {
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold">스토리 기획</h1>
-            <p className="text-neutral-500 mt-1">AI와 함께 6단계로 스토리를 기획하세요</p>
+            <h1 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200">스토리 기획</h1>
+            <p className="text-stone-400 dark:text-stone-500 mt-1">AI와 함께 6단계로 스토리를 기획하세요</p>
           </div>
           <button
             onClick={() => setShowNewPlan(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition"
+            className="flex items-center gap-2 px-4 py-2 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300"
           >
             <Plus className="w-4 h-4" />
             새 기획
@@ -201,19 +201,19 @@ export default function PlannerListPage() {
         {/* Plans Grid */}
         {storyPlans.length === 0 ? (
           <div className="text-center py-20">
-            <Sparkles className="w-16 h-16 text-neutral-300 dark:text-neutral-700 mx-auto mb-4" />
-            <h2 className="text-xl font-medium text-neutral-400 mb-2">기획이 없습니다</h2>
-            <p className="text-neutral-400 mb-6">새 기획을 만들어 AI와 스토리를 설계하세요</p>
+            <Sparkles className="w-16 h-16 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
+            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">기획이 없습니다</h2>
+            <p className="text-stone-400 dark:text-stone-500 mb-6">새 기획을 만들어 AI와 스토리를 설계하세요</p>
             <button
               onClick={() => setShowNewPlan(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300"
             >
               <Plus className="w-5 h-5" />
               첫 기획 시작
             </button>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-in">
             {storyPlans.map((plan: any) => {
               const progress = getStepProgress(plan)
               const isComplete = plan.status === 'complete' || plan.status === 'finalized'
@@ -221,12 +221,12 @@ export default function PlannerListPage() {
               return (
                 <div
                   key={plan.id}
-                  className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 hover:shadow-lg transition cursor-pointer group"
+                  className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-6 card-hover cursor-pointer group"
                   onClick={() => router.push(`/planner/${plan.id}`)}
                 >
                   <div className="flex items-start justify-between mb-3">
-                    <div className="w-12 h-12 bg-neutral-100 dark:bg-neutral-700 rounded-xl flex items-center justify-center">
-                      <Map className="w-6 h-6 text-neutral-500" />
+                    <div className="w-12 h-12 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center">
+                      <Map className="w-6 h-6 text-stone-500 dark:text-stone-400" />
                     </div>
                     <div className="flex items-center gap-1">
                       {isComplete && (
@@ -241,26 +241,26 @@ export default function PlannerListPage() {
                       )}
                       <button
                         onClick={(e) => handleDelete(e, plan.id)}
-                        className="p-2 text-neutral-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition"
+                        className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
 
-                  <h3 className="font-semibold text-lg mb-1 truncate">{plan.title || '제목 없음'}</h3>
+                  <h3 className="font-serif font-medium text-lg mb-1 truncate text-stone-800 dark:text-stone-200">{plan.title || '제목 없음'}</h3>
 
                   {plan.idea_text && (
-                    <p className="text-sm text-neutral-500 mb-3 line-clamp-2">{plan.idea_text}</p>
+                    <p className="text-sm text-stone-500 mb-3 line-clamp-2">{plan.idea_text}</p>
                   )}
 
-                  <div className="flex items-center gap-2 text-sm text-neutral-500 mb-3">
+                  <div className="flex items-center gap-2 text-sm text-stone-500 mb-3">
                     {plan.genre && (
-                      <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded">
+                      <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                         {plan.genre}
                       </span>
                     )}
-                    <span className="px-2 py-0.5 bg-neutral-100 dark:bg-neutral-700 rounded">
+                    <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                       Step {plan.current_step || 1}/6
                     </span>
                   </div>
@@ -272,27 +272,27 @@ export default function PlannerListPage() {
                         key={i}
                         className={`h-1.5 flex-1 rounded-full ${
                           i < progress
-                            ? 'bg-neutral-900 dark:bg-white'
-                            : 'bg-neutral-200 dark:bg-neutral-700'
+                            ? 'bg-stone-700 dark:bg-stone-300'
+                            : 'bg-stone-200 dark:bg-stone-700'
                         }`}
                         title={label}
                       />
                     ))}
                   </div>
-                  <div className="flex justify-between text-[10px] text-neutral-400 mb-3">
+                  <div className="flex justify-between text-[10px] text-stone-400 mb-3">
                     {STEP_LABELS.map((label, i) => (
-                      <span key={i} className={i < progress ? 'text-neutral-600 dark:text-neutral-300' : ''}>
+                      <span key={i} className={i < progress ? 'text-stone-600 dark:text-stone-300' : ''}>
                         {label}
                       </span>
                     ))}
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1 text-xs text-neutral-400">
+                    <div className="flex items-center gap-1 text-xs text-stone-400">
                       <Clock className="w-3 h-3" />
                       {new Date(plan.updated_at).toLocaleDateString('ko-KR')}
                     </div>
-                    <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition" />
+                    <ChevronRight className="w-4 h-4 text-stone-400 group-hover:text-stone-600 dark:group-hover:text-stone-300 transition" />
                   </div>
                 </div>
               )
@@ -303,17 +303,17 @@ export default function PlannerListPage() {
 
       {/* New Plan Modal */}
       {showNewPlan && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => !creating && setShowNewPlan(false)}>
-          <div className="bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h2 className="text-xl font-bold mb-5">새 스토리 기획</h2>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 modal-overlay" onClick={() => !creating && setShowNewPlan(false)}>
+          <div className="bg-white dark:bg-stone-900 rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="font-serif text-xl font-medium text-stone-800 dark:text-stone-200 mb-5">새 스토리 기획</h2>
 
             {/* Auto-generate progress overlay */}
             {autoProgress && (
               <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="w-10 h-10 animate-spin text-neutral-500 mb-4" />
+                <Loader2 className="w-10 h-10 animate-spin text-stone-500 mb-4" />
                 <p className="text-lg font-semibold mb-2">AI가 기획 중...</p>
-                <p className="text-sm text-neutral-500">{autoProgress.label}</p>
-                <p className="text-xs text-neutral-400 mt-4">보통 30초~1분 소요됩니다</p>
+                <p className="text-sm text-stone-500">{autoProgress.label}</p>
+                <p className="text-xs text-stone-400 mt-4">보통 30초~1분 소요됩니다</p>
               </div>
             )}
 
@@ -325,37 +325,37 @@ export default function PlannerListPage() {
                     onClick={() => setCreateMode('auto')}
                     className={`p-3 rounded-xl border-2 transition text-center ${
                       createMode === 'auto'
-                        ? 'border-neutral-900 dark:border-white bg-neutral-50 dark:bg-neutral-800'
-                        : 'border-neutral-200 dark:border-neutral-700'
+                        ? 'border-stone-800 dark:border-stone-300 bg-stone-50 dark:bg-stone-800'
+                        : 'border-stone-200 dark:border-stone-700'
                     }`}
                   >
                     <Zap className="w-5 h-5 mx-auto mb-1.5" />
                     <div className="text-xs font-medium">원샷 자동</div>
-                    <div className="text-[10px] text-neutral-400 mt-0.5">아이디어→완성</div>
+                    <div className="text-[10px] text-stone-400 mt-0.5">아이디어→완성</div>
                   </button>
                   <button
                     onClick={() => setCreateMode('chat')}
                     className={`p-3 rounded-xl border-2 transition text-center ${
                       createMode === 'chat'
-                        ? 'border-neutral-900 dark:border-white bg-neutral-50 dark:bg-neutral-800'
-                        : 'border-neutral-200 dark:border-neutral-700'
+                        ? 'border-stone-800 dark:border-stone-300 bg-stone-50 dark:bg-stone-800'
+                        : 'border-stone-200 dark:border-stone-700'
                     }`}
                   >
                     <MessageSquare className="w-5 h-5 mx-auto mb-1.5" />
                     <div className="text-xs font-medium">채팅 기획</div>
-                    <div className="text-[10px] text-neutral-400 mt-0.5">AI와 대화</div>
+                    <div className="text-[10px] text-stone-400 mt-0.5">AI와 대화</div>
                   </button>
                   <button
                     onClick={() => setCreateMode('manuscript')}
                     className={`p-3 rounded-xl border-2 transition text-center ${
                       createMode === 'manuscript'
-                        ? 'border-neutral-900 dark:border-white bg-neutral-50 dark:bg-neutral-800'
-                        : 'border-neutral-200 dark:border-neutral-700'
+                        ? 'border-stone-800 dark:border-stone-300 bg-stone-50 dark:bg-stone-800'
+                        : 'border-stone-200 dark:border-stone-700'
                     }`}
                   >
                     <FileText className="w-5 h-5 mx-auto mb-1.5" />
                     <div className="text-xs font-medium">원고 분석</div>
-                    <div className="text-[10px] text-neutral-400 mt-0.5">기존 원고→기획</div>
+                    <div className="text-[10px] text-stone-400 mt-0.5">기존 원고→기획</div>
                   </button>
                 </div>
 
@@ -370,7 +370,7 @@ export default function PlannerListPage() {
                     <div>
                       <label className="block text-sm font-medium mb-1.5">분석할 작품 선택</label>
                       {works.length === 0 ? (
-                        <p className="text-sm text-neutral-400 py-4 text-center">작품이 없습니다. 먼저 대시보드에서 작품을 만들어주세요.</p>
+                        <p className="text-sm text-stone-400 py-4 text-center">작품이 없습니다. 먼저 대시보드에서 작품을 만들어주세요.</p>
                       ) : (
                         <div className="space-y-2 max-h-60 overflow-y-auto">
                           {works.map((work: any) => (
@@ -379,12 +379,12 @@ export default function PlannerListPage() {
                               onClick={() => setSelectedWorkId(work.id)}
                               className={`w-full text-left p-3 rounded-xl border-2 transition ${
                                 selectedWorkId === work.id
-                                  ? 'border-neutral-900 dark:border-white bg-neutral-50 dark:bg-neutral-800'
-                                  : 'border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                                  ? 'border-stone-800 dark:border-stone-300 bg-stone-50 dark:bg-stone-800'
+                                  : 'border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
                               }`}
                             >
                               <div className="font-medium text-sm">{work.title}</div>
-                              <div className="text-xs text-neutral-400 mt-0.5">
+                              <div className="text-xs text-stone-400 mt-0.5">
                                 {work.genre || '장르 미지정'} · {new Date(work.updated_at).toLocaleDateString('ko-KR')}
                               </div>
                             </button>
@@ -410,7 +410,7 @@ export default function PlannerListPage() {
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                         placeholder="예: 회귀한 천재 마법사"
-                        className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                        className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                         autoFocus
                       />
                     </div>
@@ -419,7 +419,7 @@ export default function PlannerListPage() {
                       <select
                         value={newGenre}
                         onChange={(e) => setNewGenre(e.target.value)}
-                        className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                        className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500"
                       >
                         {GENRE_OPTIONS.map((g) => (
                           <option key={g} value={g}>{g}</option>
@@ -437,7 +437,7 @@ export default function PlannerListPage() {
                           ? '메모장에 적어둔 아이디어를 통째로 붙여넣으세요.\n설정, 캐릭터, 전개, 분위기 등 무엇이든 좋습니다.\n길면 길수록 더 정확한 기획이 나옵니다.'
                           : '스토리 아이디어를 자유롭게 적어주세요. (선택사항)'}
                         rows={createMode === 'auto' ? 8 : 4}
-                        className="w-full px-4 py-3 border border-neutral-200 dark:border-neutral-700 rounded-xl bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-500 resize-none"
+                        className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500 resize-none"
                       />
                     </div>
                   </div>
@@ -446,7 +446,7 @@ export default function PlannerListPage() {
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={() => setShowNewPlan(false)}
-                    className="flex-1 py-3 px-4 border border-neutral-200 dark:border-neutral-700 rounded-xl font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 transition"
+                    className="flex-1 py-3 px-4 border border-stone-200 dark:border-stone-700 rounded-xl font-medium hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300"
                   >
                     취소
                   </button>
@@ -457,7 +457,7 @@ export default function PlannerListPage() {
                       (createMode === 'manuscript' ? !selectedWorkId : !newTitle.trim()) ||
                       (createMode === 'auto' && !newIdea.trim())
                     }
-                    className="flex-1 py-3 px-4 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 px-4 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {creating ? (
                       <>
