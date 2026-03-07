@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StoryMind - AI 웹소설 어시스턴트",
-  description: "설정 자동 추적, 모순 탐지, AI 대필까지. 작가를 위한 올인원 창작 도구.",
+  title: "StoryMind - 여러분의 일기가, 소설이 됩니다",
+  description: "오늘 있었던 일을 AI에게 말해보세요. 여러분의 일상이 소설이 됩니다. AI 기반 창작 도구 & 커뮤니티.",
   metadataBase: new URL("https://storymind.co.kr"),
   openGraph: {
-    title: "StoryMind - AI 웹소설 어시스턴트",
-    description: "설정 자동 추적, 모순 탐지, AI 대필까지. 작가를 위한 올인원 창작 도구.",
+    title: "여러분의 일기가, 소설이 됩니다",
+    description: "오늘 있었던 일을 AI에게 말해보세요. 여러분의 일상이 소설이 됩니다.",
     url: "https://storymind.co.kr",
     siteName: "StoryMind",
     locale: "ko_KR",
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "StoryMind - AI 웹소설 어시스턴트",
-    description: "설정 자동 추적, 모순 탐지, AI 대필까지. 작가를 위한 올인원 창작 도구.",
+    title: "여러분의 일기가, 소설이 됩니다",
+    description: "오늘 있었던 일을 AI에게 말해보세요. 여러분의 일상이 소설이 됩니다.",
   },
 };
 

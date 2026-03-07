@@ -1,12 +1,18 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'StoryLife - 나의 이야기를 소설로',
-  description: 'AI와 대화하며 일상을 소설로 만들어보세요. 커뮤니티에서 공유하고 함께 즐기세요.',
+  title: 'StoryLife - 여러분의 일기가, 소설이 됩니다',
+  description: '오늘 있었던 일을 AI에게 말해보세요. 일상이 소설이 되고, 커뮤니티에서 공유할 수 있어요.',
   openGraph: {
-    title: 'StoryLife - 나의 이야기를 소설로',
-    description: 'AI와 대화하며 일상을 소설로 만들어보세요.',
+    title: '여러분의 일기가, 소설이 됩니다',
+    description: '오늘 있었던 일을 AI에게 말해보세요. 일상이 소설이 되고, 커뮤니티에서 공유할 수 있어요.',
     type: 'website',
+    url: 'https://storymind.co.kr/life',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '여러분의 일기가, 소설이 됩니다',
+    description: '오늘 있었던 일을 AI에게 말해보세요. 일상이 소설이 되고, 커뮤니티에서 공유할 수 있어요.',
   },
 }
 
