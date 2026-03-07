@@ -108,7 +108,7 @@ export default function LifeFeedPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <LifeHeader />
+      <LifeHeader onShowGuide={() => { localStorage.removeItem('sl_onboarding_done'); setShowOnboarding(true) }} />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Daily prompt */}

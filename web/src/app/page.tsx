@@ -19,7 +19,7 @@ export default function Home() {
       const supabase = getSupabase()
       const { data: { session } } = await supabase.auth.getSession()
       if (session) {
-        router.push('/dashboard')
+        router.push('/home')
       } else {
         setLoading(false)
       }
@@ -41,7 +41,7 @@ export default function Home() {
         const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
       }
-      router.push('/dashboard')
+      router.push('/home')
     } catch (err) {
       setError(err instanceof Error ? err.message : '오류가 발생했습니다')
     } finally {
@@ -53,7 +53,7 @@ export default function Home() {
     const supabase = getSupabase()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/dashboard` }
+      options: { redirectTo: `${window.location.origin}/home` }
     })
   }
 

@@ -57,8 +57,8 @@ export default function LifeOnboarding({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-neutral-800 rounded-2xl w-full max-w-md overflow-hidden life-fade-in">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 modal-overlay">
+      <div className="bg-white dark:bg-stone-900 rounded-2xl w-full max-w-md overflow-hidden life-fade-in modal-content border border-stone-200/60 dark:border-stone-800/60">
         {/* Header with close */}
         <div className="flex items-center justify-between px-6 pt-5">
           <div className="flex items-center gap-1.5">
@@ -67,17 +67,17 @@ export default function LifeOnboarding({ onClose }: { onClose: () => void }) {
                 key={i}
                 className={`h-1.5 rounded-full transition-all ${
                   i === step
-                    ? 'w-6 bg-rose-500'
+                    ? 'w-6 bg-rose-700'
                     : i < step
                     ? 'w-1.5 bg-rose-300'
-                    : 'w-1.5 bg-neutral-200 dark:bg-neutral-600'
+                    : 'w-1.5 bg-stone-200 dark:bg-stone-600'
                 }`}
               />
             ))}
           </div>
           <button
             onClick={handleClose}
-            className="p-1 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition"
+            className="p-1 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -86,11 +86,11 @@ export default function LifeOnboarding({ onClose }: { onClose: () => void }) {
         {/* Content */}
         <div className="px-6 py-8 text-center">
           <div className="w-16 h-16 bg-rose-50 dark:bg-rose-900/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
-            <Icon className="w-8 h-8 text-rose-500" />
+            <Icon className="w-8 h-8 text-rose-700 dark:text-rose-400" />
           </div>
-          <h2 className="text-xl font-bold mb-1">{current.title}</h2>
-          <p className="text-sm text-rose-500 font-medium mb-4">{current.subtitle}</p>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed whitespace-pre-line">
+          <h2 className="text-xl font-serif font-medium text-stone-800 dark:text-stone-200 mb-1">{current.title}</h2>
+          <p className="text-sm text-rose-700 dark:text-rose-400 font-medium mb-4">{current.subtitle}</p>
+          <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed whitespace-pre-line">
             {current.description}
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function LifeOnboarding({ onClose }: { onClose: () => void }) {
           {step > 0 ? (
             <button
               onClick={() => setStep(step - 1)}
-              className="flex items-center gap-1 px-4 py-2.5 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm font-medium hover:bg-neutral-50 dark:hover:bg-neutral-700 transition"
+              className="flex items-center gap-1 px-4 py-2.5 border border-stone-200 dark:border-stone-700 rounded-xl text-sm font-medium text-stone-600 dark:text-stone-400 hover:bg-stone-50 dark:hover:bg-stone-800 transition"
             >
               <ChevronLeft className="w-4 h-4" />
               이전
@@ -108,14 +108,14 @@ export default function LifeOnboarding({ onClose }: { onClose: () => void }) {
           ) : (
             <button
               onClick={handleClose}
-              className="px-4 py-2.5 text-sm text-neutral-400 hover:text-neutral-600 transition"
+              className="px-4 py-2.5 text-sm text-stone-400 hover:text-stone-600 transition"
             >
               건너뛰기
             </button>
           )}
           <button
             onClick={handleNext}
-            className="flex-1 py-2.5 bg-rose-500 text-white rounded-xl font-medium hover:bg-rose-600 transition flex items-center justify-center gap-1"
+            className="flex-1 py-2.5 border border-rose-700 text-rose-700 dark:text-rose-400 dark:border-rose-600 rounded-xl font-medium hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300 flex items-center justify-center gap-1"
           >
             {isLast ? '시작하기' : '다음'}
             {!isLast && <ChevronRight className="w-4 h-4" />}

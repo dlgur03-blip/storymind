@@ -2,16 +2,16 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Bell, User, BookOpen, Moon, Sun } from 'lucide-react'
+import { Bell, User, BookOpen, Moon, Sun, HelpCircle } from 'lucide-react'
 import ServiceSwitcher from '@/components/ServiceSwitcher'
 import { useStore } from '@/stores/store'
 
-export default function LifeHeader() {
+export default function LifeHeader({ onShowGuide }: { onShowGuide?: () => void } = {}) {
   const router = useRouter()
   const { lifeUnreadCount, darkMode, toggleDark } = useStore()
 
   return (
-    <header className="bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-neutral-800/60 sticky top-0 z-40">
+    <header className="bg-white/80 dark:bg-stone-900/80 backdrop-blur-md border-b border-stone-200/60 dark:border-stone-800/60 sticky top-0 z-40">
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div
@@ -44,6 +44,14 @@ export default function LifeHeader() {
               </span>
             )}
           </button>
+          {onShowGuide && (
+            <button
+              onClick={onShowGuide}
+              className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
+            >
+              <HelpCircle className="w-[18px] h-[18px]" />
+            </button>
+          )}
           <button
             onClick={toggleDark}
             className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"

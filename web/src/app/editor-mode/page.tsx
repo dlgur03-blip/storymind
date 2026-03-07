@@ -7,7 +7,8 @@ import { getSupabase } from '@/lib/supabase/client'
 import { useStore } from '@/stores/store'
 import {
   BookOpen, FileText, Palette, Clock, Check, X,
-  Loader2, MessageSquare, Inbox, Moon, Sun, LogOut, Settings
+  Loader2, MessageSquare, Inbox, Moon, Sun, LogOut, Settings,
+  HelpCircle, ChevronDown, ChevronUp
 } from 'lucide-react'
 import ServiceSwitcher from '@/components/ServiceSwitcher'
 
@@ -18,6 +19,12 @@ export default function EditorModePage() {
   const [collaborations, setCollaborations] = useState([])
   const [pendingInvites, setPendingInvites] = useState([])
   const [activeWorks, setActiveWorks] = useState([])
+  const [showGuide, setShowGuide] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('sm_editor_guide_collapsed') !== 'true'
+    }
+    return true
+  })
 
   useEffect(() => {
     const init = async () => {
@@ -157,6 +164,50 @@ export default function EditorModePage() {
             </div>
           </div>
         )}
+
+        {/* Editor Guide */}
+        <div className="mb-8 bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 overflow-hidden">
+          <button
+            onClick={() => {
+              const next = !showGuide
+              setShowGuide(next)
+              localStorage.setItem('sm_editor_guide_collapsed', next ? 'false' : 'true')
+            }}
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-stone-50/50 dark:hover:bg-stone-800/30 transition-all duration-300"
+          >
+            <div className="flex items-center gap-2.5">
+              <HelpCircle className="w-5 h-5 text-stone-500 dark:text-stone-400" />
+              <span className="font-serif text-base font-medium text-stone-800 dark:text-stone-200">편집자 가이드</span>
+            </div>
+            {showGuide ? (
+              <ChevronUp className="w-4 h-4 text-stone-400" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-stone-400" />
+            )}
+          </button>
+          {showGuide && (
+            <div className="px-5 pb-5 space-y-4 border-t border-stone-200/40 dark:border-stone-800/30 pt-4">
+              <div>
+                <h4 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-1.5">작가가 나를 초대하는 방법</h4>
+                <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                  대시보드 → 작품 열기 → 👥 아이콘 → 편집자 초대 → 이름 검색
+                </p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-1.5">초대를 받으면</h4>
+                <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                  이 페이지 상단에 표시 → 수락 → 담당 작품에 추가
+                </p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-1.5">편집자가 할 수 있는 일</h4>
+                <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+                  원고 인라인 코멘트, 메시지, 피드백
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Active Works */}
         <h2 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200 mb-6">담당 작품</h2>

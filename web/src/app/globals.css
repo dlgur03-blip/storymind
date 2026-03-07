@@ -212,6 +212,16 @@ body {
 .stagger-in > *:nth-child(5) { animation-delay: 240ms; }
 .stagger-in > *:nth-child(6) { animation-delay: 300ms; }
 
+/* Home hero fade */
+.home-hero-fade {
+  animation: homeHeroFade 0.8s var(--ease-premium);
+}
+
+@keyframes homeHeroFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Subtle divider */
 .divider-subtle {
   height: 1px;
