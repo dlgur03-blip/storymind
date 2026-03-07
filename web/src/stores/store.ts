@@ -589,6 +589,8 @@ export const useStore = create((set, get) => ({
   lifeNotifications: [],
   lifeUnreadCount: 0,
   lifeReadRequests: [],
+  lifeStreak: null,
+  lifeBadges: [],
 
   fetchLifeProfile: async () => {
     try {
@@ -622,12 +624,23 @@ export const useStore = create((set, get) => ({
     }
   },
 
-  createLifeStory: async (title, genre, description) => {
+  createLifeStory: async (title, genre, description, recallConfig?) => {
     try {
+      const body: Record<string, unknown> = { title, genre, description }
+      if (recallConfig) {
+        body.recall_mode = 'recall'
+        body.birth_year = recallConfig.birth_year
+        body.birth_place = recallConfig.birth_place
+        body.world_setting = recallConfig.world_setting
+        body.world_detail = recallConfig.world_detail
+        body.novel_style = recallConfig.novel_style
+        body.protagonist_name = recallConfig.protagonist_name
+        body.tone = recallConfig.tone
+      }
       const res = await fetch('/api/life/stories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, genre, description }),
+        body: JSON.stringify(body),
       })
       const data = await res.json()
       if (data.story) {
@@ -722,6 +735,28 @@ export const useStore = create((set, get) => ({
       return false
     } catch {
       return false
+    }
+  },
+
+  // ===== Streaks & Badges =====
+  fetchLifeStreak: async () => {
+    try {
+      const res = await fetch('/api/life/streaks')
+      const data = await res.json()
+      set({ lifeStreak: data.streak || null })
+    } catch {
+      set({ lifeStreak: null })
+    }
+  },
+
+  fetchLifeBadges: async (userId?) => {
+    try {
+      const url = userId ? `/api/life/badges?userId=${userId}` : '/api/life/badges'
+      const res = await fetch(url)
+      const data = await res.json()
+      set({ lifeBadges: data.badges || [] })
+    } catch {
+      set({ lifeBadges: [] })
     }
   },
 

@@ -26,20 +26,36 @@ export async function POST(request: NextRequest) {
     if (!user) return error
 
     const body = await request.json()
-    const { title, genre, description } = body
+    const { title, genre, description, recall_mode, birth_year, birth_place, world_setting, world_detail, novel_style, protagonist_name, tone } = body
 
     if (!title?.trim()) {
       return NextResponse.json({ error: '제목을 입력하세요' }, { status: 400 })
     }
 
+    const currentYear = new Date().getFullYear()
+    const current_age = birth_year ? currentYear - birth_year : undefined
+
+    const insertData: Record<string, unknown> = {
+      user_id: user.id,
+      title: title.trim(),
+      genre: genre || '',
+      description: description || '',
+      is_public: false,
+    }
+
+    if (recall_mode) insertData.recall_mode = recall_mode
+    if (birth_year) insertData.birth_year = birth_year
+    if (birth_place) insertData.birth_place = birth_place
+    if (world_setting) insertData.world_setting = world_setting
+    if (world_detail) insertData.world_detail = world_detail
+    if (novel_style) insertData.novel_style = novel_style
+    if (protagonist_name) insertData.protagonist_name = protagonist_name
+    if (tone) insertData.tone = tone
+    if (current_age !== undefined) insertData.current_age = current_age
+
     const { data, error: dbError } = await supabase
       .from('life_stories')
-      .insert({
-        user_id: user.id,
-        title: title.trim(),
-        genre: genre || '',
-        description: description || '',
-      })
+      .insert(insertData)
       .select()
       .single()
 

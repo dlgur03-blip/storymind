@@ -7,7 +7,7 @@ import { getSupabase } from '@/lib/supabase/client'
 import LifeHeader from '@/components/life/LifeHeader'
 import FollowButton from '@/components/life/FollowButton'
 import {
-  BookOpen, Heart, Users, Eye, Clock
+  BookOpen, Heart, Users, Eye, Clock, Flame, Trophy, Calendar
 } from 'lucide-react'
 
 export default function PublicProfilePage({ params }: { params: Promise<{ userId: string }> }) {
@@ -18,7 +18,8 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
   const [stories, setStories] = useState<any[]>([])
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'stories' | 'liked'>('stories')
-  const [likedStories, setLikedStories] = useState<any[]>([])
+  const [streak, setStreak] = useState<any>(null)
+  const [badges, setBadges] = useState<any[]>([])
 
   useEffect(() => {
     const init = async () => {
@@ -34,6 +35,22 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
       }
       setProfile(data.profile)
       setStories(data.stories || [])
+
+      // Fetch streak and badges for this user
+      try {
+        const [streakRes, badgesRes] = await Promise.all([
+          fetch('/api/life/streaks'),
+          fetch(`/api/life/badges?userId=${userId}`),
+        ])
+        const streakData = await streakRes.json()
+        const badgesData = await badgesRes.json()
+
+        // Only show own streak
+        if (session?.user.id === userId) {
+          setStreak(streakData.streak)
+        }
+        setBadges(badgesData.badges || [])
+      } catch {}
 
       const savedDark = localStorage.getItem('sm_dark') === 'true'
       if (savedDark) document.documentElement.classList.add('dark')
@@ -104,6 +121,52 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
           </div>
         </div>
 
+        {/* Streak Card (own profile only) */}
+        {isOwnProfile && streak && (
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-2xl border border-amber-200 dark:border-amber-800 p-5 mb-6 life-fade-in">
+            <h3 className="font-bold text-sm flex items-center gap-2 mb-3">
+              <Flame className="w-4 h-4 text-amber-500" />
+              작성 스트릭
+            </h3>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{streak.current_streak || 0}</p>
+                <p className="text-xs text-neutral-500">연속 일수</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{streak.longest_streak || 0}</p>
+                <p className="text-xs text-neutral-500">최장 기록</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-rose-600 dark:text-rose-400">{streak.total_write_days || 0}</p>
+                <p className="text-xs text-neutral-500">총 작성일</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Badges */}
+        {badges.length > 0 && (
+          <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-5 mb-6 life-fade-in">
+            <h3 className="font-bold text-sm flex items-center gap-2 mb-3">
+              <Trophy className="w-4 h-4 text-rose-500" />
+              획득한 뱃지
+            </h3>
+            <div className="grid grid-cols-4 gap-3">
+              {badges.map((badge) => (
+                <div
+                  key={badge.id}
+                  className="flex flex-col items-center gap-1.5 p-3 bg-neutral-50 dark:bg-neutral-700/50 rounded-xl badge-earned"
+                  title={badge.meta?.description || ''}
+                >
+                  <span className="text-2xl">{badge.meta?.icon || '🏅'}</span>
+                  <span className="text-[11px] font-medium text-center leading-tight">{badge.meta?.name || badge.badge_type}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Tabs */}
         <div className="flex border-b border-neutral-200 dark:border-neutral-700 mb-4">
           <button
@@ -147,6 +210,11 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
                     {story.genre && (
                       <span className="px-1.5 py-0.5 bg-rose-50 dark:bg-rose-900/20 text-rose-500 rounded">
                         {story.genre}
+                      </span>
+                    )}
+                    {story.recall_mode === 'recall' && (
+                      <span className="px-1.5 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-500 rounded">
+                        기억회상
                       </span>
                     )}
                     <span>{story.total_chapters || 0}챕터</span>

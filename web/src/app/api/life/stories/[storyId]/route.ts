@@ -63,6 +63,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (body.is_public !== undefined) updates.is_public = body.is_public
     if (body.status !== undefined) updates.status = body.status
     if (body.cover_image_url !== undefined) updates.cover_image_url = body.cover_image_url
+    if (body.recall_mode !== undefined) updates.recall_mode = body.recall_mode
+    if (body.birth_year !== undefined) updates.birth_year = body.birth_year
+    if (body.birth_place !== undefined) updates.birth_place = body.birth_place
+    if (body.world_setting !== undefined) updates.world_setting = body.world_setting
+    if (body.world_detail !== undefined) updates.world_detail = body.world_detail
+    if (body.novel_style !== undefined) updates.novel_style = body.novel_style
+    if (body.protagonist_name !== undefined) updates.protagonist_name = body.protagonist_name
+    if (body.tone !== undefined) updates.tone = body.tone
+    if (body.current_age !== undefined) updates.current_age = body.current_age
 
     const { data } = await supabase
       .from('life_stories')

@@ -8,6 +8,7 @@ import { useStore } from '@/stores/store'
 import LifeHeader from '@/components/life/LifeHeader'
 import StoryCard from '@/components/life/StoryCard'
 import LifeOnboarding from '@/components/life/LifeOnboarding'
+import MonthlyBest from '@/components/life/MonthlyBest'
 import { PenLine, TrendingUp, Sparkles, Loader2, BookOpen } from 'lucide-react'
 
 const DAILY_PROMPTS = [
@@ -178,14 +179,8 @@ export default function LifeFeedPage() {
           {/* Sidebar (desktop) */}
           <div className="hidden lg:block w-72 shrink-0">
             <div className="sticky top-20 space-y-4">
-              {/* Popular stories placeholder */}
-              <div className="bg-white dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700 p-4">
-                <h3 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-rose-500" />
-                  인기 스토리
-                </h3>
-                <p className="text-xs text-neutral-400">이야기가 쌓이면 인기 목록이 표시됩니다</p>
-              </div>
+              {/* Monthly Best */}
+              <MonthlyBest />
 
               {/* My profile card */}
               {lifeProfile && (

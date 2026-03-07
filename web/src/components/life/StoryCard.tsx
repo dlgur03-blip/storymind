@@ -19,6 +19,7 @@ interface FeedItem {
   publishedChapters: number
   updatedAt: string
   readRequestStatus: string | null // null, 'pending', 'accepted', 'rejected', 'own'
+  recallMode?: string
 }
 
 export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onRequestRead?: (storyId: string) => Promise<boolean> }) {
@@ -83,11 +84,18 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
             {timeAgo(item.updatedAt)}
           </div>
         </div>
-        {item.genre && (
-          <span className="px-2 py-0.5 text-xs bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full">
-            {item.genre}
-          </span>
-        )}
+        <div className="flex items-center gap-1.5">
+          {item.recallMode === 'recall' && (
+            <span className="px-2 py-0.5 text-xs bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-full">
+              기억회상
+            </span>
+          )}
+          {item.genre && (
+            <span className="px-2 py-0.5 text-xs bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full">
+              {item.genre}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Content */}

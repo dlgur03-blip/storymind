@@ -27,6 +27,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
 
+    let body = {}
+    try { body = await request.json() } catch {}
+    const { recall_age, recall_year } = body as any
+
     // Verify story ownership
     const { data: story } = await supabase
       .from('life_stories')
@@ -47,13 +51,17 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const number = (count || 0) + 1
 
+    const insertData: Record<string, unknown> = {
+      story_id: storyId,
+      number,
+      title: recall_age !== undefined ? `${recall_age}세의 기억` : `챕터 ${number}`,
+    }
+    if (recall_age !== undefined) insertData.recall_age = recall_age
+    if (recall_year !== undefined) insertData.recall_year = recall_year
+
     const { data, error: dbError } = await supabase
       .from('life_chapters')
-      .insert({
-        story_id: storyId,
-        number,
-        title: `챕터 ${number}`,
-      })
+      .insert(insertData)
       .select()
       .single()
 

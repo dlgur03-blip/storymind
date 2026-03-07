@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       .from('life_stories')
       .select(`
         id, title, genre, description, status, user_id,
-        total_likes, total_views, total_chapters,
+        total_likes, total_views, total_chapters, recall_mode,
         created_at, updated_at,
         life_profiles:user_id (display_name, avatar_url)
       `, { count: 'exact' })
@@ -73,6 +73,7 @@ export async function GET(request: NextRequest) {
         totalLikes: s.total_likes,
         totalViews: s.total_views,
         publishedChapters: publishedCounts[s.id] || 0,
+        recallMode: s.recall_mode || 'free',
         updatedAt: s.updated_at,
         // Read request status: null (not requested), 'pending', 'accepted', 'rejected'
         // 'own' if it's the user's own story
