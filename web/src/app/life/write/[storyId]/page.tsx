@@ -81,9 +81,44 @@ export default function WritePage({ params }: { params: Promise<{ storyId: strin
           if (existing) {
             setCurrentChapter(existing)
             setMessages(existing.conversation_history || [])
+          } else {
+            // Create chapter for this age
+            try {
+              const newRes = await fetch(`/api/life/stories/${storyId}/chapters`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  recall_age: startAge,
+                  recall_year: storyData.story.birth_year ? storyData.story.birth_year + startAge : undefined,
+                }),
+              })
+              const newData = await newRes.json()
+              if (newData.chapter) {
+                setChapters(prev => [...chaps, newData.chapter])
+                setCurrentChapter(newData.chapter)
+                setMessages([])
+              }
+            } catch {}
           }
         } else {
+          // Create first chapter for age 0
           setSelectedAge(0)
+          try {
+            const newRes = await fetch(`/api/life/stories/${storyId}/chapters`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                recall_age: 0,
+                recall_year: storyData.story.birth_year || undefined,
+              }),
+            })
+            const newData = await newRes.json()
+            if (newData.chapter) {
+              setChapters([newData.chapter])
+              setCurrentChapter(newData.chapter)
+              setMessages([])
+            }
+          } catch {}
         }
       } else {
         // Free mode: select last chapter or create first one
