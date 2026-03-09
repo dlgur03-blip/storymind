@@ -660,9 +660,11 @@ export const useStore = create((set, get) => ({
     } catch {}
   },
 
-  fetchLifeFeed: async (page = 1) => {
+  fetchLifeFeed: async (page = 1, filter = 'all', genre = '', sort = 'recent') => {
     try {
-      const res = await fetch(`/api/life/feed?page=${page}`)
+      const params = new URLSearchParams({ page: String(page), filter, sort })
+      if (genre) params.set('genre', genre)
+      const res = await fetch(`/api/life/feed?${params}`)
       const data = await res.json()
       if (page === 1) {
         set({ lifeFeed: data.feed || [], lifeFeedPage: 1, lifeFeedHasMore: data.hasMore })
@@ -757,6 +759,60 @@ export const useStore = create((set, get) => ({
       set({ lifeBadges: data.badges || [] })
     } catch {
       set({ lifeBadges: [] })
+    }
+  },
+
+  // ===== Explore & Search =====
+  exploreStories: [],
+  exploreAuthors: [],
+  exploreRecommended: [],
+  exploreTags: [],
+  searchResults: { stories: [], users: [] },
+  isSearching: false,
+
+  fetchExplore: async (section = 'trending', genre = '', page = 1) => {
+    try {
+      const params = new URLSearchParams({ section, page: String(page) })
+      if (genre) params.set('genre', genre)
+      const res = await fetch(`/api/life/explore?${params}`)
+      const data = await res.json()
+      if (section === 'trending') {
+        set({ exploreStories: data.stories || [] })
+      } else if (section === 'popular_authors') {
+        set({ exploreAuthors: data.authors || [] })
+      } else if (section === 'recommended') {
+        set({ exploreRecommended: data.authors || [] })
+      } else if (section === 'popular_tags') {
+        set({ exploreTags: data.tags || [] })
+      }
+      return data
+    } catch {
+      return {}
+    }
+  },
+
+  searchLife: async (q, type = 'all') => {
+    if (!q.trim()) {
+      set({ searchResults: { stories: [], users: [] } })
+      return
+    }
+    set({ isSearching: true })
+    try {
+      const res = await fetch(`/api/life/search?q=${encodeURIComponent(q)}&type=${type}`)
+      const data = await res.json()
+      set({ searchResults: { stories: data.stories || [], users: data.users || [] }, isSearching: false })
+    } catch {
+      set({ isSearching: false })
+    }
+  },
+
+  fetchFollowersList: async (userId, type = 'followers') => {
+    try {
+      const res = await fetch(`/api/life/followers?userId=${userId}&type=${type}`)
+      const data = await res.json()
+      return data.users || []
+    } catch {
+      return []
     }
   },
 

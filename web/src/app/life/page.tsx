@@ -9,6 +9,8 @@ import LifeHeader from '@/components/life/LifeHeader'
 import StoryCard from '@/components/life/StoryCard'
 import LifeOnboarding from '@/components/life/LifeOnboarding'
 import MonthlyBest from '@/components/life/MonthlyBest'
+import FeedTabs from '@/components/life/FeedTabs'
+import GenreFilterChips from '@/components/life/GenreFilterChips'
 import { PenLine, Sparkles, Loader2, BookOpen } from 'lucide-react'
 
 const DAILY_PROMPTS = [
@@ -31,6 +33,8 @@ export default function LifeFeedPage() {
   const [profileName, setProfileName] = useState('')
   const [profileBio, setProfileBio] = useState('')
   const [savingProfile, setSavingProfile] = useState(false)
+  const [feedTab, setFeedTab] = useState('all')
+  const [selectedGenre, setSelectedGenre] = useState('')
 
   const todayPrompt = DAILY_PROMPTS[new Date().getDay()]
 
@@ -88,9 +92,16 @@ export default function LifeFeedPage() {
     }
   }, [loading, lifeProfile, showProfileSetup])
 
+  // Refetch when tab or genre changes
+  useEffect(() => {
+    if (!loading) {
+      fetchLifeFeed(1, feedTab, selectedGenre)
+    }
+  }, [feedTab, selectedGenre])
+
   const handleLoadMore = async () => {
     setLoadingMore(true)
-    await fetchLifeFeed(lifeFeedPage + 1)
+    await fetchLifeFeed(lifeFeedPage + 1, feedTab, selectedGenre)
     setLoadingMore(false)
   }
 
@@ -130,9 +141,9 @@ export default function LifeFeedPage() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Feed */}
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="font-serif text-xl font-medium text-stone-800 dark:text-stone-200">
-                최신 이야기
+                이야기
               </h2>
               <button
                 onClick={() => router.push('/life/my')}
@@ -141,6 +152,18 @@ export default function LifeFeedPage() {
                 <PenLine className="w-4 h-4" />
                 글쓰기
               </button>
+            </div>
+
+            <FeedTabs
+              active={feedTab}
+              tabs={[
+                { key: 'all', label: '전체' },
+                { key: 'following', label: '팔로잉' },
+              ]}
+              onChange={setFeedTab}
+            />
+            <div className="mt-4 mb-6">
+              <GenreFilterChips selected={selectedGenre} onChange={setSelectedGenre} />
             </div>
 
             {lifeFeed.length === 0 ? (

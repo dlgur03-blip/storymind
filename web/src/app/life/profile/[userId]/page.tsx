@@ -104,11 +104,17 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_stories || 0}</p>
               <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">스토리</p>
             </div>
-            <div>
+            <div
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => router.push(`/life/profile/${userId}/followers`)}
+            >
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_followers || 0}</p>
               <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로워</p>
             </div>
-            <div>
+            <div
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => router.push(`/life/profile/${userId}/followers`)}
+            >
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_following || 0}</p>
               <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로잉</p>
             </div>

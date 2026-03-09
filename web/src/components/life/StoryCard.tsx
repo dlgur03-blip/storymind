@@ -3,7 +3,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Heart, Eye, BookOpen, Clock, Send, CheckCircle, XCircle, Loader2 } from 'lucide-react'
+import { Heart, Eye, BookOpen, Clock, Send, CheckCircle, XCircle, Loader2, Hash } from 'lucide-react'
 
 interface FeedItem {
   id: string
@@ -20,12 +20,17 @@ interface FeedItem {
   updatedAt: string
   readRequestStatus: string | null // null, 'pending', 'accepted', 'rejected', 'own'
   recallMode?: string
+  isLiked?: boolean
+  tags?: string[]
 }
 
 export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onRequestRead?: (storyId: string) => Promise<boolean> }) {
   const router = useRouter()
   const [requestStatus, setRequestStatus] = useState(item.readRequestStatus)
   const [requesting, setRequesting] = useState(false)
+  const [liked, setLiked] = useState(item.isLiked || false)
+  const [likeCount, setLikeCount] = useState(item.totalLikes)
+  const [likeAnimating, setLikeAnimating] = useState(false)
 
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime()
@@ -53,6 +58,28 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
     const success = await onRequestRead(item.id)
     if (success) setRequestStatus('pending')
     setRequesting(false)
+  }
+
+  const handleLikeToggle = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    const newLiked = !liked
+    setLiked(newLiked)
+    setLikeCount(newLiked ? likeCount + 1 : likeCount - 1)
+    if (newLiked) {
+      setLikeAnimating(true)
+      setTimeout(() => setLikeAnimating(false), 400)
+    }
+    try {
+      await fetch('/api/life/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ story_id: item.id }),
+      })
+    } catch {
+      // Revert on error
+      setLiked(!newLiked)
+      setLikeCount(newLiked ? likeCount : likeCount + 1)
+    }
   }
 
   return (
@@ -106,16 +133,37 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
         </p>
       )}
 
+      {/* Tags */}
+      {item.tags && item.tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {item.tags.map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-medium bg-rose-50 dark:bg-rose-900/10 text-rose-600 dark:text-rose-400 rounded-full cursor-pointer hover:bg-rose-100 dark:hover:bg-rose-900/20 transition-colors"
+              onClick={(e) => { e.stopPropagation(); router.push(`/life/explore?tag=${encodeURIComponent(tag)}`) }}
+            >
+              <Hash className="w-2.5 h-2.5" />
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Stats */}
       <div className="flex items-center gap-5 text-xs text-stone-400 dark:text-stone-500 mb-4 pt-1">
         <span className="flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5" />
           {item.publishedChapters}챕터
         </span>
-        <span className="flex items-center gap-1.5">
-          <Heart className="w-3.5 h-3.5" />
-          {item.totalLikes}
-        </span>
+        <button
+          onClick={handleLikeToggle}
+          className={`flex items-center gap-1.5 transition-colors duration-200 ${
+            liked ? 'text-rose-500' : 'hover:text-rose-400'
+          }`}
+        >
+          <Heart className={`w-3.5 h-3.5 ${liked ? 'fill-current' : ''} ${likeAnimating ? 'like-bounce' : ''}`} />
+          {likeCount}
+        </button>
         <span className="flex items-center gap-1.5">
           <Eye className="w-3.5 h-3.5" />
           {item.totalViews}

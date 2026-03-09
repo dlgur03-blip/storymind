@@ -9,12 +9,29 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = (page - 1) * limit
+    const filter = searchParams.get('filter') || 'all' // all, following
+    const genre = searchParams.get('genre') || ''
+    const sort = searchParams.get('sort') || 'recent' // recent, trending
 
     // Get current user (optional - for read request status)
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Get public stories that have at least one published chapter
-    const { data: stories, count } = await supabase
+    // If following filter, get following IDs
+    let followingIds: string[] = []
+    if (filter === 'following' && user) {
+      const { data: follows } = await supabase
+        .from('life_follows')
+        .select('following_id')
+        .eq('follower_id', user.id)
+
+      followingIds = (follows || []).map(f => f.following_id)
+      if (followingIds.length === 0) {
+        return NextResponse.json({ feed: [], page, totalCount: 0, hasMore: false })
+      }
+    }
+
+    // Build query
+    let query = supabase
       .from('life_stories')
       .select(`
         id, title, genre, description, status, user_id,
@@ -24,8 +41,22 @@ export async function GET(request: NextRequest) {
       `, { count: 'exact' })
       .eq('is_public', true)
       .gt('total_chapters', 0)
-      .order('updated_at', { ascending: false })
-      .range(offset, offset + limit - 1)
+
+    if (filter === 'following' && followingIds.length > 0) {
+      query = query.in('user_id', followingIds)
+    }
+
+    if (genre) {
+      query = query.eq('genre', genre)
+    }
+
+    if (sort === 'trending') {
+      query = query.order('total_likes', { ascending: false })
+    } else {
+      query = query.order('updated_at', { ascending: false })
+    }
+
+    const { data: stories, count } = await query.range(offset, offset + limit - 1)
 
     // Get published chapter counts per story
     const storyIds = (stories || []).map(s => s.id)
@@ -46,6 +77,7 @@ export async function GET(request: NextRequest) {
 
     // Get read request status for current user
     let requestStatusMap = {}
+    let likedMap = {}
     if (user && storyIds.length > 0) {
       const { data: requests } = await supabase
         .from('life_read_requests')
@@ -56,10 +88,21 @@ export async function GET(request: NextRequest) {
       requestStatusMap = Object.fromEntries(
         (requests || []).map(r => [r.story_id, r.status])
       )
+
+      // Get liked status
+      const { data: likes } = await supabase
+        .from('life_likes')
+        .select('story_id')
+        .eq('user_id', user.id)
+        .in('story_id', storyIds)
+
+      likedMap = Object.fromEntries(
+        (likes || []).map(l => [l.story_id, true])
+      )
     }
 
     // Filter to only stories with published chapters
-    const feed = (stories || [])
+    let feed = (stories || [])
       .filter(s => (publishedCounts[s.id] || 0) > 0)
       .map((s) => ({
         id: s.id,
@@ -75,12 +118,21 @@ export async function GET(request: NextRequest) {
         publishedChapters: publishedCounts[s.id] || 0,
         recallMode: s.recall_mode || 'free',
         updatedAt: s.updated_at,
-        // Read request status: null (not requested), 'pending', 'accepted', 'rejected'
-        // 'own' if it's the user's own story
         readRequestStatus: user
           ? (s.user_id === user.id ? 'own' : (requestStatusMap[s.id] || null))
           : null,
+        isLiked: !!likedMap[s.id],
       }))
+
+    // Apply trending sort with recency boost
+    if (sort === 'trending') {
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).getTime()
+      feed = feed.sort((a, b) => {
+        const scoreA = (a.totalLikes * 2 + a.totalViews) * (new Date(a.updatedAt).getTime() > sevenDaysAgo ? 1.5 : 1)
+        const scoreB = (b.totalLikes * 2 + b.totalViews) * (new Date(b.updatedAt).getTime() > sevenDaysAgo ? 1.5 : 1)
+        return scoreB - scoreA
+      })
+    }
 
     return NextResponse.json({
       feed,

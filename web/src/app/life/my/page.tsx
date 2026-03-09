@@ -9,10 +9,11 @@ import LifeHeader from '@/components/life/LifeHeader'
 import RecallSetupForm from '@/components/life/RecallSetupForm'
 import {
   Plus, Trash2, PenLine, Heart, Eye, Clock,
-  BookOpen, Loader2, Inbox, Check, X, Sunrise, Edit3, ChevronLeft
+  BookOpen, Loader2, Inbox, Check, X, Sunrise, Edit3, ChevronLeft, Hash
 } from 'lucide-react'
+import { LIFE_GENRES } from '@/lib/life-constants'
 
-const GENRES = ['일상', '로맨스', '성장', '판타지', '감성', '유머', '공포', '기타']
+const GENRES = LIFE_GENRES
 
 type CreateStep = 'mode' | 'free' | 'recall_basic' | 'recall_setup'
 
@@ -27,6 +28,8 @@ export default function MyStoriesPage() {
   const [creating, setCreating] = useState(false)
   const [recallConfig, setRecallConfig] = useState<any>(null)
   const [processingRequest, setProcessingRequest] = useState<string | null>(null)
+  const [newTags, setNewTags] = useState<string[]>([])
+  const [tagInput, setTagInput] = useState('')
 
   useEffect(() => {
     const init = async () => {
@@ -51,16 +54,33 @@ export default function MyStoriesPage() {
     setNewTitle('')
     setNewGenre('일상')
     setRecallConfig(null)
+    setNewTags([])
+    setTagInput('')
+  }
+
+  const saveTags = async (storyId: string) => {
+    if (newTags.length > 0) {
+      try {
+        await fetch('/api/life/tags', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ story_id: storyId, tags: newTags }),
+        })
+      } catch {}
+    }
   }
 
   const handleCreateFree = async () => {
     if (!newTitle.trim()) return
     setCreating(true)
     const story = await createLifeStory(newTitle.trim(), newGenre, '')
-    setCreating(false)
     if (story) {
+      await saveTags(story.id)
+      setCreating(false)
       setShowCreate(false)
       router.push(`/life/write/${story.id}`)
+    } else {
+      setCreating(false)
     }
   }
 
@@ -68,10 +88,13 @@ export default function MyStoriesPage() {
     if (!newTitle.trim() || !recallConfig) return
     setCreating(true)
     const story = await createLifeStory(newTitle.trim(), newGenre, '', recallConfig)
-    setCreating(false)
     if (story) {
+      await saveTags(story.id)
+      setCreating(false)
       setShowCreate(false)
       router.push(`/life/write/${story.id}`)
+    } else {
+      setCreating(false)
     }
   }
 
@@ -362,6 +385,43 @@ export default function MyStoriesPage() {
                         </button>
                       ))}
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">태그 (선택, 최대 10개)</label>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {newTags.map((tag) => (
+                        <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-rose-50 dark:bg-rose-900/15 text-rose-700 dark:text-rose-400 rounded-full border border-rose-200/40 dark:border-rose-800/30">
+                          <Hash className="w-2.5 h-2.5" />
+                          {tag}
+                          <button
+                            onClick={() => setNewTags(newTags.filter(t => t !== tag))}
+                            className="ml-0.5 hover:text-red-600 dark:hover:text-red-400"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    {newTags.length < 10 && (
+                      <input
+                        type="text"
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if ((e.key === 'Enter' || e.key === ',') && tagInput.trim()) {
+                            e.preventDefault()
+                            const clean = tagInput.trim().replace(/^#/, '')
+                            if (clean && !newTags.includes(clean)) {
+                              setNewTags([...newTags, clean])
+                            }
+                            setTagInput('')
+                          }
+                        }}
+                        placeholder="태그 입력 후 Enter"
+                        className="w-full px-4 py-2.5 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 text-sm"
+                      />
+                    )}
                   </div>
                 </div>
 

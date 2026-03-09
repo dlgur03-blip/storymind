@@ -2,7 +2,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Bell, User, BookOpen, Moon, Sun, HelpCircle } from 'lucide-react'
+import { Bell, User, BookOpen, Moon, Sun, HelpCircle, Compass } from 'lucide-react'
 import ServiceSwitcher from '@/components/ServiceSwitcher'
 import { useStore } from '@/stores/store'
 
@@ -32,6 +32,13 @@ export default function LifeHeader({ onShowGuide }: { onShowGuide?: () => void }
           >
             <BookOpen className="w-4 h-4" />
             <span className="hidden sm:inline">내 스토리</span>
+          </button>
+          <button
+            onClick={() => router.push('/life/explore')}
+            className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
+          >
+            <Compass className="w-4 h-4" />
+            <span className="hidden sm:inline">탐색</span>
           </button>
           <button
             onClick={() => router.push('/life/notifications')}
