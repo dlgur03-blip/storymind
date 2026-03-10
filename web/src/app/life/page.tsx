@@ -11,7 +11,7 @@ import LifeOnboarding from '@/components/life/LifeOnboarding'
 import MonthlyBest from '@/components/life/MonthlyBest'
 import FeedTabs from '@/components/life/FeedTabs'
 import GenreFilterChips from '@/components/life/GenreFilterChips'
-import { PenLine, Sparkles, Loader2, BookOpen } from 'lucide-react'
+import { PenLine, Sparkles, Loader2, BookOpen, ArrowRight } from 'lucide-react'
 
 const DAILY_PROMPTS = [
   '오늘 길에서 마주친 낯선 사람의 이야기',
@@ -121,25 +121,31 @@ export default function LifeFeedPage() {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Main Content */}
           <div className="flex-1 min-w-0">
-            {/* Daily prompt — subtle, not demanding (Chanel reference) */}
-            <div className="relative rounded-2xl p-7 md:p-8 mb-8 border border-stone-200/40 dark:border-stone-800/20 bg-white/40 dark:bg-stone-900/20 overflow-hidden">
+            {/* Write CTA — prominent, top position */}
+            <button
+              onClick={() => router.push('/life/my')}
+              className="w-full relative rounded-2xl p-6 md:p-7 mb-8 border border-stone-200/40 dark:border-stone-800/20 bg-white/40 dark:bg-stone-900/20 overflow-hidden text-left group hover:border-stone-300 dark:hover:border-stone-700 transition-all duration-500"
+            >
               <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-stone-300/40 dark:via-stone-700/20 to-transparent" />
-              <div className="flex items-start sm:items-center justify-between gap-4 flex-col sm:flex-row">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="w-4 h-4 text-stone-400 dark:text-stone-500" />
-                    <span className="text-[11px] font-medium tracking-[0.2em] uppercase text-stone-400 dark:text-stone-500">오늘의 글감</span>
-                  </div>
-                  <p className="font-serif text-base md:text-lg text-stone-700 dark:text-stone-300 leading-relaxed">{todayPrompt}</p>
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-xl bg-stone-100 dark:bg-stone-800/60 flex items-center justify-center shrink-0">
+                  <PenLine className="w-5 h-5 text-stone-400 dark:text-stone-500" />
                 </div>
-                {/* Ghost CTA — "discover" not "buy now" */}
-                <button
-                  onClick={() => router.push('/life/my')}
-                  className="px-5 py-2 text-sm font-medium text-stone-500 dark:text-stone-400 border border-stone-300/60 dark:border-stone-700/30 rounded-full hover:text-stone-700 dark:hover:text-stone-200 hover:border-stone-400 dark:hover:border-stone-600 transition-all duration-500 shrink-0"
-                >
-                  이 글감으로 쓰기
-                </button>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-stone-600 dark:text-stone-300 mb-0.5">나만의 이야기 쓰기</p>
+                  <p className="text-xs text-stone-400 dark:text-stone-500">오늘의 일상을 소설로 만들어보세요</p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-stone-300 dark:text-stone-600 group-hover:text-stone-500 dark:group-hover:text-stone-400 group-hover:translate-x-0.5 transition-all duration-500" />
               </div>
+            </button>
+
+            {/* Daily prompt — subtle, not demanding */}
+            <div className="relative rounded-2xl p-6 mb-8 border border-stone-200/30 dark:border-stone-800/15 bg-white/30 dark:bg-stone-900/15 overflow-hidden">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-stone-400 dark:text-stone-500" />
+                <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-stone-400 dark:text-stone-500">오늘의 글감</span>
+              </div>
+              <p className="font-serif text-sm text-stone-500 dark:text-stone-400 leading-relaxed">{todayPrompt}</p>
             </div>
 
             {/* Feed Header */}
@@ -147,14 +153,6 @@ export default function LifeFeedPage() {
               <h2 className="font-serif text-xl font-medium text-stone-700 dark:text-stone-300 tracking-tight">
                 이야기
               </h2>
-              {/* Ghost text link — Chanel-style */}
-              <button
-                onClick={() => router.push('/life/my')}
-                className="flex items-center gap-1.5 text-sm text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 transition-all duration-500"
-              >
-                <PenLine className="w-4 h-4" />
-                글쓰기
-              </button>
             </div>
 
             {/* Tabs & Filters */}
@@ -174,15 +172,10 @@ export default function LifeFeedPage() {
 
             {/* Feed Content — wider card gaps */}
             {lifeFeed.length === 0 ? (
-              <div className="text-center py-24">
-                <BookOpen className="w-10 h-10 text-stone-300 dark:text-stone-700 mx-auto mb-5" />
-                <p className="font-serif text-stone-400 dark:text-stone-500 mb-8">아직 이야기가 없습니다</p>
-                <button
-                  onClick={() => router.push('/life/my')}
-                  className="px-6 py-2.5 text-sm font-medium text-stone-500 dark:text-stone-400 border border-stone-300 dark:border-stone-700 rounded-xl hover:text-stone-700 dark:hover:text-stone-200 hover:border-stone-400 dark:hover:border-stone-600 transition-all duration-500"
-                >
-                  첫 이야기 쓰기
-                </button>
+              <div className="text-center py-20">
+                <BookOpen className="w-8 h-8 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
+                <p className="text-sm text-stone-400 dark:text-stone-500">아직 공유된 이야기가 없습니다</p>
+                <p className="text-xs text-stone-300 dark:text-stone-600 mt-1">위의 글쓰기 버튼으로 첫 이야기를 시작해보세요</p>
               </div>
             ) : (
               <div className="space-y-6 stagger-in">

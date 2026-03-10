@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Inline script to set dark class before first paint — prevents flash
+const DARK_MODE_SCRIPT = `(function(){try{var d=document.documentElement;var s=localStorage.getItem('sm_dark');if(s==='true'||(s===null&&window.matchMedia('(prefers-color-scheme:dark)').matches)){d.classList.add('dark')}else{d.classList.remove('dark')}}catch(e){}})();`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,6 +41,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: DARK_MODE_SCRIPT }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

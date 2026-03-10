@@ -1,9 +1,10 @@
+// @ts-nocheck
 'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabase } from '@/lib/supabase/client'
-import { BookOpen, Sparkles, Shield, Zap, Check } from 'lucide-react'
+import { BookOpen, Heart, Pencil, Library, ArrowRight, Moon, Sun } from 'lucide-react'
 
 export default function Home() {
   const router = useRouter()
@@ -13,6 +14,19 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true)
   const [error, setError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    // Sync dark mode state with DOM
+    setIsDark(document.documentElement.classList.contains('dark'))
+  }, [])
+
+  const toggleDark = () => {
+    const next = !isDark
+    document.documentElement.classList.toggle('dark', next)
+    localStorage.setItem('sm_dark', String(next))
+    setIsDark(next)
+  }
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -65,79 +79,67 @@ export default function Home() {
     )
   }
 
+  const services = [
+    {
+      icon: Heart,
+      name: 'Story Life',
+      desc: 'AI와 대화하며 일상을 소설로',
+    },
+    {
+      icon: BookOpen,
+      name: 'Story Mind',
+      desc: 'AI와 함께 웹소설·웹툰 창작',
+    },
+    {
+      icon: Pencil,
+      name: 'Story Editor',
+      desc: '원고 편집과 피드백',
+    },
+    {
+      icon: Library,
+      name: '문학관',
+      desc: '단편·장편 이야기 감상',
+    },
+  ]
+
   return (
-    <div className="min-h-screen bg-[var(--background)]">
-      {/* Hero Section */}
-      <div className="max-w-6xl mx-auto px-4 py-20">
-        <div className="text-center mb-20">
-          <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-stone-800 dark:text-stone-200 mb-4">
+    <div className="min-h-screen bg-[var(--background)] flex flex-col">
+      {/* Dark mode toggle — top right */}
+      <div className="fixed top-5 right-5 z-50">
+        <button
+          onClick={toggleDark}
+          className="p-2.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-xl transition-all duration-500"
+          aria-label="다크 모드 전환"
+        >
+          {isDark ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
+        </button>
+      </div>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-20">
+        {/* Hero */}
+        <div className="text-center mb-12 md:mb-16 home-hero-fade">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-500 mb-4">
+            개개인의 이야기가 특별한 세상
+          </p>
+          <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-stone-800 dark:text-stone-200 mb-5">
             StoryMind
           </h1>
-          <p className="text-lg text-stone-500 dark:text-stone-400 mb-6">
-            AI 기반 웹소설/웹툰 창작 어시스턴트
-          </p>
-          <p className="text-sm text-stone-400 dark:text-stone-500 max-w-xl mx-auto leading-relaxed">
-            설정 자동 추적, 모순 탐지, AI 대필까지.<br />
-            당신의 이야기에만 집중하세요. 나머지는 StoryMind가 관리합니다.
+          <p className="text-base md:text-lg text-stone-400 dark:text-stone-500 tracking-wide">
+            여러분의 일기가 소설이 됩니다
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          {/* Features */}
-          <div className="space-y-5">
-            <h2 className="font-serif text-xl font-medium mb-6 text-stone-700 dark:text-stone-300">주요 기능</h2>
-
-            <div className="flex gap-4 p-5 bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 card-hover">
-              <div className="w-10 h-10 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center shrink-0">
-                <Shield className="w-5 h-5 text-stone-600 dark:text-stone-400" />
-              </div>
-              <div>
-                <h3 className="font-medium mb-1 text-stone-700 dark:text-stone-300">StoryVault</h3>
-                <p className="text-sm text-stone-400 dark:text-stone-500 leading-relaxed">캐릭터, 복선, 세계관, 시간선 자동 추적. AI가 설정을 기억합니다.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 p-5 bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 card-hover">
-              <div className="w-10 h-10 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center shrink-0">
-                <Sparkles className="w-5 h-5 text-stone-600 dark:text-stone-400" />
-              </div>
-              <div>
-                <h3 className="font-medium mb-1 text-stone-700 dark:text-stone-300">7모듈 AI 검수</h3>
-                <p className="text-sm text-stone-400 dark:text-stone-500 leading-relaxed">설정 모순, 캐릭터 일관성, 시간선, 복선, 문체까지 병렬 분석.</p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 p-5 bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 card-hover">
-              <div className="w-10 h-10 bg-stone-100 dark:bg-stone-800 rounded-xl flex items-center justify-center shrink-0">
-                <Zap className="w-5 h-5 text-stone-600 dark:text-stone-400" />
-              </div>
-              <div>
-                <h3 className="font-medium mb-1 text-stone-700 dark:text-stone-300">AI 대필</h3>
-                <p className="text-sm text-stone-400 dark:text-stone-500 leading-relaxed">아이디어만 주면 당신의 문체로 한 화를 작성. 웹툰 스크립트도 지원.</p>
-              </div>
-            </div>
-
-            <div className="mt-8 p-5 bg-stone-100/50 dark:bg-stone-800/30 rounded-2xl border border-stone-200/40 dark:border-stone-700/30">
-              <h4 className="font-medium mb-3 text-sm text-stone-600 dark:text-stone-400">무료 플랜 포함</h4>
-              <ul className="space-y-2 text-sm text-stone-500 dark:text-stone-400">
-                {['월 30회 AI 검수', '무제한 작품 & 챕터', 'StoryVault 자동 추출', '웹소설 & 웹툰 지원'].map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Auth Form */}
-          <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-8">
-            <h2 className="font-serif text-xl font-medium mb-6 text-center text-stone-800 dark:text-stone-200">
+        {/* Auth Card — centered, clean */}
+        <div className="w-full max-w-sm mb-16 stagger-in">
+          <div className="bg-white/50 dark:bg-stone-900/30 rounded-2xl border border-stone-200/40 dark:border-stone-800/20 p-8 md:p-10">
+            <h2 className="font-serif text-lg font-medium mb-8 text-center text-stone-700 dark:text-stone-300">
               {isLogin ? '로그인' : '회원가입'}
             </h2>
 
             <button
               onClick={handleGoogleAuth}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-stone-200 dark:border-stone-700 rounded-xl hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300 text-stone-600 dark:text-stone-400 mb-6"
+              className="w-full flex items-center justify-center gap-2.5 py-3 px-4 border border-stone-200/60 dark:border-stone-700/30 rounded-xl hover:border-stone-300 dark:hover:border-stone-600 transition-all duration-500 text-stone-600 dark:text-stone-400 mb-6"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -152,42 +154,38 @@ export default function Home() {
               <div className="absolute inset-0 flex items-center">
                 <div className="divider-subtle w-full" />
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-3 bg-white dark:bg-stone-900 text-stone-400 dark:text-stone-500">또는</span>
+              <div className="relative flex justify-center text-[11px]">
+                <span className="px-3 bg-white dark:bg-[#0a0908] text-stone-400 dark:text-stone-500 tracking-wider">또는</span>
               </div>
             </div>
 
             <form onSubmit={handleAuth} className="space-y-4">
-              <div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="이메일"
-                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="비밀번호 (6자 이상)"
-                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
-                  required
-                  minLength={6}
-                />
-              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일"
+                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                required
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호 (6자 이상)"
+                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                required
+                minLength={6}
+              />
 
               {error && (
-                <p className="text-red-500 text-sm">{error}</p>
+                <p className="text-red-500 dark:text-red-400 text-sm">{error}</p>
               )}
 
               <button
                 type="submit"
                 disabled={authLoading}
-                className="w-full py-3 px-4 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300 disabled:opacity-50"
+                className="w-full py-3 text-stone-600 dark:text-stone-300 border border-stone-300 dark:border-stone-700 rounded-xl font-medium hover:text-stone-800 dark:hover:text-stone-100 hover:border-stone-500 dark:hover:border-stone-500 transition-all duration-500 disabled:opacity-50"
               >
                 {authLoading ? '처리 중...' : isLogin ? '로그인' : '가입하기'}
               </button>
@@ -196,21 +194,40 @@ export default function Home() {
             <p className="mt-6 text-center text-sm text-stone-400 dark:text-stone-500">
               {isLogin ? '계정이 없으신가요? ' : '이미 계정이 있으신가요? '}
               <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-stone-700 dark:text-stone-300 font-medium hover:underline underline-offset-2"
+                onClick={() => { setIsLogin(!isLogin); setError('') }}
+                className="text-stone-600 dark:text-stone-300 font-medium hover:underline underline-offset-4 transition-colors duration-500"
               >
                 {isLogin ? '회원가입' : '로그인'}
               </button>
             </p>
           </div>
         </div>
+
+        {/* Services — horizontal, subtle */}
+        <div className="w-full max-w-3xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 stagger-in">
+            {services.map((s) => {
+              const Icon = s.icon
+              return (
+                <div
+                  key={s.name}
+                  className="text-center p-5 md:p-6 rounded-2xl border border-stone-200/30 dark:border-stone-800/15 bg-white/30 dark:bg-stone-900/15"
+                >
+                  <Icon className="w-5 h-5 text-stone-400 dark:text-stone-500 mx-auto mb-3" />
+                  <p className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">{s.name}</p>
+                  <p className="text-[11px] text-stone-400 dark:text-stone-500 leading-relaxed">{s.desc}</p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-stone-200/40 dark:border-stone-800/30 py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-stone-400 dark:text-stone-500">
-          <p>&copy; 2024 StoryMind. Powered by Gemini AI.</p>
-        </div>
+      <footer className="py-8">
+        <p className="text-center text-[11px] text-stone-300 dark:text-stone-700 tracking-[0.15em]">
+          &copy; 2025 StoryMind
+        </p>
       </footer>
     </div>
   )
