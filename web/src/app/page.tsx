@@ -119,13 +119,13 @@ export default function Home() {
       <div className="flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-20">
         {/* Hero */}
         <div className="text-center mb-12 md:mb-16 home-hero-fade">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-400 mb-4">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-300 mb-4">
             개개인의 이야기가 특별한 세상
           </p>
-          <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-stone-800 dark:text-stone-200 mb-5">
+          <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-stone-800 dark:text-stone-100 mb-5">
             StoryMind
           </h1>
-          <p className="text-base md:text-lg text-stone-400 dark:text-stone-400 tracking-wide">
+          <p className="text-base md:text-lg text-stone-400 dark:text-stone-300 tracking-wide">
             여러분의 일기가 소설이 됩니다
           </p>
         </div>

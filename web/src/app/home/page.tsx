@@ -98,10 +98,10 @@ export default function HomePage() {
       {/* Minimal header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-[10px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-400 leading-none mb-1">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-300 leading-none mb-1">
             개개인의 이야기가 특별한 세상
           </span>
-          <h1 className="font-serif text-lg font-medium text-stone-700 dark:text-stone-300 tracking-[0.05em] leading-none">
+          <h1 className="font-serif text-lg font-medium text-stone-700 dark:text-stone-200 tracking-[0.05em] leading-none">
             Story
           </h1>
         </div>
@@ -125,10 +125,10 @@ export default function HomePage() {
       <div className="flex-1 flex flex-col items-center justify-center px-5 pt-24 pb-10">
         {/* Title — wide letter spacing, unhurried (Céline reference) */}
         <div className="text-center mb-16 home-hero-fade">
-          <h2 className="font-serif text-3xl md:text-4xl font-medium text-stone-800 dark:text-stone-200 tracking-tight mb-4 leading-snug">
+          <h2 className="font-serif text-3xl md:text-4xl font-medium text-stone-800 dark:text-stone-100 tracking-tight mb-4 leading-snug">
             개개인의 이야기가 특별한 세상
           </h2>
-          <p className="text-sm md:text-base text-stone-400 dark:text-stone-400 tracking-wide">
+          <p className="text-sm md:text-base text-stone-400 dark:text-stone-300 tracking-wide">
             여러분의 일기가 소설이 됩니다
           </p>
         </div>
