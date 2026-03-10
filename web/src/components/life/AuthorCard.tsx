@@ -44,9 +44,9 @@ export default function AuthorCard({
         <div className="flex-1 min-w-0">
           <p className="font-medium text-sm text-stone-700 dark:text-stone-300 truncate">{displayName}</p>
           {bio && (
-            <p className="text-xs text-stone-400 dark:text-stone-500 truncate mt-0.5">{bio}</p>
+            <p className="text-xs text-stone-400 dark:text-stone-400 truncate mt-0.5">{bio}</p>
           )}
-          <div className="flex items-center gap-3 mt-1 text-xs text-stone-400 dark:text-stone-500">
+          <div className="flex items-center gap-3 mt-1 text-xs text-stone-400 dark:text-stone-400">
             <span className="flex items-center gap-1">
               <BookOpen className="w-3 h-3" />
               {totalStories}

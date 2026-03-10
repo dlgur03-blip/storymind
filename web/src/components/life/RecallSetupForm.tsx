@@ -51,7 +51,7 @@ export default function RecallSetupForm({ onChange, initialConfig }: RecallSetup
       ? 'border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/15'
       : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700'
 
-  const inputClass = 'w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600'
+  const inputClass = 'w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500'
 
   return (
     <div className="space-y-5">

@@ -106,7 +106,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
           >
             {item.authorName}
           </span>
-          <div className="flex items-center gap-1.5 text-xs text-stone-400 dark:text-stone-500 mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs text-stone-400 dark:text-stone-400 mt-0.5">
             <Clock className="w-3 h-3" />
             {timeAgo(item.updatedAt)}
           </div>
@@ -149,7 +149,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
       {/* Prada-style hover preview — first sentence fades in on hover */}
       {!item.description && (
         <div className="story-card-preview">
-          <p className="text-sm text-stone-400 dark:text-stone-500 italic font-serif leading-relaxed">
+          <p className="text-sm text-stone-400 dark:text-stone-400 italic font-serif leading-relaxed">
             이야기를 열어보세요...
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
       )}
 
       {/* Stats — wider spacing */}
-      <div className="flex items-center gap-6 text-xs text-stone-400 dark:text-stone-500 mb-5 pt-2">
+      <div className="flex items-center gap-6 text-xs text-stone-400 dark:text-stone-400 mb-5 pt-2">
         <span className="flex items-center gap-1.5">
           <BookOpen className="w-3.5 h-3.5" />
           {item.publishedChapters}챕터
@@ -209,7 +209,7 @@ export default function StoryCard({ item, onRequestRead }: { item: FeedItem; onR
           읽기
         </button>
       ) : requestStatus === 'pending' ? (
-        <div className="w-full py-2.5 text-sm font-medium text-stone-400 dark:text-stone-500 rounded-xl flex items-center justify-center gap-1.5 border border-stone-200/40 dark:border-stone-800/20">
+        <div className="w-full py-2.5 text-sm font-medium text-stone-400 dark:text-stone-400 rounded-xl flex items-center justify-center gap-1.5 border border-stone-200/40 dark:border-stone-700/40">
           <Clock className="w-4 h-4" />
           요청 대기중
         </div>

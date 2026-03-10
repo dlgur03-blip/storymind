@@ -68,7 +68,7 @@ export default function RecallTimeline({ currentAge, birthYear, chapters, select
     in_progress: 'bg-amber-500 text-white border-amber-500',
     started: 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 border-amber-300/60 dark:border-amber-700/40',
     skipped: 'bg-stone-200 dark:bg-stone-700 text-stone-400 line-through border-stone-300/60 dark:border-stone-600/40',
-    empty: 'bg-stone-50 dark:bg-stone-800/60 text-stone-400 dark:text-stone-500 border-stone-200/60 dark:border-stone-700/40',
+    empty: 'bg-stone-50 dark:bg-stone-800/60 text-stone-400 dark:text-stone-400 border-stone-200/60 dark:border-stone-700/40',
   }
 
   let lastGroup = ''
@@ -91,7 +91,7 @@ export default function RecallTimeline({ currentAge, birthYear, chapters, select
             return (
               <div key={age} className="flex flex-col items-center shrink-0">
                 {showLabel && (
-                  <span className="text-[10px] text-stone-400 dark:text-stone-500 mb-1.5 whitespace-nowrap font-medium">{group.label}</span>
+                  <span className="text-[10px] text-stone-400 dark:text-stone-400 mb-1.5 whitespace-nowrap font-medium">{group.label}</span>
                 )}
                 {!showLabel && <span className="text-[10px] mb-1.5 invisible">.</span>}
                 <button
@@ -108,7 +108,7 @@ export default function RecallTimeline({ currentAge, birthYear, chapters, select
             )
           })}
         </div>
-        <div className="flex items-center gap-5 mt-3 text-[10px] text-stone-400 dark:text-stone-500">
+        <div className="flex items-center gap-5 mt-3 text-[10px] text-stone-400 dark:text-stone-400">
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-600" /> 완료</span>
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500" /> 진행중</span>
           <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-stone-300 dark:bg-stone-600" /> 건너뜀</span>

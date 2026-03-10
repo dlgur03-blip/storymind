@@ -213,9 +213,9 @@ export default function EditorModePage() {
         <h2 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200 mb-6">담당 작품</h2>
         {activeWorks.length === 0 ? (
           <div className="text-center py-20">
-            <BookOpen className="w-16 h-16 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
-            <h3 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">담당 작품이 없습니다</h3>
-            <p className="text-stone-400 dark:text-stone-500">작가의 초대를 기다리세요</p>
+            <BookOpen className="w-16 h-16 text-stone-300 dark:text-stone-400 mx-auto mb-4" />
+            <h3 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-400 mb-2">담당 작품이 없습니다</h3>
+            <p className="text-stone-400 dark:text-stone-400">작가의 초대를 기다리세요</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-in">

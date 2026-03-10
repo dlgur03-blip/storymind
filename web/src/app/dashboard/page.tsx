@@ -238,7 +238,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={handleLogout}
-              className="p-2 text-stone-400 dark:text-stone-500 hover:text-stone-700 dark:hover:text-stone-300 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
+              className="p-2 text-stone-400 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:bg-stone-100/60 dark:hover:bg-stone-800/40 rounded-lg transition-all duration-300"
               title="로그아웃"
             >
               <LogOut className="w-[18px] h-[18px]" />
@@ -264,7 +264,7 @@ export default function Dashboard() {
                 <span className="text-3xl font-serif font-medium text-stone-800 dark:text-stone-200">
                   {statsData.today.toLocaleString()}
                 </span>
-                <span className="text-sm text-stone-400 dark:text-stone-500 ml-1">
+                <span className="text-sm text-stone-400 dark:text-stone-400 ml-1">
                   / {statsData.goal.toLocaleString()}자
                 </span>
               </div>
@@ -274,7 +274,7 @@ export default function Dashboard() {
                     ? 'text-emerald-600 dark:text-emerald-400'
                     : goalProgress >= 50
                     ? 'text-amber-600 dark:text-amber-400'
-                    : 'text-stone-400 dark:text-stone-500'
+                    : 'text-stone-400 dark:text-stone-400'
                 }`}
               >
                 {goalProgress}%
@@ -338,7 +338,7 @@ export default function Dashboard() {
                 </ResponsiveContainer>
               </div>
             ) : (
-              <div className="h-36 flex items-center justify-center text-sm text-stone-400 dark:text-stone-500 font-serif">
+              <div className="h-36 flex items-center justify-center text-sm text-stone-400 dark:text-stone-400 font-serif">
                 아직 집필 데이터가 없습니다
               </div>
             )}
@@ -370,9 +370,9 @@ export default function Dashboard() {
         {/* Works Grid */}
         {works.length === 0 ? (
           <div className="text-center py-24">
-            <Folder className="w-12 h-12 text-stone-300 dark:text-stone-700 mx-auto mb-5" />
-            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">작품이 없습니다</h2>
-            <p className="text-sm text-stone-400 dark:text-stone-500 mb-8">새 작품을 만들거나 기존 원고를 임포트하세요</p>
+            <Folder className="w-12 h-12 text-stone-300 dark:text-stone-400 mx-auto mb-5" />
+            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-400 mb-2">작품이 없습니다</h2>
+            <p className="text-sm text-stone-400 dark:text-stone-400 mb-8">새 작품을 만들거나 기존 원고를 임포트하세요</p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => fileInputRef.current?.click()}
@@ -425,7 +425,7 @@ export default function Dashboard() {
                     {work.work_type === 'webtoon' ? '웹툰' : '웹소설'}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-4 text-xs text-stone-400 dark:text-stone-500">
+                <div className="flex items-center gap-1 mt-4 text-xs text-stone-400 dark:text-stone-400">
                   <Clock className="w-3 h-3" />
                   {new Date(work.updated_at).toLocaleDateString('ko-KR')}
                 </div>
@@ -482,7 +482,7 @@ export default function Dashboard() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="예: 회귀한 천재 마법사"
-                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                  className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-stone-500 dark:focus:border-stone-500 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500"
                   autoFocus
                 />
               </div>
@@ -544,7 +544,7 @@ export default function Dashboard() {
                 <div className="divider-subtle w-full" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-white dark:bg-stone-900 px-3 text-stone-400 dark:text-stone-500">또는</span>
+                <span className="bg-white dark:bg-stone-900 px-3 text-stone-400 dark:text-stone-400">또는</span>
               </div>
             </div>
 
@@ -596,7 +596,7 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-            <p className="text-[11px] text-stone-400 dark:text-stone-500 text-center mt-5">에디터 화면에서 사용 가능합니다</p>
+            <p className="text-[11px] text-stone-400 dark:text-stone-400 text-center mt-5">에디터 화면에서 사용 가능합니다</p>
           </div>
         </div>
       )}

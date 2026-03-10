@@ -98,7 +98,7 @@ export default function HomePage() {
       {/* Minimal header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-[10px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-500 leading-none mb-1">
+          <span className="text-[10px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-400 leading-none mb-1">
             개개인의 이야기가 특별한 세상
           </span>
           <h1 className="font-serif text-lg font-medium text-stone-700 dark:text-stone-300 tracking-[0.05em] leading-none">
@@ -128,7 +128,7 @@ export default function HomePage() {
           <h2 className="font-serif text-3xl md:text-4xl font-medium text-stone-800 dark:text-stone-200 tracking-tight mb-4 leading-snug">
             개개인의 이야기가 특별한 세상
           </h2>
-          <p className="text-sm md:text-base text-stone-400 dark:text-stone-500 tracking-wide">
+          <p className="text-sm md:text-base text-stone-400 dark:text-stone-400 tracking-wide">
             여러분의 일기가 소설이 됩니다
           </p>
         </div>
@@ -204,7 +204,7 @@ export default function HomePage() {
 
         {/* 문학관 Section */}
         <div className="w-full max-w-5xl mt-14">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-500 mb-5 font-medium text-center">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-400 mb-5 font-medium text-center">
             문학관
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -249,7 +249,7 @@ export default function HomePage() {
         </div>
 
         {/* Subtle footer — understated */}
-        <p className="mt-16 text-[11px] text-stone-300 dark:text-stone-700 tracking-[0.15em]">
+        <p className="mt-16 text-[11px] text-stone-300 dark:text-stone-400 tracking-[0.15em]">
           Powered by Gemini AI
         </p>
       </div>

@@ -31,7 +31,7 @@ export default function UserList({ users, loading = false, emptyMessage = 'ì‚¬ìš
 
   if (users.length === 0) {
     return (
-      <div className="text-center py-12 text-stone-400 dark:text-stone-500 text-sm font-serif">
+      <div className="text-center py-12 text-stone-400 dark:text-stone-400 text-sm font-serif">
         {emptyMessage}
       </div>
     )

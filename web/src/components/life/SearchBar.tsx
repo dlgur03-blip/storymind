@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch, placeholder = '작품, 작가를 �
 
   return (
     <div className="relative">
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 dark:text-stone-500" />
+      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 dark:text-stone-400" />
       <input
         type="text"
         value={query}

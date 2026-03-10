@@ -177,7 +177,7 @@ export default function MyStoriesPage() {
                       <span className="text-rose-700 dark:text-rose-400">{req.requesterName}</span>
                       님이 읽기를 요청했습니다
                     </p>
-                    <p className="text-xs text-stone-400 dark:text-stone-500 truncate">{req.storyTitle}</p>
+                    <p className="text-xs text-stone-400 dark:text-stone-400 truncate">{req.storyTitle}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <button
@@ -220,9 +220,9 @@ export default function MyStoriesPage() {
 
         {lifeStories.length === 0 ? (
           <div className="text-center py-24">
-            <PenLine className="w-12 h-12 text-stone-300 dark:text-stone-700 mx-auto mb-5" />
-            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">아직 스토리가 없습니다</h2>
-            <p className="text-sm text-stone-400 dark:text-stone-500 mb-8">AI와 대화하며 나만의 이야기를 만들어보세요</p>
+            <PenLine className="w-12 h-12 text-stone-300 dark:text-stone-400 mx-auto mb-5" />
+            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-400 mb-2">아직 스토리가 없습니다</h2>
+            <p className="text-sm text-stone-400 dark:text-stone-400 mb-8">AI와 대화하며 나만의 이야기를 만들어보세요</p>
             <button
               onClick={openCreate}
               className="inline-flex items-center gap-2 px-6 py-3 border border-rose-700 dark:border-rose-600 text-rose-700 dark:text-rose-400 rounded-xl font-medium hover:bg-rose-700 hover:text-white dark:hover:bg-rose-700 dark:hover:text-white transition-all duration-300"
@@ -273,7 +273,7 @@ export default function MyStoriesPage() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-4 text-xs text-stone-400 dark:text-stone-500 mt-4">
+                <div className="flex items-center gap-4 text-xs text-stone-400 dark:text-stone-400 mt-4">
                   <span className="flex items-center gap-1">
                     <PenLine className="w-3 h-3" />
                     {story.total_chapters || 0}챕터
@@ -287,7 +287,7 @@ export default function MyStoriesPage() {
                     {story.total_views || 0}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-2 text-xs text-stone-400 dark:text-stone-500">
+                <div className="flex items-center gap-1 mt-2 text-xs text-stone-400 dark:text-stone-400">
                   <Clock className="w-3 h-3" />
                   {new Date(story.updated_at).toLocaleDateString('ko-KR')}
                 </div>
@@ -311,7 +311,7 @@ export default function MyStoriesPage() {
             {createStep === 'mode' && (
               <>
                 <h2 className="font-serif text-2xl font-medium mb-2 text-stone-800 dark:text-stone-200">새 스토리 만들기</h2>
-                <p className="text-sm text-stone-400 dark:text-stone-500 mb-8">어떤 방식으로 시작할까요?</p>
+                <p className="text-sm text-stone-400 dark:text-stone-400 mb-8">어떤 방식으로 시작할까요?</p>
 
                 <div className="space-y-3">
                   <button
@@ -324,7 +324,7 @@ export default function MyStoriesPage() {
                       </div>
                       <h3 className="font-serif font-medium text-base text-stone-800 dark:text-stone-200">기억회상으로 시작하기</h3>
                     </div>
-                    <p className="text-sm text-stone-400 dark:text-stone-500 ml-[52px] leading-relaxed">
+                    <p className="text-sm text-stone-400 dark:text-stone-400 ml-[52px] leading-relaxed">
                       0세부터 현재까지, 나이별로 기억을 소설로 만들어요
                     </p>
                   </button>
@@ -339,7 +339,7 @@ export default function MyStoriesPage() {
                       </div>
                       <h3 className="font-serif font-medium text-base text-stone-800 dark:text-stone-200">자유롭게 시작하기</h3>
                     </div>
-                    <p className="text-sm text-stone-400 dark:text-stone-500 ml-[52px] leading-relaxed">
+                    <p className="text-sm text-stone-400 dark:text-stone-400 ml-[52px] leading-relaxed">
                       자유로운 주제로 AI와 대화하며 이야기를 만들어요
                     </p>
                   </button>
@@ -372,7 +372,7 @@ export default function MyStoriesPage() {
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
                       placeholder="예: 카페에서 시작된 이야기"
-                      className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                      className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500"
                       autoFocus
                     />
                   </div>
@@ -450,7 +450,7 @@ export default function MyStoriesPage() {
                           }
                         }}
                         placeholder="태그 입력 후 Enter"
-                        className="w-full px-4 py-2.5 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600 text-sm"
+                        className="w-full px-4 py-2.5 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500 text-sm"
                       />
                     )}
                   </div>
@@ -492,7 +492,7 @@ export default function MyStoriesPage() {
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
                       placeholder="예: 나의 인생 이야기"
-                      className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                      className="w-full px-4 py-3 border border-stone-200 dark:border-stone-700 rounded-xl bg-transparent focus:outline-none focus:border-rose-700 dark:focus:border-rose-600 transition-colors duration-300 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500"
                       autoFocus
                     />
                   </div>

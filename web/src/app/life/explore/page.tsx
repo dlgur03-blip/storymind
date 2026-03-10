@@ -176,7 +176,7 @@ function ExploreContent() {
                   </div>
                 )}
                 {searchResults.stories.length === 0 && searchResults.users.length === 0 && (
-                  <div className="text-center py-16 text-stone-400 dark:text-stone-500 font-serif">
+                  <div className="text-center py-16 text-stone-400 dark:text-stone-400 font-serif">
                     검색 결과가 없습니다
                   </div>
                 )}
@@ -205,7 +205,7 @@ function ExploreContent() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16 text-stone-400 dark:text-stone-500 font-serif">
+              <div className="text-center py-16 text-stone-400 dark:text-stone-400 font-serif">
                 이 태그의 스토리가 없습니다
               </div>
             )}
@@ -245,7 +245,7 @@ function ExploreContent() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-16 text-stone-400 dark:text-stone-500 font-serif">
+                  <div className="text-center py-16 text-stone-400 dark:text-stone-400 font-serif">
                     아직 트렌딩 이야기가 없습니다
                   </div>
                 )}
@@ -268,7 +268,7 @@ function ExploreContent() {
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded-full hover:bg-rose-50 hover:text-rose-700 dark:hover:bg-rose-900/15 dark:hover:text-rose-400 transition-colors"
                         >
                           #{tag}
-                          <span className="text-stone-300 dark:text-stone-600">{count}</span>
+                          <span className="text-stone-300 dark:text-stone-400">{count}</span>
                         </button>
                       ))}
                     </div>

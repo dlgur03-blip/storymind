@@ -119,20 +119,20 @@ export default function Home() {
       <div className="flex-1 flex flex-col items-center justify-center px-5 py-16 md:py-20">
         {/* Hero */}
         <div className="text-center mb-12 md:mb-16 home-hero-fade">
-          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-500 mb-4">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-400 mb-4">
             개개인의 이야기가 특별한 세상
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-medium tracking-tight text-stone-800 dark:text-stone-200 mb-5">
             StoryMind
           </h1>
-          <p className="text-base md:text-lg text-stone-400 dark:text-stone-500 tracking-wide">
+          <p className="text-base md:text-lg text-stone-400 dark:text-stone-400 tracking-wide">
             여러분의 일기가 소설이 됩니다
           </p>
         </div>
 
         {/* Auth Card — centered, clean */}
         <div className="w-full max-w-sm mb-16 stagger-in">
-          <div className="bg-white/50 dark:bg-stone-900/30 rounded-2xl border border-stone-200/40 dark:border-stone-800/20 p-8 md:p-10">
+          <div className="bg-white/50 dark:bg-stone-800/40 rounded-2xl border border-stone-200/40 dark:border-stone-700/40 p-8 md:p-10">
             <h2 className="font-serif text-lg font-medium mb-8 text-center text-stone-700 dark:text-stone-300">
               {isLogin ? '로그인' : '회원가입'}
             </h2>
@@ -155,7 +155,7 @@ export default function Home() {
                 <div className="divider-subtle w-full" />
               </div>
               <div className="relative flex justify-center text-[11px]">
-                <span className="px-3 bg-white dark:bg-[#0a0908] text-stone-400 dark:text-stone-500 tracking-wider">또는</span>
+                <span className="px-3 bg-white dark:bg-[#0a0908] text-stone-400 dark:text-stone-400 tracking-wider">또는</span>
               </div>
             </div>
 
@@ -165,7 +165,7 @@ export default function Home() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일"
-                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500"
                 required
               />
               <input
@@ -173,7 +173,7 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호 (6자 이상)"
-                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-600"
+                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500"
                 required
                 minLength={6}
               />
@@ -191,7 +191,7 @@ export default function Home() {
               </button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-stone-400 dark:text-stone-500">
+            <p className="mt-6 text-center text-sm text-stone-400 dark:text-stone-400">
               {isLogin ? '계정이 없으신가요? ' : '이미 계정이 있으신가요? '}
               <button
                 onClick={() => { setIsLogin(!isLogin); setError('') }}
@@ -211,11 +211,11 @@ export default function Home() {
               return (
                 <div
                   key={s.name}
-                  className="text-center p-5 md:p-6 rounded-2xl border border-stone-200/30 dark:border-stone-800/15 bg-white/30 dark:bg-stone-900/15"
+                  className="text-center p-5 md:p-6 rounded-2xl border border-stone-200/30 dark:border-stone-700/35 bg-white/30 dark:bg-stone-800/30"
                 >
-                  <Icon className="w-5 h-5 text-stone-400 dark:text-stone-500 mx-auto mb-3" />
+                  <Icon className="w-5 h-5 text-stone-400 dark:text-stone-400 mx-auto mb-3" />
                   <p className="text-sm font-medium text-stone-600 dark:text-stone-400 mb-1">{s.name}</p>
-                  <p className="text-[11px] text-stone-400 dark:text-stone-500 leading-relaxed">{s.desc}</p>
+                  <p className="text-[11px] text-stone-400 dark:text-stone-400 leading-relaxed">{s.desc}</p>
                 </div>
               )
             })}
@@ -225,7 +225,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-8">
-        <p className="text-center text-[11px] text-stone-300 dark:text-stone-700 tracking-[0.15em]">
+        <p className="text-center text-[11px] text-stone-300 dark:text-stone-400 tracking-[0.15em]">
           &copy; 2025 StoryMind
         </p>
       </footer>

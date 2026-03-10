@@ -187,7 +187,7 @@ export default function PlannerListPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200">스토리 기획</h1>
-            <p className="text-stone-400 dark:text-stone-500 mt-1">AI와 함께 6단계로 스토리를 기획하세요</p>
+            <p className="text-stone-400 dark:text-stone-400 mt-1">AI와 함께 6단계로 스토리를 기획하세요</p>
           </div>
           <button
             onClick={() => setShowNewPlan(true)}
@@ -201,9 +201,9 @@ export default function PlannerListPage() {
         {/* Plans Grid */}
         {storyPlans.length === 0 ? (
           <div className="text-center py-20">
-            <Sparkles className="w-16 h-16 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
-            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-500 mb-2">기획이 없습니다</h2>
-            <p className="text-stone-400 dark:text-stone-500 mb-6">새 기획을 만들어 AI와 스토리를 설계하세요</p>
+            <Sparkles className="w-16 h-16 text-stone-300 dark:text-stone-400 mx-auto mb-4" />
+            <h2 className="font-serif text-xl font-medium text-stone-400 dark:text-stone-400 mb-2">기획이 없습니다</h2>
+            <p className="text-stone-400 dark:text-stone-400 mb-6">새 기획을 만들어 AI와 스토리를 설계하세요</p>
             <button
               onClick={() => setShowNewPlan(true)}
               className="inline-flex items-center gap-2 px-6 py-3 border border-stone-800 dark:border-stone-300 text-stone-800 dark:text-stone-300 rounded-xl font-medium hover:bg-stone-800 hover:text-white dark:hover:bg-stone-300 dark:hover:text-stone-900 transition-all duration-300"

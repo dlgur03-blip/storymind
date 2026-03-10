@@ -26,7 +26,7 @@ export default function ComingSoonPopup({ isOpen, onClose, title = '준비 중�
           <Sparkles className="w-6 h-6 text-stone-500 dark:text-stone-400" />
         </div>
         <h3 className="font-serif text-lg font-medium mb-2 text-stone-800 dark:text-stone-200">{title}</h3>
-        <p className="text-sm text-stone-400 dark:text-stone-500 mb-6 leading-relaxed">{description}</p>
+        <p className="text-sm text-stone-400 dark:text-stone-400 mb-6 leading-relaxed">{description}</p>
         <button
           onClick={onClose}
           className="w-full py-3 border border-stone-300 dark:border-stone-700 text-stone-600 dark:text-stone-400 rounded-xl font-medium hover:bg-stone-50 dark:hover:bg-stone-800 transition-all duration-300"

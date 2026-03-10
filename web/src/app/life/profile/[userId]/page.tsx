@@ -90,7 +90,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
             <div className="flex-1">
               <h1 className="font-serif text-xl font-medium text-stone-800 dark:text-stone-200">{profile.display_name}</h1>
               {profile.bio && (
-                <p className="text-sm text-stone-400 dark:text-stone-500 mt-1 leading-relaxed">{profile.bio}</p>
+                <p className="text-sm text-stone-400 dark:text-stone-400 mt-1 leading-relaxed">{profile.bio}</p>
               )}
             </div>
             {!isOwnProfile && currentUserId && (
@@ -102,27 +102,27 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
           <div className="grid grid-cols-4 gap-4 text-center pt-4 border-t border-stone-200/40 dark:border-stone-800/30">
             <div>
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_stories || 0}</p>
-              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">스토리</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">스토리</p>
             </div>
             <div
               className="cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => router.push(`/life/profile/${userId}/followers`)}
             >
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_followers || 0}</p>
-              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로워</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">팔로워</p>
             </div>
             <div
               className="cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => router.push(`/life/profile/${userId}/followers`)}
             >
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">{profile.total_following || 0}</p>
-              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">팔로잉</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">팔로잉</p>
             </div>
             <div>
               <p className="text-lg font-serif font-medium text-stone-700 dark:text-stone-300">
                 {stories.reduce((sum, s) => sum + (s.total_likes || 0), 0)}
               </p>
-              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">총 좋아요</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">총 좋아요</p>
             </div>
           </div>
         </div>
@@ -137,15 +137,15 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-2xl font-serif font-medium text-amber-700 dark:text-amber-400">{streak.current_streak || 0}</p>
-                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">연속 일수</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">연속 일수</p>
               </div>
               <div>
                 <p className="text-2xl font-serif font-medium text-orange-700 dark:text-orange-400">{streak.longest_streak || 0}</p>
-                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">최장 기록</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">최장 기록</p>
               </div>
               <div>
                 <p className="text-2xl font-serif font-medium text-rose-700 dark:text-rose-400">{streak.total_write_days || 0}</p>
-                <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">총 작성일</p>
+                <p className="text-[11px] text-stone-400 dark:text-stone-400 mt-0.5">총 작성일</p>
               </div>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
             className={`flex-1 py-3 text-sm font-medium text-center transition-all duration-300 ${
               activeTab === 'stories'
                 ? 'text-rose-700 dark:text-rose-400 border-b-2 border-rose-700 dark:border-rose-400'
-                : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
+                : 'text-stone-400 dark:text-stone-400 hover:text-stone-600 dark:hover:text-stone-400'
             }`}
           >
             스토리
@@ -190,7 +190,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
             className={`flex-1 py-3 text-sm font-medium text-center transition-all duration-300 ${
               activeTab === 'liked'
                 ? 'text-rose-700 dark:text-rose-400 border-b-2 border-rose-700 dark:border-rose-400'
-                : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
+                : 'text-stone-400 dark:text-stone-400 hover:text-stone-600 dark:hover:text-stone-400'
             }`}
           >
             좋아요
@@ -200,7 +200,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
         {/* Stories grid */}
         {activeTab === 'stories' && (
           stories.length === 0 ? (
-            <div className="text-center py-16 text-stone-400 dark:text-stone-500 text-sm font-serif">
+            <div className="text-center py-16 text-stone-400 dark:text-stone-400 text-sm font-serif">
               아직 공개된 스토리가 없습니다
             </div>
           ) : (
@@ -212,7 +212,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
                   onClick={() => router.push(`/life/story/${story.id}`)}
                 >
                   <h3 className="font-serif font-medium text-base mb-1.5 truncate text-stone-800 dark:text-stone-200">{story.title}</h3>
-                  <div className="flex items-center gap-2 text-xs text-stone-400 dark:text-stone-500 mb-2">
+                  <div className="flex items-center gap-2 text-xs text-stone-400 dark:text-stone-400 mb-2">
                     {story.genre && (
                       <span className="px-2 py-0.5 bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 rounded font-medium">
                         {story.genre}
@@ -225,7 +225,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
                     )}
                     <span>{story.total_chapters || 0}챕터</span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-stone-400 dark:text-stone-500">
+                  <div className="flex items-center gap-3 text-xs text-stone-400 dark:text-stone-400">
                     <span className="flex items-center gap-1">
                       <Heart className="w-3 h-3" />
                       {story.total_likes || 0}
@@ -242,7 +242,7 @@ export default function PublicProfilePage({ params }: { params: Promise<{ userId
         )}
 
         {activeTab === 'liked' && (
-          <div className="text-center py-16 text-stone-400 dark:text-stone-500 text-sm font-serif">
+          <div className="text-center py-16 text-stone-400 dark:text-stone-400 text-sm font-serif">
             좋아요한 스토리 목록은 준비 중입니다
           </div>
         )}

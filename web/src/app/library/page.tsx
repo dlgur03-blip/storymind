@@ -202,11 +202,11 @@ function LibraryContent() {
         {/* Stories */}
         {stories.length === 0 ? (
           <div className="text-center py-20">
-            <BookOpen className="w-10 h-10 text-stone-300 dark:text-stone-700 mx-auto mb-4" />
-            <p className="font-serif text-stone-400 dark:text-stone-500 mb-2">
+            <BookOpen className="w-10 h-10 text-stone-300 dark:text-stone-400 mx-auto mb-4" />
+            <p className="font-serif text-stone-400 dark:text-stone-400 mb-2">
               {activeTab === 'short' ? '단편 문학관' : '장편 문학관'}에 아직 작품이 없습니다
             </p>
-            <p className="text-sm text-stone-400 dark:text-stone-500">
+            <p className="text-sm text-stone-400 dark:text-stone-400">
               StoryLife에서 이야기를 작성하고 발행해보세요
             </p>
           </div>

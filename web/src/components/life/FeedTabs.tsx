@@ -17,7 +17,7 @@ export default function FeedTabs({ active, tabs, onChange }: FeedTabsProps) {
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-500 ${
             active === tab.key
               ? 'text-stone-800 dark:text-stone-200 bg-stone-100/80 dark:bg-stone-800/50'
-              : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
+              : 'text-stone-400 dark:text-stone-400 hover:text-stone-600 dark:hover:text-stone-400'
           }`}
         >
           {tab.label}
