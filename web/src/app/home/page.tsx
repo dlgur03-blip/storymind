@@ -248,10 +248,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Subtle footer — understated */}
-        <p className="mt-16 text-[11px] text-stone-300 dark:text-stone-400 tracking-[0.15em]">
-          Powered by Gemini AI
-        </p>
+        {/* Spacer */}
+        <div className="mt-16" />
       </div>
     </div>
   )
