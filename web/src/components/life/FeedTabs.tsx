@@ -9,14 +9,14 @@ interface FeedTabsProps {
 
 export default function FeedTabs({ active, tabs, onChange }: FeedTabsProps) {
   return (
-    <div className="flex border-b border-stone-200/60 dark:border-stone-800/40">
+    <div className="flex gap-1">
       {tabs.map((tab) => (
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
-          className={`flex-1 py-3 text-sm font-medium text-center transition-all duration-300 ${
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-500 ${
             active === tab.key
-              ? 'text-rose-700 dark:text-rose-400 border-b-2 border-rose-700 dark:border-rose-400'
+              ? 'text-stone-800 dark:text-stone-200 bg-stone-100/80 dark:bg-stone-800/50'
               : 'text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-400'
           }`}
         >

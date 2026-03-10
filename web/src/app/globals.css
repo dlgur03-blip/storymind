@@ -9,7 +9,14 @@
   --font-serif: 'Noto Serif KR', 'Georgia', serif;
   --accent: #be123c;
   --accent-light: #fce7ef;
-  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Premium easing — unhurried, luxury feel (Chanel/Hermès reference) */
+  --ease-premium: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Transition durations — deliberately slow */
+  --duration-fast: 0.4s;
+  --duration-base: 0.5s;
+  --duration-slow: 0.7s;
+  --duration-slower: 1s;
 }
 
 @theme inline {
@@ -31,14 +38,15 @@
   --color-surface-950: #0c0a09;
 }
 
+/* Premium dark mode — not just inversion, but a richer atmosphere (Saint Laurent reference) */
 .dark {
-  --background: #0f0e0d;
+  --background: #0a0908;
   --foreground: #e8e6e1;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #0f0e0d;
+    --background: #0a0908;
     --foreground: #e8e6e1;
   }
 }
@@ -51,7 +59,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Serif utility */
+/* Serif utility — used for titles, quotes, story text */
 .font-serif {
   font-family: var(--font-serif);
 }
@@ -75,9 +83,13 @@ body {
   height: 0;
 }
 
-/* Animations — slow, elegant, cubic-bezier */
+/* ================================================================
+   ANIMATIONS — slow, elegant, deliberate
+   "급하지 않은 게 럭셔리" (Benchmark insight #1)
+   ================================================================ */
+
 .anim-fade {
-  animation: fadeIn 0.4s var(--ease-premium);
+  animation: fadeIn var(--duration-base) var(--ease-premium);
 }
 
 @keyframes fadeIn {
@@ -87,8 +99,8 @@ body {
 
 /* Scrollbar — thinner, more subtle */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -101,7 +113,7 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #3a3836;
+  background: #2a2826;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -109,82 +121,101 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #4a4744;
+  background: #3a3836;
 }
 
-/* StoryLife Animations — slower, more deliberate */
+/* StoryLife fade — slower, more deliberate */
 .life-fade-in {
-  animation: lifeFadeIn 0.5s var(--ease-premium);
+  animation: lifeFadeIn var(--duration-slow) var(--ease-luxe);
 }
 
 @keyframes lifeFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .like-bounce {
-  animation: likeBounce 0.5s var(--ease-premium);
+  animation: likeBounce var(--duration-base) var(--ease-premium);
 }
 
 @keyframes likeBounce {
   0% { transform: scale(1); }
-  40% { transform: scale(1.2); }
-  70% { transform: scale(0.95); }
+  40% { transform: scale(1.15); }
+  70% { transform: scale(0.97); }
   100% { transform: scale(1); }
 }
 
 /* Timeline slide-in */
 .timeline-slide-in {
-  animation: timelineSlideIn 0.6s var(--ease-premium);
+  animation: timelineSlideIn 0.8s var(--ease-luxe);
 }
 
 @keyframes timelineSlideIn {
-  from { opacity: 0; transform: translateX(-16px); }
+  from { opacity: 0; transform: translateX(-20px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
 /* Badge earned */
 .badge-earned {
-  animation: badgeEarned 0.7s var(--ease-premium);
+  animation: badgeEarned var(--duration-slower) var(--ease-luxe);
 }
 
 @keyframes badgeEarned {
   0% { opacity: 0; transform: scale(0.6); }
-  60% { transform: scale(1.08); }
+  60% { transform: scale(1.06); }
   100% { opacity: 1; transform: scale(1); }
 }
 
 /* Age pulse — gentler, warmer */
 .age-pulse {
-  animation: agePulse 2.5s ease-in-out infinite;
+  animation: agePulse 3s ease-in-out infinite;
 }
 
 @keyframes agePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(190, 18, 60, 0.3); }
-  50% { box-shadow: 0 0 0 6px rgba(190, 18, 60, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(190, 18, 60, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(190, 18, 60, 0); }
 }
 
-/* Premium card hover */
+/* ================================================================
+   PREMIUM CARD HOVER
+   Hermès-style: "살짝" with deliberate delay
+   Prada-style: content preview on hover
+   ================================================================ */
+
 .card-hover {
-  transition: all 0.4s var(--ease-premium);
+  transition: all var(--duration-slow) var(--ease-luxe);
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow:
-    0 4px 24px rgba(28, 25, 23, 0.06),
-    0 1px 4px rgba(28, 25, 23, 0.04);
+    0 8px 40px rgba(28, 25, 23, 0.06),
+    0 2px 8px rgba(28, 25, 23, 0.03);
 }
 
 .dark .card-hover:hover {
   box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.3),
-    0 1px 4px rgba(0, 0, 0, 0.2);
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Modal overlay — slower fade */
+/* Story card preview — Prada-inspired crossfade on hover */
+.story-card-preview {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-slow) var(--ease-luxe),
+              opacity var(--duration-base) var(--ease-premium);
+}
+
+.card-hover:hover .story-card-preview {
+  max-height: 60px;
+  opacity: 1;
+}
+
+/* Modal overlay — slower, cinematic fade */
 .modal-overlay {
-  animation: modalOverlayIn 0.3s ease-out;
+  animation: modalOverlayIn var(--duration-base) ease-out;
 }
 
 @keyframes modalOverlayIn {
@@ -193,32 +224,38 @@ body {
 }
 
 .modal-content {
-  animation: modalContentIn 0.4s var(--ease-premium);
+  animation: modalContentIn 0.6s var(--ease-luxe);
 }
 
 @keyframes modalContentIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Stagger children fade-in */
+/* ================================================================
+   STAGGER — wider delays for a more composed reveal
+   ================================================================ */
+
 .stagger-in > * {
-  animation: lifeFadeIn 0.5s var(--ease-premium) both;
+  animation: lifeFadeIn var(--duration-slow) var(--ease-luxe) both;
 }
 .stagger-in > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-in > *:nth-child(2) { animation-delay: 60ms; }
-.stagger-in > *:nth-child(3) { animation-delay: 120ms; }
-.stagger-in > *:nth-child(4) { animation-delay: 180ms; }
-.stagger-in > *:nth-child(5) { animation-delay: 240ms; }
-.stagger-in > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-in > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-in > *:nth-child(6) { animation-delay: 500ms; }
+.stagger-in > *:nth-child(7) { animation-delay: 600ms; }
+.stagger-in > *:nth-child(8) { animation-delay: 700ms; }
+.stagger-in > *:nth-child(9) { animation-delay: 800ms; }
 
-/* Home hero fade */
+/* Home hero fade — cinematic entrance */
 .home-hero-fade {
-  animation: homeHeroFade 0.8s var(--ease-premium);
+  animation: homeHeroFade 1.2s var(--ease-luxe);
 }
 
 @keyframes homeHeroFade {
-  from { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -229,5 +266,23 @@ body {
 }
 
 .dark .divider-subtle {
-  background: linear-gradient(90deg, transparent, #2a2826 20%, #2a2826 80%, transparent);
+  background: linear-gradient(90deg, transparent, #1f1d1b 20%, #1f1d1b 80%, transparent);
+}
+
+/* ================================================================
+   PREMIUM DARK MODE ENHANCEMENTS
+   Saint Laurent reference: dark is not absence, it's atmosphere
+   ================================================================ */
+
+.dark .card-hover {
+  border-color: rgba(168, 162, 158, 0.08);
+}
+
+.dark .card-hover:hover {
+  border-color: rgba(168, 162, 158, 0.15);
+}
+
+/* Subtle text glow in dark mode for emphasis */
+.dark .font-serif {
+  text-shadow: 0 0 80px rgba(232, 230, 225, 0.03);
 }

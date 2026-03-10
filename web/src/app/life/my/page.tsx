@@ -11,7 +11,7 @@ import {
   Plus, Trash2, PenLine, Heart, Eye, Clock,
   BookOpen, Loader2, Inbox, Check, X, Sunrise, Edit3, ChevronLeft, Hash
 } from 'lucide-react'
-import { LIFE_GENRES } from '@/lib/life-constants'
+import { LIFE_GENRES, SERIES_TYPES } from '@/lib/life-constants'
 
 const GENRES = LIFE_GENRES
 
@@ -30,6 +30,7 @@ export default function MyStoriesPage() {
   const [processingRequest, setProcessingRequest] = useState<string | null>(null)
   const [newTags, setNewTags] = useState<string[]>([])
   const [tagInput, setTagInput] = useState('')
+  const [newSeriesType, setNewSeriesType] = useState<'short' | 'long'>('short')
 
   useEffect(() => {
     const init = async () => {
@@ -56,6 +57,7 @@ export default function MyStoriesPage() {
     setRecallConfig(null)
     setNewTags([])
     setTagInput('')
+    setNewSeriesType('short')
   }
 
   const saveTags = async (storyId: string) => {
@@ -73,7 +75,7 @@ export default function MyStoriesPage() {
   const handleCreateFree = async () => {
     if (!newTitle.trim()) return
     setCreating(true)
-    const story = await createLifeStory(newTitle.trim(), newGenre, '')
+    const story = await createLifeStory(newTitle.trim(), newGenre, '', undefined, newSeriesType)
     if (story) {
       await saveTags(story.id)
       setCreating(false)
@@ -87,7 +89,7 @@ export default function MyStoriesPage() {
   const handleCreateRecall = async () => {
     if (!newTitle.trim() || !recallConfig) return
     setCreating(true)
-    const story = await createLifeStory(newTitle.trim(), newGenre, '', recallConfig)
+    const story = await createLifeStory(newTitle.trim(), newGenre, '', recallConfig, newSeriesType)
     if (story) {
       await saveTags(story.id)
       setCreating(false)
@@ -258,6 +260,13 @@ export default function MyStoriesPage() {
                   <span className={`px-2 py-0.5 rounded text-[11px] font-medium ${statusColor(story.status)}`}>
                     {statusLabel(story.status)}
                   </span>
+                  <span className={`px-2 py-0.5 rounded text-[11px] font-medium border ${
+                    story.series_type === 'long'
+                      ? 'bg-indigo-50 dark:bg-indigo-900/15 text-indigo-700 dark:text-indigo-400 border-indigo-200/40 dark:border-indigo-800/30'
+                      : 'bg-violet-50 dark:bg-violet-900/15 text-violet-700 dark:text-violet-400 border-violet-200/40 dark:border-violet-800/30'
+                  }`}>
+                    {story.series_type === 'long' ? '장편' : '단편'}
+                  </span>
                   {modeLabel(story.recall_mode) && (
                     <span className="px-2 py-0.5 bg-amber-50 dark:bg-amber-900/15 text-amber-700 dark:text-amber-400 rounded text-[11px] font-medium border border-amber-200/40 dark:border-amber-800/30">
                       {modeLabel(story.recall_mode)}
@@ -388,6 +397,28 @@ export default function MyStoriesPage() {
                   </div>
 
                   <div>
+                    <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">연재 유형</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {SERIES_TYPES.map((st) => (
+                        <button
+                          key={st.key}
+                          onClick={() => setNewSeriesType(st.key as 'short' | 'long')}
+                          className={`p-3 rounded-xl text-left transition-all duration-300 ${
+                            newSeriesType === st.key
+                              ? st.key === 'short'
+                                ? 'border border-violet-500 dark:border-violet-600 bg-violet-50 dark:bg-violet-900/15 text-violet-700 dark:text-violet-400'
+                                : 'border border-indigo-500 dark:border-indigo-600 bg-indigo-50 dark:bg-indigo-900/15 text-indigo-700 dark:text-indigo-400'
+                              : 'border border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:border-stone-400 dark:hover:border-stone-600'
+                          }`}
+                        >
+                          <div className="font-medium text-sm">{st.label}</div>
+                          <div className="text-[11px] mt-0.5 opacity-70">{st.description}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
                     <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">태그 (선택, 최대 10개)</label>
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {newTags.map((tag) => (
@@ -480,6 +511,28 @@ export default function MyStoriesPage() {
                           }`}
                         >
                           {g}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-stone-600 dark:text-stone-400">연재 유형</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {SERIES_TYPES.map((st) => (
+                        <button
+                          key={st.key}
+                          onClick={() => setNewSeriesType(st.key as 'short' | 'long')}
+                          className={`p-3 rounded-xl text-left transition-all duration-300 ${
+                            newSeriesType === st.key
+                              ? st.key === 'short'
+                                ? 'border border-violet-500 dark:border-violet-600 bg-violet-50 dark:bg-violet-900/15 text-violet-700 dark:text-violet-400'
+                                : 'border border-indigo-500 dark:border-indigo-600 bg-indigo-50 dark:bg-indigo-900/15 text-indigo-700 dark:text-indigo-400'
+                              : 'border border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:border-stone-400 dark:hover:border-stone-600'
+                          }`}
+                        >
+                          <div className="font-medium text-sm">{st.label}</div>
+                          <div className="text-[11px] mt-0.5 opacity-70">{st.description}</div>
                         </button>
                       ))}
                     </div>

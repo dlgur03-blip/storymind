@@ -42,35 +42,35 @@ export default function MonthlyBest() {
 
   if (loading || stories.length === 0) {
     return (
-      <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-5">
-        <h3 className="font-serif font-medium text-sm mb-3 text-stone-700 dark:text-stone-300">
-          월간 인기 TOP
+      <div className="bg-white/50 dark:bg-stone-900/30 rounded-2xl border border-stone-200/40 dark:border-stone-800/20 p-6">
+        <h3 className="font-serif font-medium text-sm mb-3 text-stone-600 dark:text-stone-400 tracking-wide">
+          월간 인기
         </h3>
-        <p className="text-xs text-stone-400 dark:text-stone-500">이야기가 쌓이면 인기 목록이 표시됩니다</p>
+        <p className="text-xs text-stone-400 dark:text-stone-500 leading-relaxed">이야기가 쌓이면 인기 목록이 표시됩니다</p>
       </div>
     )
   }
 
   return (
-    <div className="bg-white/60 dark:bg-stone-900/40 rounded-2xl border border-stone-200/60 dark:border-stone-800/40 p-5">
-      <h3 className="font-serif font-medium text-sm mb-4 text-stone-700 dark:text-stone-300">
-        월간 인기 TOP
+    <div className="bg-white/50 dark:bg-stone-900/30 rounded-2xl border border-stone-200/40 dark:border-stone-800/20 p-6">
+      <h3 className="font-serif font-medium text-sm mb-5 text-stone-600 dark:text-stone-400 tracking-wide">
+        월간 인기
       </h3>
-      <div className="space-y-3">
+      <div className="space-y-1">
         {stories.map((s, i) => (
           <div
             key={s.id}
-            className="flex items-center gap-3 cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-800/40 rounded-lg p-2 -mx-2 transition-all duration-300"
+            className="flex items-center gap-3.5 cursor-pointer hover:bg-stone-50/60 dark:hover:bg-stone-800/20 rounded-xl p-2.5 -mx-2.5 transition-all duration-500"
             onClick={() => router.push(`/life/story/${s.id}`)}
           >
-            <span className="w-6 text-center font-serif text-sm font-medium text-stone-400 dark:text-stone-500 shrink-0">
+            <span className="w-6 text-center font-serif text-sm font-medium text-stone-300 dark:text-stone-600 shrink-0">
               {i + 1}
             </span>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate text-stone-700 dark:text-stone-300">{s.title}</p>
-              <p className="text-[11px] text-stone-400 dark:text-stone-500">{s.authorName}</p>
+              <p className="text-[11px] text-stone-400 dark:text-stone-500 mt-0.5">{s.authorName}</p>
             </div>
-            <div className="flex items-center gap-2.5 text-[11px] text-stone-400 dark:text-stone-500 shrink-0">
+            <div className="flex items-center gap-3 text-[11px] text-stone-400 dark:text-stone-500 shrink-0">
               <span className="flex items-center gap-0.5"><Heart className="w-3 h-3" />{s.totalLikes}</span>
               <span className="flex items-center gap-0.5"><Eye className="w-3 h-3" />{s.totalViews}</span>
             </div>

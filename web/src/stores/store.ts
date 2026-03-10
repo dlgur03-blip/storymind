@@ -624,9 +624,10 @@ export const useStore = create((set, get) => ({
     }
   },
 
-  createLifeStory: async (title, genre, description, recallConfig?) => {
+  createLifeStory: async (title, genre, description, recallConfig?, seriesType?) => {
     try {
       const body: Record<string, unknown> = { title, genre, description }
+      if (seriesType) body.series_type = seriesType
       if (recallConfig) {
         body.recall_mode = 'recall'
         body.birth_year = recallConfig.birth_year

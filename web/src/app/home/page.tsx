@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabase } from '@/lib/supabase/client'
 import { useStore } from '@/stores/store'
-import { BookOpen, Heart, Pencil, Moon, Sun, LogOut, ArrowRight } from 'lucide-react'
+import { BookOpen, Heart, Pencil, Moon, Sun, LogOut, ArrowRight, Library, BookMarked } from 'lucide-react'
 
 export default function HomePage() {
   const router = useRouter()
@@ -95,41 +95,41 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] flex flex-col">
-      {/* Minimal header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between">
-        <h1 className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200 tracking-tight">
+      {/* Minimal header — Céline-level restraint */}
+      <header className="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex items-center justify-between">
+        <h1 className="font-serif text-lg font-medium text-stone-700 dark:text-stone-300 tracking-[0.05em]">
           Story
         </h1>
         <div className="flex items-center gap-1">
           <button
             onClick={toggleDark}
-            className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg hover:bg-white/60 dark:hover:bg-stone-800/40 transition-all duration-300"
+            className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg transition-all duration-500"
           >
             {darkMode ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
           </button>
           <button
             onClick={handleLogout}
-            className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg hover:bg-white/60 dark:hover:bg-stone-800/40 transition-all duration-300"
+            className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg transition-all duration-500"
           >
             <LogOut className="w-[18px] h-[18px]" />
           </button>
         </div>
       </header>
 
-      {/* Hero area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 pt-20 pb-8">
-        {/* Title */}
-        <div className="text-center mb-12 home-hero-fade">
-          <p className="text-sm tracking-[0.3em] uppercase text-stone-400 dark:text-stone-500 mb-3 font-medium">
-            당신의 이야기를 시작하세요
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl font-medium text-stone-800 dark:text-stone-200 tracking-tight">
-            Story
+      {/* Hero area — generous vertical rhythm */}
+      <div className="flex-1 flex flex-col items-center justify-center px-5 pt-24 pb-10">
+        {/* Title — wide letter spacing, unhurried (Céline reference) */}
+        <div className="text-center mb-16 home-hero-fade">
+          <h2 className="font-serif text-3xl md:text-4xl font-medium text-stone-800 dark:text-stone-200 tracking-tight mb-4 leading-snug">
+            개인의 이야기가 특별한 세상
           </h2>
+          <p className="text-sm md:text-base text-stone-400 dark:text-stone-500 tracking-wide">
+            여러분의 일기가 소설이 됩니다
+          </p>
         </div>
 
-        {/* 3-Card Grid */}
-        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 stagger-in">
+        {/* 3-Card Grid — wider gaps */}
+        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 stagger-in">
           {services.map((service) => {
             const Icon = service.icon
             const isHovered = hoveredCard === service.id
@@ -141,14 +141,14 @@ export default function HomePage() {
                 onMouseEnter={() => setHoveredCard(service.id)}
                 onMouseLeave={() => setHoveredCard(null)}
                 className={`
-                  relative group text-left rounded-3xl border p-8 md:p-10
+                  relative group text-left rounded-3xl border p-9 md:p-12
                   bg-gradient-to-br ${service.gradient} ${service.gradientDark}
                   ${service.accentBorder}
-                  transition-all duration-500 ease-[var(--ease-premium)]
+                  transition-all duration-700 ease-[var(--ease-luxe)]
                   hover:shadow-2xl ${service.hoverShadow}
                   hover:-translate-y-1
                   overflow-hidden
-                  min-h-[260px] md:min-h-[340px]
+                  min-h-[280px] md:min-h-[360px]
                   flex flex-col justify-between
                 `}
               >
@@ -166,15 +166,15 @@ export default function HomePage() {
 
                 {/* Content */}
                 <div className="relative z-10">
-                  <div className={`w-14 h-14 ${service.accentBg} rounded-2xl flex items-center justify-center mb-6 transition-transform duration-500 ${isHovered ? 'scale-110' : ''}`}>
+                  <div className={`w-14 h-14 ${service.accentBg} rounded-2xl flex items-center justify-center mb-8 transition-transform duration-700 ease-[var(--ease-luxe)] ${isHovered ? 'scale-105' : ''}`}>
                     <Icon className={`w-7 h-7 ${service.accent}`} />
                   </div>
-                  <div className="mb-2">
-                    <span className={`text-xs font-medium tracking-widest uppercase ${service.accent} opacity-70`}>
+                  <div className="mb-3">
+                    <span className={`text-[11px] font-medium tracking-[0.2em] uppercase ${service.accent} opacity-60`}>
                       {service.label}
                     </span>
                   </div>
-                  <h3 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200 mb-2">
+                  <h3 className="font-serif text-2xl font-medium text-stone-800 dark:text-stone-200 mb-3 tracking-tight">
                     {service.description}
                   </h3>
                   <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed whitespace-pre-line">
@@ -182,23 +182,69 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                {/* Arrow */}
+                {/* Text link CTA — Chanel-style "Discover" */}
                 <div className={`
-                  relative z-10 flex items-center gap-1.5 mt-6
-                  text-sm font-medium ${service.accent}
-                  transition-all duration-300
-                  ${isHovered ? 'translate-x-1 opacity-100' : 'opacity-60'}
+                  relative z-10 flex items-center gap-1.5 mt-8
+                  text-sm ${service.accent}
+                  transition-all duration-500
+                  ${isHovered ? 'translate-x-1 opacity-100' : 'opacity-40'}
                 `}>
                   시작하기
-                  <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+                  <ArrowRight className={`w-4 h-4 transition-transform duration-500 ${isHovered ? 'translate-x-1' : ''}`} />
                 </div>
               </button>
             )
           })}
         </div>
 
-        {/* Subtle footer text */}
-        <p className="mt-12 text-xs text-stone-400 dark:text-stone-600 tracking-wide">
+        {/* 문학관 Section */}
+        <div className="w-full max-w-5xl mt-14">
+          <p className="text-[11px] tracking-[0.25em] uppercase text-stone-400 dark:text-stone-500 mb-5 font-medium text-center">
+            문학관
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <button
+              onClick={() => router.push('/library?tab=short')}
+              onMouseEnter={() => setHoveredCard('short')}
+              onMouseLeave={() => setHoveredCard(null)}
+              className="relative group text-left rounded-2xl border border-violet-200/60 dark:border-violet-800/40 p-6 md:p-7 bg-gradient-to-br from-violet-50/60 via-purple-50/30 to-stone-50/40 dark:from-violet-950/20 dark:via-purple-950/10 dark:to-stone-950/10 transition-all duration-500 ease-[var(--ease-premium)] hover:shadow-xl hover:shadow-violet-200/20 dark:hover:shadow-violet-900/10 hover:-translate-y-0.5 overflow-hidden"
+            >
+              <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full bg-violet-200/30 dark:bg-violet-800/15 blur-3xl transition-all duration-700 ${hoveredCard === 'short' ? 'opacity-80 scale-110' : 'opacity-30 scale-100'}`} />
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/30 rounded-xl flex items-center justify-center">
+                  <BookMarked className="w-6 h-6 text-violet-700 dark:text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200">단편 문학관</h3>
+                  <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">완결된 짧은 이야기들</p>
+                </div>
+                <ArrowRight className={`w-4 h-4 ml-auto text-violet-600 dark:text-violet-400 transition-all duration-300 ${hoveredCard === 'short' ? 'translate-x-1 opacity-100' : 'opacity-40'}`} />
+              </div>
+            </button>
+
+            <button
+              onClick={() => router.push('/library?tab=long')}
+              onMouseEnter={() => setHoveredCard('long')}
+              onMouseLeave={() => setHoveredCard(null)}
+              className="relative group text-left rounded-2xl border border-indigo-200/60 dark:border-indigo-800/40 p-6 md:p-7 bg-gradient-to-br from-indigo-50/60 via-blue-50/30 to-stone-50/40 dark:from-indigo-950/20 dark:via-blue-950/10 dark:to-stone-950/10 transition-all duration-500 ease-[var(--ease-premium)] hover:shadow-xl hover:shadow-indigo-200/20 dark:hover:shadow-indigo-900/10 hover:-translate-y-0.5 overflow-hidden"
+            >
+              <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full bg-indigo-200/30 dark:bg-indigo-800/15 blur-3xl transition-all duration-700 ${hoveredCard === 'long' ? 'opacity-80 scale-110' : 'opacity-30 scale-100'}`} />
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center">
+                  <Library className="w-6 h-6 text-indigo-700 dark:text-indigo-400" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-lg font-medium text-stone-800 dark:text-stone-200">장편 문학관</h3>
+                  <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">연재되는 긴 이야기들</p>
+                </div>
+                <ArrowRight className={`w-4 h-4 ml-auto text-indigo-600 dark:text-indigo-400 transition-all duration-300 ${hoveredCard === 'long' ? 'translate-x-1 opacity-100' : 'opacity-40'}`} />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Subtle footer — understated */}
+        <p className="mt-16 text-[11px] text-stone-300 dark:text-stone-700 tracking-[0.15em]">
           Powered by Gemini AI
         </p>
       </div>

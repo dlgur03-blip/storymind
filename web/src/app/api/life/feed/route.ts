@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
     const filter = searchParams.get('filter') || 'all' // all, following
     const genre = searchParams.get('genre') || ''
     const sort = searchParams.get('sort') || 'recent' // recent, trending
+    const seriesType = searchParams.get('series_type') || '' // short, long
 
     // Get current user (optional - for read request status)
     const { data: { user } } = await supabase.auth.getUser()
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
       .from('life_stories')
       .select(`
         id, title, genre, description, status, user_id,
-        total_likes, total_views, total_chapters, recall_mode,
+        total_likes, total_views, total_chapters, recall_mode, series_type,
         created_at, updated_at,
         life_profiles:user_id (display_name, avatar_url)
       `, { count: 'exact' })
@@ -48,6 +49,10 @@ export async function GET(request: NextRequest) {
 
     if (genre) {
       query = query.eq('genre', genre)
+    }
+
+    if (seriesType) {
+      query = query.eq('series_type', seriesType)
     }
 
     if (sort === 'trending') {
@@ -117,6 +122,7 @@ export async function GET(request: NextRequest) {
         totalViews: s.total_views,
         publishedChapters: publishedCounts[s.id] || 0,
         recallMode: s.recall_mode || 'free',
+        seriesType: s.series_type || 'short',
         updatedAt: s.updated_at,
         readRequestStatus: user
           ? (s.user_id === user.id ? 'own' : (requestStatusMap[s.id] || null))

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (!user) return error
 
     const body = await request.json()
-    const { title, genre, description, recall_mode, birth_year, birth_place, world_setting, world_detail, novel_style, protagonist_name, tone } = body
+    const { title, genre, description, series_type, recall_mode, birth_year, birth_place, world_setting, world_detail, novel_style, protagonist_name, tone } = body
 
     if (!title?.trim()) {
       return NextResponse.json({ error: '제목을 입력하세요' }, { status: 400 })
@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
       title: title.trim(),
       genre: genre || '',
       description: description || '',
+      series_type: series_type || 'short',
       is_public: false,
     }
 
