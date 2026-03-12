@@ -244,15 +244,17 @@ export default function Home() {
                 {isLogin ? '회원가입' : '로그인'}
               </button>
             </p>
-          </div>
-        </div>
 
-        {/* Member code entry */}
-        <div className="w-full max-w-sm mb-16 stagger-in">
-          <div className="bg-white/30 dark:bg-stone-800/20 rounded-2xl border border-stone-200/30 dark:border-stone-700/30 p-6">
-            <p className="text-[11px] tracking-[0.15em] uppercase text-stone-400 dark:text-stone-400 text-center mb-4">
-              회원번호로 입장
-            </p>
+            {/* Member code entry - inside auth card */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="divider-subtle w-full" />
+              </div>
+              <div className="relative flex justify-center text-[11px]">
+                <span className="px-3 bg-white dark:bg-[#0a0908] text-stone-400 dark:text-stone-400 tracking-wider">회원번호 입장</span>
+              </div>
+            </div>
+
             <form onSubmit={handleMemberLogin} className="space-y-3">
               <input
                 type="text"
