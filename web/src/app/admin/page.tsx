@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { getSupabase } from '@/lib/supabase/client'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { ArrowLeft, Users, BookOpen, FileText, Activity, DollarSign, Loader2, Coins, CheckCircle, XCircle } from 'lucide-react'
 
@@ -72,14 +71,7 @@ export default function AdminPage() {
   useEffect(() => {
     async function fetchAdmin() {
       try {
-        const supabase = getSupabase()
-        const { data: { session } } = await supabase.auth.getSession()
-
-        const res = await fetch('/api/admin', {
-          headers: {
-            Authorization: `Bearer ${session?.access_token ?? ''}`,
-          },
-        })
+        const res = await fetch('/api/admin')
 
         if (res.status === 403) {
           setError('관리자 권한이 필요합니다')
@@ -95,9 +87,7 @@ export default function AdminPage() {
         setData(json)
 
         // Fetch credit purchase requests
-        const creditRes = await fetch('/api/admin/credits', {
-          headers: { Authorization: `Bearer ${session?.access_token ?? ''}` },
-        })
+        const creditRes = await fetch('/api/admin/credits')
         if (creditRes.ok) {
           const creditJson = await creditRes.json()
           setCreditRequests(creditJson.requests || [])
@@ -134,13 +124,10 @@ export default function AdminPage() {
   const handleCreditAction = async (requestId: string, action: 'approve' | 'reject') => {
     setProcessingId(requestId)
     try {
-      const supabase = getSupabase()
-      const { data: { session } } = await supabase.auth.getSession()
       const res = await fetch('/api/admin/credits', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.access_token ?? ''}`,
         },
         body: JSON.stringify({ requestId, action }),
       })

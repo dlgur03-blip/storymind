@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabase } from '@/lib/supabase/client'
 import { useStore } from '@/stores/store'
-import { BookOpen, Heart, Pencil, Moon, Sun, LogOut, ArrowRight, Library, BookMarked, Coins } from 'lucide-react'
+import { BookOpen, Heart, Pencil, Moon, Sun, LogOut, ArrowRight, Library, BookMarked, Coins, User } from 'lucide-react'
 
 export default function HomePage() {
   const router = useRouter()
@@ -106,6 +106,13 @@ export default function HomePage() {
           </h1>
         </div>
         <div className="flex items-center gap-1">
+          <button
+            onClick={() => router.push('/mypage')}
+            className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg transition-all duration-500"
+            title="마이페이지"
+          >
+            <User className="w-[18px] h-[18px]" />
+          </button>
           <button
             onClick={() => router.push('/credits')}
             className="p-2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 rounded-lg transition-all duration-500"

@@ -1,9 +1,10 @@
 // @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 import { getAuthUser } from '@/lib/auth'
 import { addCredits } from '@/lib/credits'
 
-const ADMIN_EMAILS = ['admin@storymind.co.kr']
+const ADMIN_EMAILS = ['dlgur03@gmail.com']
 
 export async function GET() {
   try {
@@ -20,14 +21,23 @@ export async function GET() {
       .select('*')
       .order('created_at', { ascending: false })
 
-    // Fetch user emails for each request
+    // Fetch user emails using service role client (admin API requires service role)
     const userIds = [...new Set((requests || []).map(r => r.user_id))]
     const userEmails: Record<string, string> = {}
 
+    const serviceSupabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+
     for (const uid of userIds) {
-      const { data } = await supabase.auth.admin.getUserById(uid)
-      if (data?.user) {
-        userEmails[uid] = data.user.email || '알 수 없음'
+      try {
+        const { data } = await serviceSupabase.auth.admin.getUserById(uid)
+        if (data?.user) {
+          userEmails[uid] = data.user.email || '알 수 없음'
+        }
+      } catch (e) {
+        console.warn(`Failed to fetch user ${uid}:`, e)
       }
     }
 
