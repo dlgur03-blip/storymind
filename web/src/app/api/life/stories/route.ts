@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ story: data })
   } catch (error) {
     console.error('Stories POST error:', error)
-    return NextResponse.json({ error: '스토리 생성 실패' }, { status: 500 })
+    const msg = error instanceof Error ? error.message : String(error)
+    return NextResponse.json({ error: '스토리 생성 실패', detail: msg }, { status: 500 })
   }
 }
