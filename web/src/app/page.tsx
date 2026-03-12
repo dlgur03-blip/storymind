@@ -15,6 +15,9 @@ export default function Home() {
   const [error, setError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [memberCode, setMemberCode] = useState('')
+  const [memberError, setMemberError] = useState('')
+  const [memberLoading, setMemberLoading] = useState(false)
 
   useEffect(() => {
     // Sync dark mode state with DOM
@@ -60,6 +63,47 @@ export default function Home() {
       setError(err instanceof Error ? err.message : '오류가 발생했습니다')
     } finally {
       setAuthLoading(false)
+    }
+  }
+
+  const MEMBER_CODE = '01046975590'
+  const TEST_EMAIL = 'member01046975590@storymind.co.kr'
+  const TEST_PASSWORD = 'storymind2025!member'
+
+  const handleMemberLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setMemberError('')
+    if (memberCode !== MEMBER_CODE) {
+      setMemberError('회원번호가 올바르지 않습니다')
+      return
+    }
+    setMemberLoading(true)
+    const supabase = getSupabase()
+    try {
+      // Try sign in first
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: TEST_EMAIL,
+        password: TEST_PASSWORD,
+      })
+      if (signInError) {
+        // If account doesn't exist, create it
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
+        })
+        if (signUpError) throw signUpError
+        // Try sign in again after signup
+        const { error: retryError } = await supabase.auth.signInWithPassword({
+          email: TEST_EMAIL,
+          password: TEST_PASSWORD,
+        })
+        if (retryError) throw retryError
+      }
+      router.push('/home')
+    } catch (err) {
+      setMemberError(err instanceof Error ? err.message : '입장에 실패했습니다')
+    } finally {
+      setMemberLoading(false)
     }
   }
 
@@ -200,6 +244,34 @@ export default function Home() {
                 {isLogin ? '회원가입' : '로그인'}
               </button>
             </p>
+          </div>
+        </div>
+
+        {/* Member code entry */}
+        <div className="w-full max-w-sm mb-16 stagger-in">
+          <div className="bg-white/30 dark:bg-stone-800/20 rounded-2xl border border-stone-200/30 dark:border-stone-700/30 p-6">
+            <p className="text-[11px] tracking-[0.15em] uppercase text-stone-400 dark:text-stone-400 text-center mb-4">
+              회원번호로 입장
+            </p>
+            <form onSubmit={handleMemberLogin} className="space-y-3">
+              <input
+                type="text"
+                value={memberCode}
+                onChange={(e) => setMemberCode(e.target.value)}
+                placeholder="회원번호 입력"
+                className="w-full px-4 py-3 border border-stone-200/60 dark:border-stone-700/30 rounded-xl bg-transparent focus:outline-none focus:border-stone-400 dark:focus:border-stone-600 transition-colors duration-500 text-stone-800 dark:text-stone-200 placeholder:text-stone-300 dark:placeholder:text-stone-500 text-center tracking-widest"
+              />
+              {memberError && (
+                <p className="text-red-500 dark:text-red-400 text-sm text-center">{memberError}</p>
+              )}
+              <button
+                type="submit"
+                disabled={memberLoading || !memberCode}
+                className="w-full py-3 text-stone-500 dark:text-stone-400 border border-stone-200/60 dark:border-stone-700/30 rounded-xl text-sm hover:text-stone-700 dark:hover:text-stone-200 hover:border-stone-400 dark:hover:border-stone-500 transition-all duration-500 disabled:opacity-40"
+              >
+                {memberLoading ? '입장 중...' : '입장하기'}
+              </button>
+            </form>
           </div>
         </div>
 

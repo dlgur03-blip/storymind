@@ -38,16 +38,33 @@
   --color-surface-950: #0c0a09;
 }
 
-/* Premium dark mode — not just inversion, but a richer atmosphere (Saint Laurent reference) */
+/* ================================================================
+   DARK MODE — proper layered design, not just inversion
+   Background → Surface → Elevated → Modal (4 depth levels)
+   ================================================================ */
 .dark {
-  --background: #0a0908;
-  --foreground: #e8e6e1;
+  --background: #111110;
+  --foreground: #ece9e4;
+  --surface: #1a1918;
+  --surface-elevated: #232221;
+  --border: #2d2b2a;
+  --border-hover: #3a3836;
+  --text-primary: #ece9e4;
+  --text-secondary: #a8a49e;
+  --text-muted: #706c66;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #0a0908;
-    --foreground: #e8e6e1;
+    --background: #111110;
+    --foreground: #ece9e4;
+    --surface: #1a1918;
+    --surface-elevated: #232221;
+    --border: #2d2b2a;
+    --border-hover: #3a3836;
+    --text-primary: #ece9e4;
+    --text-secondary: #a8a49e;
+    --text-muted: #706c66;
   }
 }
 
@@ -113,7 +130,7 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #2a2826;
+  background: #2d2b2a;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -121,7 +138,7 @@ body {
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #3a3836;
+  background: #4a4846;
 }
 
 /* StoryLife fade — slower, more deliberate */
@@ -266,7 +283,7 @@ body {
 }
 
 .dark .divider-subtle {
-  background: linear-gradient(90deg, transparent, #1f1d1b 20%, #1f1d1b 80%, transparent);
+  background: linear-gradient(90deg, transparent, #2d2b2a 20%, #2d2b2a 80%, transparent);
 }
 
 /* ================================================================
@@ -275,14 +292,9 @@ body {
    ================================================================ */
 
 .dark .card-hover {
-  border-color: rgba(168, 162, 158, 0.08);
+  border-color: var(--border);
 }
 
 .dark .card-hover:hover {
-  border-color: rgba(168, 162, 158, 0.15);
-}
-
-/* Subtle text glow in dark mode for emphasis */
-.dark .font-serif {
-  text-shadow: 0 0 80px rgba(232, 230, 225, 0.03);
+  border-color: var(--border-hover);
 }
