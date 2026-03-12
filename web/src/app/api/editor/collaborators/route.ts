@@ -56,7 +56,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ collaborators: editors || data || [] })
   } catch (error) {
     console.error('Collaborators GET error:', error)
-    return NextResponse.json({ error: '협업자 조회 실패' }, { status: 500 })
+    const msg = error instanceof Error ? error.message : JSON.stringify(error)
+    return NextResponse.json({ error: '협업자 조회 실패', detail: msg }, { status: 500 })
   }
 }
 
