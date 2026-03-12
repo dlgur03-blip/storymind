@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const CLICHE_PATTERNS = [
   { pattern: /눈을?\s*떴다|눈을?\s*뜨니/g, type: 'expression', desc: '눈을 뜨는 장면 (회귀물 클리셰)' },
@@ -30,6 +31,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'ai/detect-cliches', '클리셰 탐지')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { workId, chapterId, useAI } = await request.json()
     if (!chapterId) return NextResponse.json({ error: 'chapterId 필수' }, { status: 400 })

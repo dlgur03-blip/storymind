@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const SYSTEM_PROMPT = `너는 사용자의 일상 이야기를 들어주는 친근한 친구야. 사용자가 자신의 경험이나 감정을 이야기하면, 관심을 보이고 더 자세한 이야기를 끌어내는 질문을 해줘.
 
@@ -19,6 +20,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'life/ai/chat', 'Story Life 채팅')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { message, conversationHistory, storyContext } = await request.json()
 

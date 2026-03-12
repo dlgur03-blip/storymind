@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getSupabase } from '@/lib/supabase/client'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import { ArrowLeft, Users, BookOpen, FileText, Activity, DollarSign, Loader2 } from 'lucide-react'
+import { ArrowLeft, Users, BookOpen, FileText, Activity, DollarSign, Loader2, Coins, CheckCircle, XCircle } from 'lucide-react'
 
 interface Overview {
   totalUsers: number
@@ -47,11 +47,27 @@ interface AdminData {
   recentWorks: RecentWork[]
 }
 
+interface CreditRequest {
+  id: string
+  user_id: string
+  userEmail: string
+  package_key: string
+  amount: number
+  price: number
+  depositor_name: string
+  status: string
+  admin_note: string
+  created_at: string
+  processed_at: string | null
+}
+
 export default function AdminPage() {
   const router = useRouter()
   const [data, setData] = useState<AdminData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [creditRequests, setCreditRequests] = useState<CreditRequest[]>([])
+  const [processingId, setProcessingId] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchAdmin() {
@@ -77,6 +93,15 @@ export default function AdminPage() {
 
         const json = await res.json()
         setData(json)
+
+        // Fetch credit purchase requests
+        const creditRes = await fetch('/api/admin/credits', {
+          headers: { Authorization: `Bearer ${session?.access_token ?? ''}` },
+        })
+        if (creditRes.ok) {
+          const creditJson = await creditRes.json()
+          setCreditRequests(creditJson.requests || [])
+        }
       } catch (err: any) {
         setError(err.message ?? '알 수 없는 오류가 발생했습니다')
       } finally {
@@ -104,6 +129,30 @@ export default function AdminPage() {
         <p className="text-sm text-neutral-500">대시보드로 이동합니다...</p>
       </div>
     )
+  }
+
+  const handleCreditAction = async (requestId: string, action: 'approve' | 'reject') => {
+    setProcessingId(requestId)
+    try {
+      const supabase = getSupabase()
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/admin/credits', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.access_token ?? ''}`,
+        },
+        body: JSON.stringify({ requestId, action }),
+      })
+      if (res.ok) {
+        setCreditRequests(prev => prev.map(r =>
+          r.id === requestId ? { ...r, status: action === 'approve' ? 'approved' : 'rejected' } : r
+        ))
+      }
+    } catch (err) {
+      console.error('Credit action error:', err)
+    }
+    setProcessingId(null)
   }
 
   if (!data) return null
@@ -302,7 +351,85 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* ── Section 4: Recent Works Table ── */}
+        {/* ── Section 4: Credit Purchase Requests ── */}
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-4">
+            크레딧 구매 요청
+          </h2>
+          <div className="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+            <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-neutral-50 dark:bg-neutral-800">
+                  <tr className="text-neutral-500 dark:text-neutral-400">
+                    <th className="text-left py-3 px-5 font-medium">사용자</th>
+                    <th className="text-left py-3 px-4 font-medium">패키지</th>
+                    <th className="text-right py-3 px-4 font-medium">금액</th>
+                    <th className="text-left py-3 px-4 font-medium">입금자</th>
+                    <th className="text-left py-3 px-4 font-medium">일시</th>
+                    <th className="text-left py-3 px-4 font-medium">상태</th>
+                    <th className="text-center py-3 px-5 font-medium">처리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {creditRequests.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="py-12 text-center text-neutral-400">
+                        구매 요청이 없습니다
+                      </td>
+                    </tr>
+                  ) : (
+                    creditRequests.map((req) => (
+                      <tr key={req.id} className="border-t border-neutral-100 dark:border-neutral-800/60">
+                        <td className="py-3 px-5 text-xs">{req.userEmail}</td>
+                        <td className="py-3 px-4">{req.package_key} ({req.amount})</td>
+                        <td className="py-3 px-4 text-right tabular-nums">{req.price.toLocaleString()}원</td>
+                        <td className="py-3 px-4 font-medium">{req.depositor_name}</td>
+                        <td className="py-3 px-4 text-neutral-500 tabular-nums">
+                          {new Date(req.created_at).toLocaleDateString('ko-KR')}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                            req.status === 'pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' :
+                            req.status === 'approved' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' :
+                            'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                          }`}>
+                            {req.status === 'pending' ? '대기' : req.status === 'approved' ? '승인' : '거절'}
+                          </span>
+                        </td>
+                        <td className="py-3 px-5 text-center">
+                          {req.status === 'pending' ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <button
+                                onClick={() => handleCreditAction(req.id, 'approve')}
+                                disabled={processingId === req.id}
+                                className="p-1.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors disabled:opacity-50"
+                                title="승인"
+                              >
+                                <CheckCircle className="w-5 h-5" />
+                              </button>
+                              <button
+                                onClick={() => handleCreditAction(req.id, 'reject')}
+                                disabled={processingId === req.id}
+                                className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                                title="거절"
+                              >
+                                <XCircle className="w-5 h-5" />
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-neutral-400">처리 완료</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 5: Recent Works Table ── */}
         <section>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 mb-4">
             최근 작품

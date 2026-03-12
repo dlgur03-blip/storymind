@@ -2,11 +2,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'ai/extract', '키워드 추출')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { workId, chapterId } = await request.json()
     if (!workId || !chapterId) {

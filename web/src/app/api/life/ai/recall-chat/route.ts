@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 function getAgeGuide(age: number): string {
   if (age <= 2) return '이 시기는 본인이 기억하기 어려운 나이야. 부모님이나 가족에게 들은 이야기, 사진 속 모습, 가족들이 자주 하던 말 등을 물어봐.'
@@ -15,6 +16,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'life/ai/recall-chat', '회상 채팅')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { message, conversationHistory, recallContext } = await request.json()
 

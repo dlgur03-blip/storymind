@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const SYSTEM_PROMPT = `너는 대화 내용을 바탕으로 감성적인 소설 챕터를 작성하는 작가야.
 
@@ -24,6 +25,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'life/ai/generate', '소설 생성')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { conversationHistory, genre, storyTitle, chapterNumber, previousChapterSummary } = await request.json()
 

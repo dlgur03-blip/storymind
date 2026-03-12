@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 function getAgeTone(age: number): string {
   if (age <= 2) return '부모의 시점에서 따뜻하게, 감각적인 묘사 (아기의 작은 손, 옹알이 소리, 우유 냄새) 위주로 서술해.'
@@ -15,6 +16,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'life/ai/recall-generate', '회상 소설 생성')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { conversationHistory, recallContext, storyTitle, chapterNumber, previousChapterSummary } = await request.json()
 

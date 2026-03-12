@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const STEP_PROMPTS = {
   1: {
@@ -177,6 +178,11 @@ export async function POST(
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'planner/chat', '플래너 채팅')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { id } = await context.params
     const { message, step } = await request.json()

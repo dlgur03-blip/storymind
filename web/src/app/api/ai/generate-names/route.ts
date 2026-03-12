@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const STYLE_PROMPTS: Record<string, string> = {
   korean: '한국 현대 이름. 흔하지 않으면서 기억에 남는 이름.',
@@ -16,8 +17,13 @@ const STYLE_PROMPTS: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { user, error } = await getAuthUser()
+    const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'ai/generate-names', '이름 생성')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { style = 'korean', gender = 'any', count = 5, personality = '' } = await request.json()
 

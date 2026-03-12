@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 import { callGemini, parseJSON } from '@/lib/gemini'
+import { useCredits } from '@/lib/credits'
 
 const PERSONA_PROMPTS: Record<string, string> = {
   hardcore: '당신은 이 작품의 열혈 팬입니다. 작품에 깊이 몰입하고, 복선과 설정에 매우 예민합니다. 작은 디테일도 놓치지 않습니다.',
@@ -25,6 +26,11 @@ export async function POST(request: NextRequest) {
   try {
     const { user, supabase, error } = await getAuthUser()
     if (!user) return error
+
+    const creditResult = await useCredits(supabase, user.id, 'ai/simulate-readers', '가상 독자 시뮬레이션')
+    if (!creditResult.success) {
+      return NextResponse.json({ error: creditResult.error, remainingCredits: creditResult.remaining }, { status: 402 })
+    }
 
     const { workId, chapterId, personas = ['hardcore', 'casual', 'critic'] } = await request.json()
     if (!workId || !chapterId) return NextResponse.json({ error: 'workId, chapterId 필수' }, { status: 400 })
