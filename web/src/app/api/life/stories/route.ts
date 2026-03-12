@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
     if (dbError) throw dbError
 
     // Update profile story count
-    await supabase.rpc('', {}).catch(() => {})
     const { count } = await supabase
       .from('life_stories')
       .select('*', { count: 'exact', head: true })
